@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 388.875458, y: 30.6380005, z: 765.622437}
+  m_LocalPosition: {x: -2.15564871, y: 3.06479417e-17, z: -1.38026047}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -127,7 +127,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ada13df772e88c547ad3b252934ed66b, type: 3}
+  m_Script: {fileID: 11500000, guid: 551b3788ed9923340889a6a5c650897d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ClampInDegrees: {x: 360, y: 180}
@@ -135,7 +135,7 @@ MonoBehaviour:
   Smoothing: {x: 2, y: 2}
   TargetDirection: {x: 0, y: 0}
   TargetCharacterDirection: {x: 0, y: 0}
-  CharacterBody: {fileID: 100002}
+  CharacterBody: {fileID: 0}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,13 +144,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 100002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74468f3f358197a4780250217ec8fe76, type: 3}
+  m_Script: {fileID: 11500000, guid: b4f5a20ddbea8544eb61b2cc7664a996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForwardMovementSpeed: 9
-  SideMovementSpeed: 8
-  RunSpeedMultiplyer: 1.5
-  JumpForce: 5
+  ForwardMovementSpeed: 0
+  SideMovementSpeed: 0
+  RunSpeedMultiplyer: 0
+  JumpForce: 0
   Jumped: 0
   Landed: 0
   isGrounded: 0
