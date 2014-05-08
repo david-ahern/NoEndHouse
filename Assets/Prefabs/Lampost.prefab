@@ -345,10 +345,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d4b28e4988a494091a1f69a8a82396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AverageRefreshRate: 3
-  RefreshRateRange: 1
-  AverageFadeSpeed: .300000012
-  FadeSpeedRange: 1
+  AverageOnTime: 1
+  OnTimeRange: 1
+  AverageOffTime: 2
+  OffTimeRange: .5
+  AverageFadeSpeed: .200000003
+  FadeSpeedRange: .5
   FadedLightPercentage: .300000012
 --- !u!1001 &100100000
 Prefab:

@@ -15,14 +15,22 @@ public class LightFlicker : MonoBehaviour
     private enum LightState { FULL, LOWERED, OFF };
     private LightState CurrentState;
 
-    public float AverageRefreshRate = 1.0f;
-    public float RefreshRateRange = 1.0f;
+    public float AverageOnTime = 1.0f;
+    public float OnTimeRange = 1.0f;
+
+    public float AverageOffTime = 1.0f;
+    public float OffTimeRange = 1.0f;
+
+
     private float NextRefreshTime = 0.0f;
 
     public float AverageFadeSpeed = 0.5f;
     public float FadeSpeedRange = 1.0f;
 
     public float FadedLightPercentage = 0.5f;
+
+    public float FullLightVolume = 0.2f;
+
 
 	void Start () 
     {
@@ -43,9 +51,10 @@ public class LightFlicker : MonoBehaviour
         {
             if (CurrentState == LightState.FULL)
             {
-                StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity * FadedLightPercentage, false));
-                LightComponent.flare = DefaultFlare;
-                CurrentState = LightState.LOWERED;
+                StartCoroutine(FadeLight(LightComponent.intensity, 0));
+                CurrentState = LightState.OFF;
+
+                NextRefreshTime = Time.time + Random.Range(AverageOffTime * (1 - OffTimeRange), AverageOffTime * (1 + OffTimeRange));
             }
             else if (CurrentState == LightState.LOWERED)
             {
@@ -53,27 +62,27 @@ public class LightFlicker : MonoBehaviour
 
                 if (newState == 0)
                 {
-                    StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity, false));
-                    LightComponent.flare = DefaultFlare;
+                    StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity));
                     CurrentState = LightState.FULL;
+                    NextRefreshTime = Time.time + Random.Range(AverageOnTime * (1 - OnTimeRange), AverageOnTime * (1 + OnTimeRange));
                 }
                 else
                 {
-                    StartCoroutine(FadeLight(LightComponent.intensity, 0, true));
+                    StartCoroutine(FadeLight(LightComponent.intensity, 0));
                     CurrentState = LightState.OFF;
+                    NextRefreshTime = Time.time + Random.Range(AverageOffTime * (1 - OffTimeRange), AverageOffTime * (1 + OffTimeRange));
                 }
             }
             else
             {
-                StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity * FadedLightPercentage, false));
-                LightComponent.flare = DefaultFlare;
+                StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity * FadedLightPercentage));
                 CurrentState = LightState.LOWERED;
+                NextRefreshTime = Time.time + Random.Range(AverageOnTime * (1 - OnTimeRange), AverageOnTime * (1 + OnTimeRange));
             }
-            NextRefreshTime = Time.time + Random.Range(AverageRefreshRate * (1 - RefreshRateRange), AverageRefreshRate * (1 + RefreshRateRange));
         }        
 	}
 
-    private IEnumerator FadeLight(float startIntensity, float endIntensity, bool turnOffFlare)
+    private IEnumerator FadeLight(float startIntensity, float endIntensity)
     {
         LightComponent.flare = DefaultFlare;
 
@@ -83,12 +92,16 @@ public class LightFlicker : MonoBehaviour
         {
             // end time is the lower value in this because the time calculation goes from 1 to 0
             LightComponent.intensity = Mathf.Lerp(endIntensity, startIntensity, fadeEndTime - Time.time);
-            LightSound.pitch = Mathf.Lerp(Mathf.Clamp(endIntensity / DefaultIntensity, 0.75f, 1.0f), Mathf.Clamp(startIntensity / DefaultIntensity, 0.75f, 1.0f), fadeEndTime - Time.time);
-            LightSound.volume = Mathf.Lerp(endIntensity / DefaultIntensity, startIntensity / DefaultIntensity, fadeEndTime - Time.time);
+            if (LightSound != null)
+                LightSound.volume = Mathf.Lerp(1 - ((1 - FullLightVolume) * endIntensity/DefaultIntensity), 1 - ((1 - FullLightVolume) * startIntensity/DefaultIntensity), fadeEndTime - Time.time);
             yield return new WaitForEndOfFrame();
         }
 
-        if (turnOffFlare)
+        if (endIntensity < 0.05)
+        {
+            if (LightSound != null)
+                LightSound.volume = 0;
             LightComponent.flare = null;
+        }
     }
 }
