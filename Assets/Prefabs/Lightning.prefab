@@ -102,14 +102,14 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
-    m_Strength: 1
-    m_Bias: .0500000007
-    m_Softness: 4
-    m_SoftnessFade: 1
+    m_Strength: .609000027
+    m_Bias: .649999976
+    m_Softness: 6.28999996
+    m_SoftnessFade: 1.98000002
   m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
+  m_DrawHalo: 1
   m_ActuallyLightmapped: 0
   m_Flare: {fileID: 0}
   m_RenderMode: 0
@@ -142,6 +142,7 @@ MonoBehaviour:
   FlashSeperationgRange: .800000012
   AverageFlashTime: .100000001
   FlashTimeRange: 1
+  SoundClip: {fileID: 8300000, guid: 7feaf638e02d9be4086b8f2e420ad1b0, type: 3}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Light))]
 
@@ -7,19 +8,25 @@ public class Lightning : MonoBehaviour
 {
     private Light LightComponent;
 
+    [Range(0,2)]
     public float FlashIntensity = 1.0f;
 
     public float AverageLightningFrequency = 10.0f;
+    [Range(0,1)]
     public float LightningFrequencyRange = 1.0f;
+
+    public float AverageFlashSeperation = 1.0f;
+    [Range(0,1)]
+    public float FlashSeperationgRange = 1.0f;
+
+    public float AverageFlashTime = 0.1f;
+    [Range(0,1)]
+    public float FlashTimeRange = 1.0f;
 
     public int MaxFlashes = 3;
     public int MinFlashes = 1;
 
-    public float AverageFlashSeperation = 1.0f;
-    public float FlashSeperationgRange = 1.0f;
-
-    public float AverageFlashTime = 0.1f;
-    public float FlashTimeRange = 1.0f;
+    public List<AudioClip> SoundClips;
 
     private float NextFlashTime = 0.0f;
 
@@ -47,8 +54,11 @@ public class Lightning : MonoBehaviour
         {
             float flashTime = Random.Range(AverageFlashTime * (1 - FlashTimeRange), AverageFlashTime * (1 + FlashTimeRange));
 
-            if (gameObject.audio != null)
-                gameObject.audio.Play();
+            if (SoundClips.Count > 0)
+            {
+                int clip = Random.Range(0, SoundClips.Count);
+                SoundController.PlayClip(SoundClips[clip], (clip == 1 ? true : false));
+            }
 
             gameObject.light.intensity = FlashIntensity;
             yield return new WaitForSeconds(flashTime);

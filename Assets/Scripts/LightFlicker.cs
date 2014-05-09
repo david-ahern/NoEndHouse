@@ -16,19 +16,23 @@ public class LightFlicker : MonoBehaviour
     private LightState CurrentState;
 
     public float AverageOnTime = 1.0f;
+    [Range(0,1)]
     public float OnTimeRange = 1.0f;
 
     public float AverageOffTime = 1.0f;
+    [Range(0,1)]
     public float OffTimeRange = 1.0f;
 
 
     private float NextRefreshTime = 0.0f;
 
     public float AverageFadeSpeed = 0.5f;
+    [Range(0,1)]
     public float FadeSpeedRange = 1.0f;
 
+    [Range(0,1)]
     public float FadedLightPercentage = 0.5f;
-
+    [Range(0,1)]
     public float FullLightVolume = 0.2f;
 
 
