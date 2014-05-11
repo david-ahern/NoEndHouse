@@ -30,7 +30,6 @@ public class LODController : MonoBehaviour
 	private MeshFilter thisMeshFilter;
 	
 	public float RefreshRate = 5.0f;
-	private float NextUpdateTime = 0.0f;
 
 	LODController()
 	{

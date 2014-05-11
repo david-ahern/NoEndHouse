@@ -72,6 +72,8 @@ public class SoundController : MonoBehaviour
                 if (instance.MiscSources[i].Override)
                 {
                     instance.MiscSources[i].Source.Stop();
+                    instance.MiscSources[i].Source.volume = clip.Volume;
+                    instance.MiscSources[i].Source.pitch = clip.Pitch;
                     instance.MiscSources[i].Source.Play();
                 }
                 return;
@@ -79,6 +81,8 @@ public class SoundController : MonoBehaviour
         }
         instance.MiscSources.Add(new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), clip.Overridable));
         instance.MiscSources[instance.MiscSources.Count - 1].Source.clip = clip.Clip;
+        instance.MiscSources[instance.MiscSources.Count - 1].Source.volume = clip.Volume;
+        instance.MiscSources[instance.MiscSources.Count - 1].Source.pitch = clip.Pitch;
         instance.MiscSources[instance.MiscSources.Count - 1].Override = clip.Overridable;
         instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
     }
@@ -128,5 +132,9 @@ public class MiscAudioClip
     [SerializeField]
     public AudioClip Clip;
     [SerializeField]
-    public bool Overridable;
+    public bool Overridable = false;
+    [SerializeField]
+    public float Volume = 1.0f;
+    [SerializeField]
+    public float Pitch = 1.0f;
 }

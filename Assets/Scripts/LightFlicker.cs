@@ -9,7 +9,6 @@ public class LightFlicker : MonoBehaviour
     private AudioSource LightSound;
 
     private float DefaultIntensity;
-    private float DefaultRange;
     private Flare DefaultFlare;
 
     private enum LightState { FULL, LOWERED, OFF };
@@ -42,7 +41,6 @@ public class LightFlicker : MonoBehaviour
         LightSound = gameObject.GetComponent<AudioSource>();
 
         DefaultIntensity = LightComponent.intensity;
-        DefaultRange = LightComponent.range;
         DefaultFlare = LightComponent.flare;
 
         CurrentState = LightState.FULL;
