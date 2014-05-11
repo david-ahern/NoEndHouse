@@ -26,7 +26,7 @@ public class Lightning : MonoBehaviour
     public int MaxFlashes = 3;
     public int MinFlashes = 1;
 
-    public List<AudioClip> SoundClips;
+    public List<MiscAudioClip> SoundClips;
 
     private float NextFlashTime = 0.0f;
 
@@ -57,7 +57,7 @@ public class Lightning : MonoBehaviour
             if (SoundClips.Count > 0)
             {
                 int clip = Random.Range(0, SoundClips.Count);
-                SoundController.PlayClip(SoundClips[clip], (clip == 1 ? true : false));
+                SoundController.PlayClip(SoundClips[clip]);
             }
 
             gameObject.light.intensity = FlashIntensity;

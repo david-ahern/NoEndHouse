@@ -41,8 +41,9 @@ MonoBehaviour:
   SoundTracks:
   - Name: Hush
     Track: {fileID: 8300000, guid: 04f0e16a4c0ac404f80536ded7a064ff, type: 3}
-  - Name: Lost Frontier
-    Track: {fileID: 8300000, guid: 43747e6a5ef6b1a44b8497aeb294bc21, type: 3}
+  - Name: Evening of Chaos
+    Track: {fileID: 8300000, guid: 8d36336e266c6f2419eb6dcac035a451, type: 3}
+  _musicVolume: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

@@ -9,7 +9,7 @@ public class SoundController : MonoBehaviour
 
     private AudioSource SoundtrackSource;
 
-    private List<MiscSource> MiscSounds;
+    private List<MiscAudioSource> MiscSources;
 
     [Range(0,1)]
     public float _musicVolume = 1.0f;
@@ -28,7 +28,7 @@ public class SoundController : MonoBehaviour
 
             SoundtrackSource.volume = _musicVolume;
 
-            MiscSounds = new List<MiscSource>();
+            MiscSources = new List<MiscAudioSource>();
         }
         if (instance == this)
             DontDestroyOnLoad(this.gameObject);
@@ -46,12 +46,12 @@ public class SoundController : MonoBehaviour
         if (!SoundtrackSource.isPlaying)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
 
-        for (int i = 0; i < instance.MiscSounds.Count; ++i)
+        for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
-            if (!instance.MiscSounds[i].Source.isPlaying)
+            if (!instance.MiscSources[i].Source.isPlaying)
             {
-                Destroy(instance.MiscSounds[i].Source);
-                instance.MiscSounds.RemoveAt(i);
+                Destroy(instance.MiscSources[i].Source);
+                instance.MiscSources.RemoveAt(i);
                 --i;
             }
         }
@@ -63,25 +63,45 @@ public class SoundController : MonoBehaviour
         instance.SoundtrackSource.Play();
     }
 
+    static public void PlayClip(MiscAudioClip clip)
+    {
+        for (int i = 0; i < instance.MiscSources.Count; ++i)
+        {
+            if (instance.MiscSources[i].Source.clip == clip.Clip)
+            {
+                if (instance.MiscSources[i].Override)
+                {
+                    instance.MiscSources[i].Source.Stop();
+                    instance.MiscSources[i].Source.Play();
+                }
+                return;
+            }
+        }
+        instance.MiscSources.Add(new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), clip.Overridable));
+        instance.MiscSources[instance.MiscSources.Count - 1].Source.clip = clip.Clip;
+        instance.MiscSources[instance.MiscSources.Count - 1].Override = clip.Overridable;
+        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+    }
+
     static public void PlayClip(AudioClip clip, bool Overridable)
     {
-        for (int i = 0; i < instance.MiscSounds.Count; ++i)
+        for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
-            if (instance.MiscSounds[i].Source.clip == clip)
+            if (instance.MiscSources[i].Source.clip == clip)
             {
-                if (instance.MiscSounds[i].Override)
+                if (instance.MiscSources[i].Override)
                 {
-                    instance.MiscSounds[i].Source.Stop();
-                    instance.MiscSounds[i].Source.Play();
+                    instance.MiscSources[i].Source.Stop();
+                    instance.MiscSources[i].Source.Play();
                 }
                 return;
             }
 
         }
-        instance.MiscSounds.Add(new MiscSource(instance.gameObject.AddComponent<AudioSource>(), true));
-        instance.MiscSounds[instance.MiscSounds.Count - 1].Source.clip = clip;
-        instance.MiscSounds[instance.MiscSounds.Count - 1].Override = Overridable;
-        instance.MiscSounds[instance.MiscSounds.Count - 1].Source.Play();
+        instance.MiscSources.Add(new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), Overridable));
+        instance.MiscSources[instance.MiscSources.Count - 1].Source.clip = clip;
+        instance.MiscSources[instance.MiscSources.Count - 1].Override = Overridable;
+        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
     }
 
     [System.Serializable]
@@ -93,11 +113,20 @@ public class SoundController : MonoBehaviour
         public AudioClip Track;
     }
 
-    public class MiscSource
+    public class MiscAudioSource
     {
         public AudioSource Source;
         public bool Override;
 
-        public MiscSource(AudioSource s, bool ov) { Source = s; Override = ov; }
+        public MiscAudioSource(AudioSource s, bool ov) { Source = s; Override = ov; }
     }
+}
+
+[System.Serializable]
+public class MiscAudioClip
+{
+    [SerializeField]
+    public AudioClip Clip;
+    [SerializeField]
+    public bool Overridable;
 }
