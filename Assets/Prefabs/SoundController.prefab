@@ -40,9 +40,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SoundTracks:
   - Name: Hush
-    Track: {fileID: 8300000, guid: 0369ab87f63118d418167b65a61a8449, type: 3}
+    Track: {fileID: 8300000, guid: 04f0e16a4c0ac404f80536ded7a064ff, type: 3}
   - Name: Evening of Chaos
-    Track: {fileID: 8300000, guid: 7feaf638e02d9be4086b8f2e420ad1b0, type: 3}
+    Track: {fileID: 8300000, guid: 8d36336e266c6f2419eb6dcac035a451, type: 3}
   _musicVolume: .512000024
 --- !u!1001 &100100000
 Prefab:
