@@ -72,22 +72,21 @@ public class SoundController : MonoBehaviour
                 if (instance.MiscSources[i].Override)
                 {
                     instance.MiscSources[i].Source.Stop();
-                    instance.MiscSources[i].Source.volume = clip.Volume;
-                    instance.MiscSources[i].Source.pitch = clip.Pitch;
                     instance.MiscSources[i].Source.Play();
+                }
+                else if (instance.MiscSources[i].CreateAnother)
+                {
+                    instance.MiscSources.Add(CreateSource(clip));
+                    instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
                 }
                 return;
             }
         }
-        instance.MiscSources.Add(new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), clip.Overridable));
-        instance.MiscSources[instance.MiscSources.Count - 1].Source.clip = clip.Clip;
-        instance.MiscSources[instance.MiscSources.Count - 1].Source.volume = clip.Volume;
-        instance.MiscSources[instance.MiscSources.Count - 1].Source.pitch = clip.Pitch;
-        instance.MiscSources[instance.MiscSources.Count - 1].Override = clip.Overridable;
+        instance.MiscSources.Add(CreateSource(clip));
         instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
     }
 
-    static public void PlayClip(AudioClip clip, bool Overridable)
+    static public void PlayClip(AudioClip clip)
     {
         for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
@@ -98,14 +97,37 @@ public class SoundController : MonoBehaviour
                     instance.MiscSources[i].Source.Stop();
                     instance.MiscSources[i].Source.Play();
                 }
+                else if (instance.MiscSources[i].CreateAnother)
+                {
+                    instance.MiscSources.Add(CreateSource(clip));
+                    instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+                }
                 return;
             }
 
         }
-        instance.MiscSources.Add(new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), Overridable));
-        instance.MiscSources[instance.MiscSources.Count - 1].Source.clip = clip;
-        instance.MiscSources[instance.MiscSources.Count - 1].Override = Overridable;
+        instance.MiscSources.Add(CreateSource(clip));
         instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+    }
+
+    static private MiscAudioSource CreateSource(AudioClip Clip, bool Loop = false, bool Override = false, bool CreateAnother = false, float Volume = 1.0f, float Pitch = 1.0f)
+    {
+        MiscAudioSource source = new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), Override, CreateAnother);
+        source.Source.clip = Clip;
+        source.Source.loop = Loop;
+        source.Source.volume = Volume;
+        source.Source.pitch = Pitch;
+        return source;
+    }
+
+    static private MiscAudioSource CreateSource(MiscAudioClip clip)
+    {
+        MiscAudioSource source = new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), clip.Overridable, clip.CreateAnother);
+        source.Source.clip = clip.Clip;
+        source.Source.loop = clip.Loop;
+        source.Source.volume = clip.Volume;
+        source.Source.pitch = clip.Pitch;
+        return source;
     }
 
     [System.Serializable]
@@ -121,8 +143,14 @@ public class SoundController : MonoBehaviour
     {
         public AudioSource Source;
         public bool Override;
+        public bool CreateAnother;
 
-        public MiscAudioSource(AudioSource s, bool ov) { Source = s; Override = ov; }
+        public MiscAudioSource(AudioSource source, bool Overridable, bool createAnother) 
+        { 
+            Source = source; 
+            Override = Overridable;
+            CreateAnother = createAnother;
+        }
     }
 }
 
@@ -132,7 +160,11 @@ public class MiscAudioClip
     [SerializeField]
     public AudioClip Clip;
     [SerializeField]
+    public bool Loop = false;
+    [SerializeField]
     public bool Overridable = false;
+    [SerializeField]
+    public bool CreateAnother = false;
     [SerializeField]
     public float Volume = 1.0f;
     [SerializeField]
