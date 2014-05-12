@@ -13,6 +13,7 @@ GameObject:
   - 124: {fileID: 12400000}
   - 81: {fileID: 8100000}
   - 114: {fileID: 11400000}
+  - 45: {fileID: 4500000}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -31,6 +32,7 @@ GameObject:
   - 114: {fileID: 11400002}
   - 136: {fileID: 13600000}
   - 54: {fileID: 5400000}
+  - 114: {fileID: 11400004}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -55,8 +57,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.15564871, y: 3.06479417e-17, z: -1.38026047}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
+  m_LocalPosition: {x: 1.45110667, y: .141528845, z: 18.4367294}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -86,10 +88,18 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_RenderingPath: -1
+  m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_HDR: 0
   m_OcclusionCulling: 1
+--- !u!45 &4500000
+Skybox:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 5ba172cd3918d7c44aa6d04446119a00, type: 2}
 --- !u!54 &5400000
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -135,7 +145,7 @@ MonoBehaviour:
   Smoothing: {x: 2, y: 2}
   TargetDirection: {x: 0, y: 0}
   TargetCharacterDirection: {x: 0, y: 0}
-  CharacterBody: {fileID: 0}
+  CharacterBody: {fileID: 100002}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -147,14 +157,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f5a20ddbea8544eb61b2cc7664a996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForwardMovementSpeed: 0
-  SideMovementSpeed: 0
-  RunSpeedMultiplyer: 0
-  JumpForce: 0
+  ForwardMovementSpeed: 9
+  SideMovementSpeed: 8
+  RunSpeedMultiplyer: 1.5
+  JumpForce: 5
   Jumped: 0
   Landed: 0
   isGrounded: 0
   wasGrounded: 0
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf3fb4ed8d5b4241b0a79387e45becb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Clip:
+    Clip: {fileID: 8300000, guid: 1e7ee6e096e23db49b8e418b1ed5c0b7, type: 3}
+    Loop: 1
+    Overridable: 0
+    CreateAnother: 0
+    Volume: 1
+    Pitch: 1
+  RateChange: .00100000005
+  DefaultRate: 1
+  MaxRate: 2
+  MinRate: .5
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

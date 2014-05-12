@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80df8084ca9a2db42b39885d74d7b1ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxFlashIntensity: 1.63999999
+  MaxFlashIntensity: 2
   AverageLightningFrequency: 5
   LightningFrequencyRange: .839999974
   AverageFlashSeperation: .100000001
@@ -115,14 +115,18 @@ MonoBehaviour:
   LightningParticles: {fileID: 19800000}
   SoundClips:
   - Clip: {fileID: 8300000, guid: 7feaf638e02d9be4086b8f2e420ad1b0, type: 3}
+    Loop: 0
     Overridable: 1
+    CreateAnother: 0
     Volume: 0
     Pitch: 1
   - Clip: {fileID: 8300000, guid: 0369ab87f63118d418167b65a61a8449, type: 3}
+    Loop: 0
     Overridable: 0
+    CreateAnother: 0
     Volume: 0
     Pitch: 1
-  Velocity: {x: 0, y: .5}
+  Velocity: {x: 0, y: .100000001}
   MaxDistances: {x: 1000, y: 1000}
 --- !u!198 &19800000
 ParticleSystem:

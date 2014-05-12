@@ -59,7 +59,6 @@ public class Lightning : MonoBehaviour
         int NumFlashes = 0;
 
         float Intensity = CalculateIntensity();
-        Debug.Log(Intensity);
         while (NumFlashes < FlashCount)
         {
             float flashTime = Random.Range(AverageFlashTime * (1 - FlashTimeRange), AverageFlashTime * (1 + FlashTimeRange));

@@ -45,6 +45,8 @@ public class SoundController : MonoBehaviour
     {
         if (!SoundtrackSource.isPlaying)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
+        
+        SoundtrackSource.volume = _musicVolume;
 
         for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
@@ -79,6 +81,9 @@ public class SoundController : MonoBehaviour
                     instance.MiscSources.Add(CreateSource(clip));
                     instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
                 }
+                instance.MiscSources[i].Source.volume = clip.Volume;
+                instance.MiscSources[i].Source.pitch = clip.Pitch;
+                instance.MiscSources[i].Source.loop = clip.Loop;
                 return;
             }
         }

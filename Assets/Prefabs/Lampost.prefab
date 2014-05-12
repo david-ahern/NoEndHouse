@@ -130,7 +130,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: bcbd6ecb98d148b4aaa11ed58a4e236f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -243,39 +243,24 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 10
+  MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: .100000001
+    - time: 0
       value: 1
-      inSlope: -10.0039835
-      outSlope: -10.0039835
-      tangentMode: 0
-    - time: .200000003
-      value: .5
-      inSlope: -2.50099587
-      outSlope: -2.50099587
-      tangentMode: 0
-    - time: .400000006
-      value: .22647059
-      inSlope: -1.01841664
-      outSlope: -1.01841664
-      tangentMode: 0
-    - time: .677192986
-      value: .0485294089
-      inSlope: -.510230124
-      outSlope: -.510230124
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
     - time: 1
       value: 0
-      inSlope: -.100039922
-      outSlope: -.100039922
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -308,7 +293,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 3
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: .845588207, g: .652286351, b: .236267313, a: 1}
   m_Intensity: 3.69000006
   m_Range: 10
   m_SpotAngle: 134
@@ -345,13 +330,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69d4b28e4988a494091a1f69a8a82396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AverageOnTime: 1
+  AverageOnTime: .400000006
   OnTimeRange: 1
-  AverageOffTime: 2
-  OffTimeRange: .5
+  AverageOffTime: .5
+  OffTimeRange: 1
   AverageFadeSpeed: .200000003
-  FadeSpeedRange: .5
+  FadeSpeedRange: .100000001
   FadedLightPercentage: .300000012
+  FullLightVolume: .200000003
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
