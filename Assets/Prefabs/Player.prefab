@@ -58,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: -4.37113883e-08}
-  m_LocalPosition: {x: 1.45110667, y: .141528845, z: 18.4367294}
+  m_LocalPosition: {x: 1.45110667, y: .141528845, z: 5.09066391}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f5a20ddbea8544eb61b2cc7664a996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForwardMovementSpeed: 9
+  ForwardMovementSpeed: 8
   SideMovementSpeed: 8
   RunSpeedMultiplyer: 1.5
   JumpForce: 5
@@ -181,12 +181,13 @@ MonoBehaviour:
     Loop: 1
     Overridable: 0
     CreateAnother: 0
-    Volume: 1
+    Volume: 0
     Pitch: 1
-  RateChange: .00100000005
+  RateChangeIncrease: .00100000005
+  RateChangeDecrease: .000500000024
   DefaultRate: 1
   MaxRate: 2
-  MinRate: .5
+  DefaultVolume: .300000012
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1

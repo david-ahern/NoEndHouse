@@ -13,9 +13,9 @@ public class SoundController : MonoBehaviour
 
     [Range(0,1)]
     public float _musicVolume = 1.0f;
-    public float MusicVolume
+    static public float MusicVolume
     {
-        get { return _musicVolume; }
+        get { if (instance != null) return instance._musicVolume; else return -1; }
     }
 
     void Awake()
@@ -61,58 +61,67 @@ public class SoundController : MonoBehaviour
 
     static public void PlaySoundtrack(int track)
     {
-        instance.SoundtrackSource.clip = instance.SoundTracks[track].Track;
-        instance.SoundtrackSource.Play();
+        if (instance != null)
+        {
+            instance.SoundtrackSource.clip = instance.SoundTracks[track].Track;
+            instance.SoundtrackSource.Play();
+        }
     }
 
     static public void PlayClip(MiscAudioClip clip)
     {
-        for (int i = 0; i < instance.MiscSources.Count; ++i)
+        if (instance != null)
         {
-            if (instance.MiscSources[i].Source.clip == clip.Clip)
+            for (int i = 0; i < instance.MiscSources.Count; ++i)
             {
-                if (instance.MiscSources[i].Override)
+                if (instance.MiscSources[i].Source.clip == clip.Clip)
                 {
-                    instance.MiscSources[i].Source.Stop();
-                    instance.MiscSources[i].Source.Play();
+                    if (instance.MiscSources[i].Override)
+                    {
+                        instance.MiscSources[i].Source.Stop();
+                        instance.MiscSources[i].Source.Play();
+                    }
+                    else if (instance.MiscSources[i].CreateAnother)
+                    {
+                        instance.MiscSources.Add(CreateSource(clip));
+                        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+                    }
+                    instance.MiscSources[i].Source.volume = clip.Volume;
+                    instance.MiscSources[i].Source.pitch = clip.Pitch;
+                    instance.MiscSources[i].Source.loop = clip.Loop;
+                    return;
                 }
-                else if (instance.MiscSources[i].CreateAnother)
-                {
-                    instance.MiscSources.Add(CreateSource(clip));
-                    instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
-                }
-                instance.MiscSources[i].Source.volume = clip.Volume;
-                instance.MiscSources[i].Source.pitch = clip.Pitch;
-                instance.MiscSources[i].Source.loop = clip.Loop;
-                return;
             }
+            instance.MiscSources.Add(CreateSource(clip));
+            instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
         }
-        instance.MiscSources.Add(CreateSource(clip));
-        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
     }
 
     static public void PlayClip(AudioClip clip)
     {
-        for (int i = 0; i < instance.MiscSources.Count; ++i)
+        if (instance != null)
         {
-            if (instance.MiscSources[i].Source.clip == clip)
+            for (int i = 0; i < instance.MiscSources.Count; ++i)
             {
-                if (instance.MiscSources[i].Override)
+                if (instance.MiscSources[i].Source.clip == clip)
                 {
-                    instance.MiscSources[i].Source.Stop();
-                    instance.MiscSources[i].Source.Play();
+                    if (instance.MiscSources[i].Override)
+                    {
+                        instance.MiscSources[i].Source.Stop();
+                        instance.MiscSources[i].Source.Play();
+                    }
+                    else if (instance.MiscSources[i].CreateAnother)
+                    {
+                        instance.MiscSources.Add(CreateSource(clip));
+                        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+                    }
+                    return;
                 }
-                else if (instance.MiscSources[i].CreateAnother)
-                {
-                    instance.MiscSources.Add(CreateSource(clip));
-                    instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
-                }
-                return;
-            }
 
+            }
+            instance.MiscSources.Add(CreateSource(clip));
+            instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
         }
-        instance.MiscSources.Add(CreateSource(clip));
-        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
     }
 
     static private MiscAudioSource CreateSource(AudioClip Clip, bool Loop = false, bool Override = false, bool CreateAnother = false, float Volume = 1.0f, float Pitch = 1.0f)

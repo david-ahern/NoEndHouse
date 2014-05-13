@@ -59,15 +59,13 @@ public class Lightning : MonoBehaviour
         int NumFlashes = 0;
 
         float Intensity = CalculateIntensity();
+
         while (NumFlashes < FlashCount)
         {
             float flashTime = Random.Range(AverageFlashTime * (1 - FlashTimeRange), AverageFlashTime * (1 + FlashTimeRange));
 
             if (SoundClips.Count > 0)
-            {
-                int clip = Random.Range(0, SoundClips.Count);
-                StartCoroutine(HandleSound((SoundClips[clip])));
-            }
+                StartCoroutine(HandleSound((SoundClips[Random.Range(0, SoundClips.Count)])));
 
             gameObject.light.intensity = Intensity;
             if (LightningParticles != null)
@@ -90,13 +88,13 @@ public class Lightning : MonoBehaviour
 
     private float CalculateIntensity()
     {
-        return MaxFlashIntensity * (1 - ((new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / MaxDistances.magnitude));
+        return Mathf.Clamp(MaxFlashIntensity * (1 - ((new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / MaxDistances.magnitude)), 0, MaxFlashIntensity);
     }
 
     private IEnumerator HandleSound(MiscAudioClip clip)
     {
-        clip.Volume = 1 - ((new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / MaxDistances.magnitude);
-        clip.Pitch = 1 - ((new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / MaxDistances.magnitude);
+        clip.Volume = Mathf.Clamp(1 - ((new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / MaxDistances.magnitude), 0, 1);
+        clip.Pitch = Mathf.Clamp(1 - ((new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / MaxDistances.magnitude), 0, 1);
         float delay = (new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / Globals.SoundSpeed;
 
         yield return new WaitForSeconds(delay);
@@ -108,14 +106,17 @@ public class Lightning : MonoBehaviour
     {
         gameObject.transform.position += new Vector3(Velocity.x, 0, Velocity.y);
 
-        if (gameObject.transform.position.x > MaxDistances.x)
-            gameObject.transform.position = new Vector3(-MaxDistances.x + 0.01f, gameObject.transform.position.y, gameObject.transform.position.z);
-        if (gameObject.transform.position.x < -MaxDistances.x)
-            gameObject.transform.position = new Vector3(MaxDistances.x - 0.01f, gameObject.transform.position.y, gameObject.transform.position.z);
-        if (gameObject.transform.position.z > MaxDistances.y)
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, -MaxDistances.y + 0.01f);
-        if (gameObject.transform.position.z < -MaxDistances.y)
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, MaxDistances.y - 0.01f);
+        if (gameObject.transform.position.x > Globals.Player.gameObject.transform.position.x + MaxDistances.x)
+            gameObject.transform.position = new Vector3(Globals.Player.gameObject.transform.position.x - MaxDistances.x + 5.0f, gameObject.transform.position.y, gameObject.transform.position.z);
+
+        if (gameObject.transform.position.x < Globals.Player.gameObject.transform.position.x - MaxDistances.x)
+            gameObject.transform.position = new Vector3(Globals.Player.gameObject.transform.position.x + MaxDistances.x - 5.0f, gameObject.transform.position.y, gameObject.transform.position.z);
+
+        if (gameObject.transform.position.z > Globals.Player.gameObject.transform.position.y + MaxDistances.y)
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Globals.Player.gameObject.transform.position.y - MaxDistances.y + 5.0f);
+
+        if (gameObject.transform.position.z < Globals.Player.gameObject.transform.position.y - MaxDistances.y)
+            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, Globals.Player.gameObject.transform.position.y + MaxDistances.y - 5.0f);
 
         gameObject.transform.forward = Globals.Player.transform.position - gameObject.transform.position;
     }
