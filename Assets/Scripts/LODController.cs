@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using System.Collections;
 
+#if UNITY_EDITOR
 [InitializeOnLoad]
+#endif
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class LODController : MonoBehaviour
@@ -31,12 +35,12 @@ public class LODController : MonoBehaviour
 	
 	public float RefreshRate = 5.0f;
 
-	LODController()
+#if UNITY_EDITOR
+    LODController()
 	{
-		#if UNITY_EDITOR
 		EditorApplication.update += EditorUpdate;
-		#endif
 	}
+#endif
 
 	// Use this for initialization
 	void Start () 
@@ -81,6 +85,7 @@ public class LODController : MonoBehaviour
 
 	private int prevHigh, prevLow, prevOffset;
 	
+#if UNITY_EDITOR
 	void EditorUpdate()
 	{
 		if (HighResolutionDistance != prevHigh || DistanceOffset != prevOffset)
@@ -117,4 +122,5 @@ public class LODController : MonoBehaviour
 		Gizmos.color = Color.blue;
 		Gizmos.DrawWireSphere(gameObject.transform.position, (float)MediumResolutionDistance);
 	}
+#endif
 }
