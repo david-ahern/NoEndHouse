@@ -104,14 +104,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxFlashIntensity: 1
-  AverageLightningFrequency: 5
+  AverageLightningFrequency: 7
   LightningFrequencyRange: .839999974
   AverageFlashSeperation: .100000001
   FlashSeperationRange: 1
   AverageFlashTime: .00999999978
   FlashTimeRange: .5
-  MaxFlashes: 15
-  MinFlashes: 5
+  MaxFlashes: 9
+  MinFlashes: 4
   LightningParticles: {fileID: 19800000}
   SoundClips:
   - Clip: {fileID: 8300000, guid: 7feaf638e02d9be4086b8f2e420ad1b0, type: 3}

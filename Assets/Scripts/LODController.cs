@@ -28,8 +28,9 @@ public class LODController : MonoBehaviour
 	public int HighResolutionDistance = 10;
 	[Range(0, MaxMediumResolutionDistance)]
 	public int MediumResolutionDistance = 20;
-
+#if UNITY_EDITOR
 	static private int DistanceOffset = 10;
+#endif
 
 	private MeshFilter thisMeshFilter;
 	
