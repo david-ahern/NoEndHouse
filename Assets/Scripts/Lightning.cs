@@ -45,6 +45,7 @@ public class Lightning : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+        Debug.Log("Lightning updating");
         HandleMovement();
 	    if (Time.time > NextFlashTime)
         {

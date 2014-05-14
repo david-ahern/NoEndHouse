@@ -241,6 +241,7 @@ GameObject:
   - 198: {fileID: 19800004}
   - 199: {fileID: 19900004}
   - 82: {fileID: 8200000}
+  - 114: {fileID: 11400010}
   m_Layer: 0
   m_Name: Rain Storm
   m_TagString: Untagged
@@ -275,8 +276,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400030}
   - 108: {fileID: 10800000}
-  - 114: {fileID: 11400006}
   - 82: {fileID: 8200002}
+  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Lampost
   m_TagString: Untagged
@@ -311,8 +312,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400034}
   - 108: {fileID: 10800002}
-  - 114: {fileID: 11400008}
   - 82: {fileID: 8200004}
+  - 114: {fileID: 11400008}
   m_Layer: 0
   m_Name: Lampost
   m_TagString: Untagged
@@ -1196,7 +1197,7 @@ AudioSource:
   Mute: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 3.29999995
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -1254,7 +1255,7 @@ AudioSource:
   Mute: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 3.29999995
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -1446,6 +1447,17 @@ MonoBehaviour:
   FadeSpeedRange: .100000001
   FadedLightPercentage: .300000012
   FullLightVolume: .200000003
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a16c318f1d421149b12e0005407af86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &19800000
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -3451,7 +3463,7 @@ ParticleSystem:
   speed: 1
   randomSeed: 0
   looping: 1
-  prewarm: 1
+  prewarm: 0
   playOnAwake: 1
   moveWithTransform: 1
   InitialModule:

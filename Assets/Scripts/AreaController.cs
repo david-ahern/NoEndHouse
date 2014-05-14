@@ -16,6 +16,7 @@ public class AreaController : MonoBehaviour {
         if (other.tag == "Player")
         {
             Active = true;
+            Globals.Player.CurrentArea = this;
         }
     }
 
@@ -25,5 +26,19 @@ public class AreaController : MonoBehaviour {
         {
             Active = false;
         }
+    }
+
+    public AreaController LoadArea(GameObject AreaToLoad, Vector3 RelativePosition)
+    {
+        AreaController temp = ((GameObject)GameObject.Instantiate(AreaToLoad)).GetComponent<AreaController>();
+        temp.gameObject.transform.position = gameObject.transform.position + RelativePosition;
+
+        LoadAreaTrigger[] triggersInNewArea = temp.gameObject.GetComponentsInChildren<LoadAreaTrigger>();
+
+        foreach (LoadAreaTrigger trigger in triggersInNewArea)
+            if (trigger.AreaToLoad.name == AreaName)
+                trigger.LoadedArea = this;
+
+        return temp;
     }
 }

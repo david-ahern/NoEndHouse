@@ -21,14 +21,7 @@ public class LoadAreaTrigger : MonoBehaviour
         {
             if (LoadedArea == null)
             {
-                LoadedArea = ((GameObject)GameObject.Instantiate(AreaToLoad)).GetComponent<AreaController>();
-                LoadedArea.gameObject.transform.position = ParentArea.gameObject.transform.position + RelativePosition;
-
-                LoadAreaTrigger[] triggersInArea = LoadedArea.gameObject.GetComponentsInChildren<LoadAreaTrigger>();
-
-                foreach (LoadAreaTrigger trigger in triggersInArea)
-                    if (trigger.AreaToLoad.name == ParentArea.AreaName)
-                        trigger.LoadedArea = ParentArea;
+                LoadedArea = ParentArea.LoadArea(AreaToLoad, RelativePosition);
             }
         }
     }

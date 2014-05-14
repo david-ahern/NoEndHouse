@@ -15,6 +15,8 @@ public class FirstPersonController : MonoBehaviour
 
 	private Vector3 Velocity;
 
+    public AreaController CurrentArea;
+
 	// Use this for initialization 
 	void Start () 
 	{
@@ -91,14 +93,5 @@ public class FirstPersonController : MonoBehaviour
 
 		wasGrounded = isGrounded;
 	}
-	public void SnapRotate(float Rotation)
-	{
-        Vector3 currentVel = gameObject.rigidbody.velocity;
-
-        float yRotRad = -Rotation * Mathf.Deg2Rad;
-
-        gameObject.rigidbody.velocity = new Vector3((currentVel.z * Mathf.Sin(yRotRad)) + (currentVel.x * Mathf.Cos(yRotRad)),
-            currentVel.y,
-            (currentVel.z * Mathf.Cos(yRotRad)) - (currentVel.x * Mathf.Sin(yRotRad)));
-	}
+	
 }

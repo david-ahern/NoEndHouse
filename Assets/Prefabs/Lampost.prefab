@@ -62,8 +62,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 400006}
   - 108: {fileID: 10800000}
-  - 114: {fileID: 11400000}
   - 82: {fileID: 8200000}
+  - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: Lampost
   m_TagString: Untagged
