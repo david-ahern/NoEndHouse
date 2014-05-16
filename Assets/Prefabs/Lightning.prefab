@@ -41,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -800, y: 50, z: -800}
+  m_LocalPosition: {x: 0, y: 50, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxFlashIntensity: 1
-  AverageLightningFrequency: 7
+  AverageLightningFrequency: 10
   LightningFrequencyRange: .839999974
   AverageFlashSeperation: .100000001
   FlashSeperationRange: 1
@@ -132,7 +132,7 @@ MonoBehaviour:
     CreateAnother: 0
     Volume: 0
     Pitch: 1
-  Velocity: {x: .100000001, y: .100000001}
+  Velocity: {x: 0, y: 0}
   MaxDistances: {x: 1000, y: 1000}
 --- !u!198 &19800000
 ParticleSystem:
