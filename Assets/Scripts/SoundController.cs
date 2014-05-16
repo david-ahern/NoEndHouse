@@ -38,7 +38,7 @@ public class SoundController : MonoBehaviour
 
 	void Start () 
     {
-        PlaySoundtrack(Random.Range(0, SoundTracks.Count));
+        PlaySoundtrack();
 	}
 	
 	void Update () 
@@ -65,6 +65,22 @@ public class SoundController : MonoBehaviour
         {
             instance.SoundtrackSource.clip = instance.SoundTracks[track].Track;
             instance.SoundtrackSource.Play();
+        }
+    }
+
+    static public void PlaySoundtrack()
+    {
+        if (instance != null)
+        {
+            PlaySoundtrack(Random.Range(0, instance.SoundTracks.Count));
+        }
+    }
+
+    static public void StopSoundtrack()
+    {
+        if (instance != null)
+        {
+            instance.SoundtrackSource.Stop();
         }
     }
 

@@ -3,6 +3,9 @@ using System.Collections;
 
 public class FirstPersonController : MonoBehaviour 
 {
+    private Rigidbody RigidBody;
+    private Animator anim;
+
 	public float ForwardMovementSpeed;
 	public float SideMovementSpeed;
 	public float RunSpeedMultiplyer;
@@ -17,19 +20,23 @@ public class FirstPersonController : MonoBehaviour
 
     public AreaController CurrentArea;
 
-	// Use this for initialization 
+    void Awake()
+    {
+        RigidBody = gameObject.GetComponentInChildren<Rigidbody>();
+        anim = gameObject.GetComponentInChildren<Animator>();
+    }
+
 	void Start () 
 	{
 	}
-	
-	// Update is called once per frame
+
 	void Update () 
 	{
 		CheckGrounded();
 		HandleMovement();
 		HandleJump();
 
-		gameObject.rigidbody.velocity += Velocity;
+        //gameObject.transform.position -= Velocity;
 		Velocity = Vector3.zero;
 	}
 
@@ -51,13 +58,18 @@ public class FirstPersonController : MonoBehaviour
 			Velocity += new Vector3(-Mathf.Sin(yrotrad) * VertAxis * ForwardMovementSpeed, 0, Mathf.Cos(yrotrad) * VertAxis * ForwardMovementSpeed) * Running * Time.deltaTime;
 		if (HorAxis != 0 && !Jumped)
 			Velocity += new Vector3(Mathf.Cos(yrotrad) * HorAxis * SideMovementSpeed, 0, Mathf.Sin(yrotrad) * HorAxis * SideMovementSpeed) * Running * Time.deltaTime;
+
+        anim.SetFloat("Speed", VertAxis);
 	}
 
 	private void HandleJump()
 	{
 		if (Input.GetKey(KeyCode.Space) && !Jumped)
 		{
-			Velocity += new Vector3(0, JumpForce, 0);
+            Debug.Log("Jump");
+            anim.SetFloat("Speed", 1);
+            anim.SetBool("Jump", true);
+			Velocity += new Vector3(0, JumpForce * 1000, 0);
 			Jumped = true;
 			isGrounded = false;
 		}
@@ -81,12 +93,21 @@ public class FirstPersonController : MonoBehaviour
 		else
 			isGrounded = false;
 
+        if (!isGrounded)
+        {
+            anim.SetBool("Jump", false);
+            anim.SetBool("Jumped", true);
+        }
+
 		if (!wasGrounded && isGrounded)
 		{
 			Landed = true;
+            anim.SetBool("Jump", false);
+            anim.SetBool("Land", true);
 		}
 		else if (Landed)
 		{
+            anim.SetBool("Land", false);
 			Landed = false;
 			Jumped = false;
 		}

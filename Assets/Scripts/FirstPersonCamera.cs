@@ -40,12 +40,14 @@ public class FirstPersonCamera : MonoBehaviour {
 			MouseAbsolute.x = Mathf.Clamp(MouseAbsolute.x, -ClampInDegrees.x * 0.5f, ClampInDegrees.x * 0.5f);
 
 		Quaternion xRotation = Quaternion.AngleAxis(-MouseAbsolute.y, targetOrientation * Vector3.right);
-		transform.localRotation = xRotation;
+		
 
 		if (ClampInDegrees.y < 360)
 			MouseAbsolute.y = Mathf.Clamp(MouseAbsolute.y, -ClampInDegrees.y * 0.5f, ClampInDegrees.y * 0.5f);
 
-		transform.localRotation *= targetOrientation;
+        transform.localRotation = xRotation;
+        transform.localRotation *= targetOrientation;
+        
 
 		if (CharacterBody)
 		{

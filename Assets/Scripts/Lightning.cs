@@ -72,7 +72,6 @@ public class Lightning : MonoBehaviour
                 LightningParticles.startLifetime = flashTime;
                 LightningParticles.Play();
             }
-            Debug.Log("Flash");
             yield return new WaitForSeconds(flashTime);
 
             if (LightningParticles != null)

@@ -34,6 +34,10 @@ public class LightFlicker : MonoBehaviour
     [Range(0,1)]
     public float FullLightVolume = 0.2f;
 
+    public GameObject SomethingFlickery;
+    private int avgWait = 12;
+    private int numFlickers = 0;
+    private bool doit = true;
 
 	void Start () 
     {
@@ -62,7 +66,7 @@ public class LightFlicker : MonoBehaviour
             {
                 int newState = Random.Range(0, 2);
 
-                if (newState == 0)
+                if (newState == 0 && (SomethingFlickery == null || !SomethingFlickery.gameObject.activeSelf))
                 {
                     StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity));
                     CurrentState = LightState.FULL;
@@ -77,12 +81,30 @@ public class LightFlicker : MonoBehaviour
             }
             else
             {
+                if (SomethingFlickery != null)
+                    SomethingFlickery.gameObject.SetActive(false);
+                if (SomethingFlickery != null && numFlickers % avgWait == 0 && doit)
+                    SomethingFlickery.gameObject.SetActive(true);
+
                 StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity * FadedLightPercentage));
                 CurrentState = LightState.LOWERED;
                 NextRefreshTime = Time.time + Random.Range(AverageOnTime * (1 - OnTimeRange), AverageOnTime * (1 + OnTimeRange));
             }
-        }        
+            numFlickers++;
+        }
 	}
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+            doit = false;
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+            doit = true;
+    }
 
     private IEnumerator FadeLight(float startIntensity, float endIntensity)
     {

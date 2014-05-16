@@ -4,6 +4,10 @@
 TagManager:
   tags:
   - Ground
+  - Breakable
+  - Projectile
+  - Launcher
+  - Explosive
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

@@ -43,7 +43,7 @@ MonoBehaviour:
     Track: {fileID: 8300000, guid: 04f0e16a4c0ac404f80536ded7a064ff, type: 3}
   - Name: Evening of Chaos
     Track: {fileID: 8300000, guid: 8d36336e266c6f2419eb6dcac035a451, type: 3}
-  _musicVolume: .69599998
+  _musicVolume: .850000024
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
