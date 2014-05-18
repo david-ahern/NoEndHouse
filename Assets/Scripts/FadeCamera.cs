@@ -45,7 +45,6 @@ public class FadeCamera : MonoBehaviour
         while (Time.time < EndTime)
         {
             float blendV = 1 - ((EndTime - Time.time) / time);
-            Debug.Log(blendV);
             FadeMaterial.color = new Color(Mathf.Lerp(start.r, end.r, blendV), Mathf.Lerp(start.g, end.g, blendV), Mathf.Lerp(start.b, end.b, blendV), Mathf.Lerp(start.a, end.a, blendV));
             yield return new WaitForEndOfFrame();
         }
