@@ -25,6 +25,8 @@ public class Hand : MonoBehaviour
         EquippedItem.gameObject.collider.enabled = false;
         EquippedItem.gameObject.rigidbody.useGravity = false;
         EquippedItem.gameObject.rigidbody.isKinematic = true;
+
+        SoundController.PlayClip(EquippedItem.Clip);
     }
 
     public void DropItem()
