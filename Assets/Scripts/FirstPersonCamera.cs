@@ -24,6 +24,12 @@ public class FirstPersonCamera : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+        if (Input.GetKeyUp(KeyCode.C))
+            if (lockCursor)
+                lockCursor = false;
+            else
+                lockCursor = true;
+
 		Screen.lockCursor = lockCursor;
 
 		Quaternion targetOrientation = Quaternion.Euler(TargetDirection);
@@ -60,8 +66,5 @@ public class FirstPersonCamera : MonoBehaviour {
 			Quaternion yRotation = Quaternion.AngleAxis (MouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
 			transform.localRotation *= yRotation;
 		}
-
 	}
-
-
 }
