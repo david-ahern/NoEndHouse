@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerSoundController : MonoBehaviour 
+public class PlayerEffectController : MonoBehaviour 
 {
     public Heartbeat heartbeat;
     public Breathing breathing;

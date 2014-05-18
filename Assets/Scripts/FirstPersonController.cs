@@ -125,29 +125,40 @@ public class FirstPersonController : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.DrawRay(Globals.MainCamera.position, Globals.MainCamera.forward * Reach, Color.green);
-            if (!LeftHand.IsEquipped)
+            RaycastHit Hit;
+            if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
             {
-                RaycastHit Hit;
-                if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
-                    if (Hit.collider.tag == "Item")
-                        LeftHand.EquipItem(Hit.collider.gameObject);
+                if (!LeftHand.IsEquipped && Hit.collider.tag == "Item")
+                {
+                    LeftHand.EquipItem(Hit.collider.gameObject);
+                }
+                else if (LeftHand.IsEquipped && Hit.collider.tag == "ItemHolder")
+                {
+                    Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(LeftHand.GiveItem());
+                }
+                else if (LeftHand.IsEquipped)
+                    LeftHand.DropItem();
             }
-            else
+            else if (LeftHand.IsEquipped)
                 LeftHand.DropItem();
         }
         else if (Input.GetMouseButtonUp(1))
         {
-            Debug.DrawRay(Globals.MainCamera.position, Globals.MainCamera.forward * Reach, Color.green);
-
-            if (!RightHand.IsEquipped)
+            RaycastHit Hit;
+            if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
             {
-                RaycastHit Hit;
-                if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
-                    if (Hit.collider.tag == "Item")
-                        RightHand.EquipItem(Hit.collider.gameObject);
+                if (!RightHand.IsEquipped && Hit.collider.tag == "Item")
+                {
+                    RightHand.EquipItem(Hit.collider.gameObject);
+                }
+                else if (RightHand.IsEquipped && Hit.collider.tag == "ItemHolder")
+                {
+                    Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(RightHand.GiveItem());
+                }
+                else if (RightHand.IsEquipped)
+                    RightHand.DropItem();
             }
-            else
+            else if (RightHand.IsEquipped)
                 RightHand.DropItem();
         }
         else if (Input.GetMouseButtonUp(2))

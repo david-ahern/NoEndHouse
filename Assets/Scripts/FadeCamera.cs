@@ -35,6 +35,7 @@ public class FadeCamera : MonoBehaviour
 
     static public void FadeColor(Color start, Color end, float time)
     {
+        instance.StopAllCoroutines();
         instance.StartCoroutine(instance.coFadeColor(start, end, time));
     }
 
@@ -48,5 +49,6 @@ public class FadeCamera : MonoBehaviour
             FadeMaterial.color = new Color(Mathf.Lerp(start.r, end.r, blendV), Mathf.Lerp(start.g, end.g, blendV), Mathf.Lerp(start.b, end.b, blendV), Mathf.Lerp(start.a, end.a, blendV));
             yield return new WaitForEndOfFrame();
         }
+        FadeMaterial.color = end;
     }
 }

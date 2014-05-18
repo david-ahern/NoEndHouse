@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: HandIcon
+  m_Name: HandIconPickup
   m_Shader: {fileID: 51, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
@@ -38,7 +38,7 @@ Material:
       data:
         first:
           name: _Cutoff
-        second: .5
+        second: .392857134
       data:
         first:
           name: _Shininess

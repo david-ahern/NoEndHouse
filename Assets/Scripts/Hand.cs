@@ -15,8 +15,9 @@ public class Hand : MonoBehaviour
 
     public void EquipItem(GameObject item)
     {
-        EquippedItem = item.GetComponent<Item>(); ;
+        EquippedItem = item.GetComponent<Item>();
 
+        EquippedItem.InHolder = false;
         EquippedItem.gameObject.transform.parent = gameObject.transform;
 
         EquippedItem.gameObject.transform.localPosition = new Vector3(0, 0, 0);
@@ -38,5 +39,12 @@ public class Hand : MonoBehaviour
         EquippedItem.gameObject.rigidbody.isKinematic = false;
         
         EquippedItem = null;
+    }
+
+    public Item GiveItem()
+    {
+        Item temp = EquippedItem;
+        EquippedItem = null;
+        return temp;
     }
 }
