@@ -14,6 +14,9 @@ public class LightFlicker : MonoBehaviour
     private enum LightState { FULL, LOWERED, OFF };
     private LightState CurrentState;
 
+    public bool StopFlickerNearPlayer = false;
+    private bool AllowFlicker = true;
+
     public float AverageOnTime = 1.0f;
     [Range(0,1)]
     public float OnTimeRange = 1.0f;
@@ -53,7 +56,7 @@ public class LightFlicker : MonoBehaviour
 
 	void Update () 
     {
-	    if(Time.time > NextRefreshTime)
+	    if(Time.time > NextRefreshTime && AllowFlicker)
         {
             if (CurrentState == LightState.FULL)
             {
@@ -97,13 +100,26 @@ public class LightFlicker : MonoBehaviour
     public void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
+        {
+            if (StopFlickerNearPlayer)
+            {
+                AllowFlicker = false;
+                StartCoroutine(FadeLight(LightComponent.intensity, DefaultIntensity));
+                CurrentState = LightState.FULL;
+            }
             doit = false;
+        }
     }
 
     public void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
+        {
+            if (!AllowFlicker)
+                AllowFlicker = true;
             doit = true;
+        }
+            
     }
 
     private IEnumerator FadeLight(float startIntensity, float endIntensity)

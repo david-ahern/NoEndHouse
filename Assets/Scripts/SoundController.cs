@@ -9,6 +9,16 @@ public class SoundController : MonoBehaviour
 
     private AudioSource SoundtrackSource;
 
+    static public float SoundtrackPlayPosition
+    {
+        get { return instance.SoundtrackSource.time; }
+    }
+
+    static public string SoundtrackName
+    {
+        get { return instance.SoundtrackSource.clip.name; }
+    }
+
     private List<MiscAudioSource> MiscSources;
 
     [Range(0,1)]
@@ -38,11 +48,17 @@ public class SoundController : MonoBehaviour
 
 	void Start () 
     {
-        PlaySoundtrack();
+        PlaySoundtrack(0);
 	}
 	
 	void Update () 
     {
+        if (Input.GetKeyUp(KeyCode.P))
+            if (MusicVolume > 0)
+                _musicVolume = 0.5f;
+            else
+                _musicVolume = 0;
+
         if (!SoundtrackSource.isPlaying)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
         
@@ -65,6 +81,7 @@ public class SoundController : MonoBehaviour
         {
             instance.SoundtrackSource.clip = instance.SoundTracks[track].Track;
             instance.SoundtrackSource.Play();
+            instance.SoundtrackSource.time = 80;
         }
     }
 

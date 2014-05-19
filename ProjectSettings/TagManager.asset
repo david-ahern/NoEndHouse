@@ -4,10 +4,11 @@
 TagManager:
   tags:
   - Ground
-  - Breakable
-  - Projectile
-  - Launcher
-  - Explosive
+  - Item
+  - HUDCamera
+  - HUD
+  - Fade
+  - ItemHolder
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -18,10 +19,10 @@ TagManager:
   Builtin Layer 6: 
   Builtin Layer 7: 
   User Layer 8: Lightning
-  User Layer 9: 
-  User Layer 10: 
-  User Layer 11: 
-  User Layer 12: 
+  User Layer 9: Item
+  User Layer 10: Player
+  User Layer 11: Fade
+  User Layer 12: HUD
   User Layer 13: 
   User Layer 14: 
   User Layer 15: 

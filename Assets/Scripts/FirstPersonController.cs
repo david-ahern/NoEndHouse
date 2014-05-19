@@ -16,6 +16,10 @@ public class FirstPersonController : MonoBehaviour
 	public bool isGrounded;
 	public bool wasGrounded;
 
+    public Hand LeftHand;
+    public Hand RightHand;
+    [Range(0, 5)]
+    public float Reach = 2.0f;
 	private Vector3 Velocity;
 
     public AreaController CurrentArea;
@@ -35,6 +39,8 @@ public class FirstPersonController : MonoBehaviour
 		CheckGrounded();
 		HandleMovement();
 		HandleJump();
+
+        HandleInteraction();
 
         //gameObject.transform.position -= Velocity;
 		Velocity = Vector3.zero;
@@ -64,7 +70,7 @@ public class FirstPersonController : MonoBehaviour
 
 	private void HandleJump()
 	{
-		if (Input.GetKey(KeyCode.Space) && !Jumped)
+		if (Input.GetAxis("Jump") > 0.5f && !Jumped)
 		{
             Debug.Log("Jump");
             anim.SetFloat("Speed", 1);
@@ -115,4 +121,52 @@ public class FirstPersonController : MonoBehaviour
 		wasGrounded = isGrounded;
 	}
 	
+    private void HandleInteraction()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            RaycastHit Hit;
+            if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
+            {
+                if (!LeftHand.IsEquipped && Hit.collider.tag == "Item")
+                {
+                    LeftHand.EquipItem(Hit.collider.gameObject);
+                }
+                else if (LeftHand.IsEquipped && Hit.collider.tag == "ItemHolder")
+                {
+                    Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(LeftHand.GiveItem());
+                }
+                else if (LeftHand.IsEquipped)
+                    LeftHand.DropItem();
+            }
+            else if (LeftHand.IsEquipped)
+                LeftHand.DropItem();
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            RaycastHit Hit;
+            if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
+            {
+                if (!RightHand.IsEquipped && Hit.collider.tag == "Item")
+                {
+                    RightHand.EquipItem(Hit.collider.gameObject);
+                }
+                else if (RightHand.IsEquipped && Hit.collider.tag == "ItemHolder")
+                {
+                    Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(RightHand.GiveItem());
+                }
+                else if (RightHand.IsEquipped)
+                    RightHand.DropItem();
+            }
+            else if (RightHand.IsEquipped)
+                RightHand.DropItem();
+        }
+        else if (Input.GetMouseButtonUp(2))
+        {
+            if (RightHand.IsEquipped)
+                RightHand.DropItem();
+            if (LeftHand.IsEquipped)
+                LeftHand.DropItem();
+        }
+    }
 }
