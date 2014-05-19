@@ -20,4 +20,9 @@ public class ItemHolder : MonoBehaviour
         PlacedItem.gameObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         PlacedItem.InHolder = true;
     }
+
+    public void RemoveItem()
+    {
+        PlacedItem = null;
+    }
 }

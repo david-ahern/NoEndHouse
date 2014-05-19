@@ -48,7 +48,7 @@ public class SoundController : MonoBehaviour
 
 	void Start () 
     {
-        PlaySoundtrack(0);
+        PlaySoundtrack();
 	}
 	
 	void Update () 
@@ -81,7 +81,6 @@ public class SoundController : MonoBehaviour
         {
             instance.SoundtrackSource.clip = instance.SoundTracks[track].Track;
             instance.SoundtrackSource.Play();
-            instance.SoundtrackSource.time = 80;
         }
     }
 

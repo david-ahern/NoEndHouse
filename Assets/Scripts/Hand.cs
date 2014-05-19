@@ -17,6 +17,9 @@ public class Hand : MonoBehaviour
     {
         EquippedItem = item.GetComponent<Item>();
 
+        if (EquippedItem.InHolder)
+            EquippedItem.transform.parent.gameObject.GetComponent<ItemHolder>().RemoveItem();
+
         EquippedItem.InHolder = false;
         EquippedItem.gameObject.transform.parent = gameObject.transform;
 

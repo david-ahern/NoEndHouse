@@ -4,12 +4,14 @@ using System.Collections;
 public class HUDController : MonoBehaviour 
 {
     public static HUDController instance;
-    public GameObject HandIcon;
-    public GameObject HandIconDrop;
-    [Range(1, 5)]
-    public float HandIconDistance = 3.0f;
+    public Renderer Crosshair;
+    public Renderer HandIcon;
+    public Renderer HandIconDrop;
 
-    public GameObject Char;
+    [Range(1, 10)]
+    public float HandIconDistance = 5.0f;
+    [Range(1, 10)]
+    public float HandDropDistance = 5.0f;
 
     void Awake()
     {
@@ -30,7 +32,7 @@ public class HUDController : MonoBehaviour
 	void Update () 
     {
         HandleHandIcons();
-        HandleChar();
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             FadeCamera.FadeColor(Color.black, Color.clear, 5);
@@ -46,46 +48,48 @@ public class HUDController : MonoBehaviour
         {
             if (Hit.collider.tag == "Item")
             {
-                if ((!Globals.Player.LeftHand.IsEquipped || !Globals.Player.RightHand.IsEquipped) && !Hit.collider.gameObject.GetComponent<Item>().InHolder)
+                if ((!Globals.Player.LeftHand.IsEquipped || !Globals.Player.RightHand.IsEquipped))
                 {
                     HandIcon.transform.localPosition = new Vector3(0, 0, Hit.distance * HandIconDistance);
-                    HandIcon.renderer.enabled = true;
+                    HandIcon.enabled = true;
+                    HandIconDrop.enabled = false;
+                    Crosshair.enabled = false;
                 }
                 else
-                    HandIcon.renderer.enabled = false;
+                {
+                    HandIcon.enabled = false;
+                    HandIconDrop.enabled = false;
+                    Crosshair.enabled = true;
+                }
             }
             else if (Hit.collider.tag == "ItemHolder")
             {
                 if ((Globals.Player.LeftHand.IsEquipped || Globals.Player.RightHand.IsEquipped) && !Hit.collider.gameObject.GetComponent<ItemHolder>().HasItem)
                 {
-                    HandIconDrop.transform.localPosition = new Vector3(0, 0, Hit.distance * HandIconDistance);
-                    HandIconDrop.renderer.enabled = true;
+                    HandIconDrop.transform.localPosition = new Vector3(0, 0, Hit.distance * HandDropDistance);
+                    HandIconDrop.enabled = true;
+                    HandIcon.enabled = false;
+                    Crosshair.enabled = false;
                 }
                 else
                 {
-                    HandIconDrop.renderer.enabled = false;
+                    HandIcon.enabled = false;
+                    HandIconDrop.enabled = false;
+                    Crosshair.enabled = true;
                 }
             }
             else
             {
-                HandIcon.renderer.enabled = false;
-                HandIconDrop.renderer.enabled = false;
+                HandIcon.enabled = false;
+                HandIconDrop.enabled = false;
+                Crosshair.enabled = true;
             }
         }
         else
         {
-            HandIcon.renderer.enabled = false;
-            HandIconDrop.renderer.enabled = false;
+            HandIcon.enabled = false;
+            HandIconDrop.enabled = false;
+            Crosshair.enabled = true;
         }
-    }
-
-    private void HandleChar()
-    {
-        if (SoundController.SoundtrackName == "Hush" && SoundController.SoundtrackPlayPosition > 94.7f && SoundController.SoundtrackPlayPosition < 96.7f)
-        {
-            Char.gameObject.SetActive(true);
-        }
-        else
-            Char.gameObject.SetActive(false);
     }
 }
