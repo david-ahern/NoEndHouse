@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Crosshair
-  m_Shader: {fileID: 51, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: FontMaterial
+  m_Shader: {fileID: 4800000, guid: d1c3bdab40c7b5f40869cf1076bc48e0, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -17,14 +17,10 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 6c50dda79bc4d53439d93671ef54d866, type: 3}
+          m_Texture: {fileID: 2800000, guid: 3cc0bc328d806fc49ae2cffad11a7dcd, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-    m_Floats:
-      data:
-        first:
-          name: _Cutoff
-        second: .232142866
+    m_Floats: {}
     m_Colors:
       data:
         first:

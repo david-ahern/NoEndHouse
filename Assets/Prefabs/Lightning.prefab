@@ -132,7 +132,7 @@ MonoBehaviour:
     CreateAnother: 0
     Volume: 0
     Pitch: 1
-  Velocity: {x: -.100000001, y: -.100000001}
+  Velocity: {x: -.200000003, y: -.200000003}
   MaxDistances: {x: 1000, y: 1000}
 --- !u!198 &19800000
 ParticleSystem:
