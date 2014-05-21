@@ -1,4 +1,4 @@
-﻿Shader "SkyboxFog" {
+﻿Shader "Custom/SkyboxFog" {
 Properties {
     _Fog ("Fog Intensity", Range(0.33,5.0)) = 1.0
     _FrontTex ("Front (+Z)", 2D) = "white" {}
@@ -10,7 +10,7 @@ Properties {
 }
  
 SubShader {
-    Tags { "Queue"="Background" "RenderType"="Background" }
+    Tags { "Queue"="Transparent" "RenderType"="Background" }
     Cull Off ZWrite Off Fog { Mode Off }
  
     CGINCLUDE
