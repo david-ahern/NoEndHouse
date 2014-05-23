@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
 public class SoundController : MonoBehaviour 
 {
     static public SoundController instance;
 
     public List<Soundtrack> SoundTracks;
-
     private AudioSource SoundtrackSource;
+
+    private AudioListener SfxListener;
 
     static public float SoundtrackPlayPosition
     {
@@ -21,11 +23,34 @@ public class SoundController : MonoBehaviour
 
     private List<MiscAudioSource> MiscSources;
 
-    [Range(0,1)]
+    [Range(0, 1)]
     public float _musicVolume = 1.0f;
     static public float MusicVolume
     {
-        get { if (instance != null) return instance._musicVolume; else return -1; }
+        get { return (instance != null ? instance._musicVolume : 0); }
+        set 
+        { 
+            if (instance != null) instance._musicVolume = value; 
+            if (instance.SoundtrackSource != null) instance.SoundtrackSource.volume = instance._musicVolume; 
+        }
+    }
+
+    [Range(0, 1)]
+    public float _sfxVolume = 1.0f;
+
+    [SerializeField]
+    static public float SfxVolume
+    {
+        get { return (instance != null ? instance._sfxVolume : 0); }
+        set 
+        {
+            if (instance != null)
+            {
+                instance._sfxVolume = value;
+                AudioListener.volume = instance._sfxVolume;
+            }
+                 
+        }
     }
 
     void Awake()
@@ -35,8 +60,8 @@ public class SoundController : MonoBehaviour
             instance = this;
 
             SoundtrackSource = gameObject.AddComponent<AudioSource>();
-
             SoundtrackSource.volume = _musicVolume;
+            SoundtrackSource.ignoreListenerVolume = true;
 
             MiscSources = new List<MiscAudioSource>();
         }
@@ -53,6 +78,9 @@ public class SoundController : MonoBehaviour
 	
 	void Update () 
     {
+        MusicVolume = _musicVolume;
+        SfxVolume = _sfxVolume;
+
         if (Input.GetKeyUp(KeyCode.P))
             if (MusicVolume > 0)
                 _musicVolume = 0.5f;
@@ -61,8 +89,6 @@ public class SoundController : MonoBehaviour
 
         if (!SoundtrackSource.isPlaying)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
-        
-        SoundtrackSource.volume = _musicVolume;
 
         for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
