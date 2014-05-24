@@ -13,7 +13,6 @@ public class ItemHolder : MonoBehaviour
 
     public void PlaceItem(Item item)
     {
-        Debug.Log("Placing Item");
         PlacedItem = item;
         PlacedItem.gameObject.transform.parent = gameObject.transform;
         PlacedItem.gameObject.transform.localPosition = new Vector3(0, 0, 0);

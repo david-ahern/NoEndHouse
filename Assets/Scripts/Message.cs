@@ -6,9 +6,12 @@ using System.Collections.Generic;
 public class Message : MonoBehaviour 
 {
     public bool PlayOnAwake;
+    public bool PlayOnce;
+    public bool StopOnExit;
     public List<MessageHolder> Messages;
 
     private bool IsPlaying = false;
+    private bool HasPlayed = false;
     private TextMesh textMesh;
 
     void Awake()
@@ -23,8 +26,9 @@ public class Message : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && !IsPlaying)
+        if (other.tag == "Player" && !IsPlaying && ((PlayOnce && !HasPlayed) || !PlayOnce))
         {
+            Debug.Log("Trigger entered");
             ShowMessages();
         }
     }
@@ -33,8 +37,11 @@ public class Message : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (!IsPlaying && !PlayOnAwake)
+            if (StopOnExit)
+            {
+                StopAllCoroutines();
                 textMesh.text = "";
+            }
         }
     }
 
@@ -49,6 +56,7 @@ public class Message : MonoBehaviour
     private IEnumerator coShowMessages()
     {
         IsPlaying = true;
+        HasPlayed = true;
         for (int i = 0; i < Messages.Count; ++i)
         {
             textMesh.text = Messages[i].Text;

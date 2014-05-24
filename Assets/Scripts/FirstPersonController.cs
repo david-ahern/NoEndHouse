@@ -175,6 +175,17 @@ public class FirstPersonController : MonoBehaviour
                 if (LeftHand.IsEquipped)
                     LeftHand.DropItem();
             }
+            else if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                RaycastHit Hit;
+                if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
+                {
+                    if (Hit.collider.tag == "DoorHandle")
+                    {
+                        Hit.collider.gameObject.GetComponent<DoorHandle>().IsTurned = true;
+                    }
+                }
+            }
         }
     }
 }
