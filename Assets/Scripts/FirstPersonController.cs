@@ -132,41 +132,11 @@ public class FirstPersonController : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                RaycastHit Hit;
-                if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
-                {
-                    if (!LeftHand.IsEquipped && Hit.collider.tag == "Item")
-                    {
-                        LeftHand.EquipItem(Hit.collider.gameObject);
-                    }
-                    else if (LeftHand.IsEquipped && Hit.collider.tag == "ItemHolder")
-                    {
-                        Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(LeftHand.GiveItem());
-                    }
-                    else if (LeftHand.IsEquipped)
-                        LeftHand.DropItem();
-                }
-                else if (LeftHand.IsEquipped)
-                    LeftHand.DropItem();
+                LeftHand.Interact();
             }
             else if (Input.GetMouseButtonUp(1))
             {
-                RaycastHit Hit;
-                if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
-                {
-                    if (!RightHand.IsEquipped && Hit.collider.tag == "Item")
-                    {
-                        RightHand.EquipItem(Hit.collider.gameObject);
-                    }
-                    else if (RightHand.IsEquipped && Hit.collider.tag == "ItemHolder")
-                    {
-                        Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(RightHand.GiveItem());
-                    }
-                    else if (RightHand.IsEquipped)
-                        RightHand.DropItem();
-                }
-                else if (RightHand.IsEquipped)
-                    RightHand.DropItem();
+                RightHand.Interact();
             }
             else if (Input.GetMouseButtonUp(2))
             {

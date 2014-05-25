@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(TextMesh))]
 public class Message : MonoBehaviour 
 {
     public bool PlayOnAwake;
@@ -28,7 +29,6 @@ public class Message : MonoBehaviour
     {
         if (other.tag == "Player" && !IsPlaying && ((PlayOnce && !HasPlayed) || !PlayOnce))
         {
-            Debug.Log("Trigger entered");
             ShowMessages();
         }
     }

@@ -182,6 +182,19 @@ public class SoundController : MonoBehaviour
         }
     }
 
+    static public void PlayClip(MiscAudioClip clip, AudioSource source)
+    {
+        if (instance != null)
+        {
+            source.clip = clip.Clip;
+            source.volume = clip.Volume;
+            source.pitch = clip.Pitch;
+            source.loop = clip.Loop;
+
+            source.Play();
+        }
+    }
+
     static private MiscAudioSource CreateSource(AudioClip Clip, bool Loop = false, bool Override = false, bool CreateAnother = false, float Volume = 1.0f, float Pitch = 1.0f)
     {
         MiscAudioSource source = new MiscAudioSource(instance.gameObject.AddComponent<AudioSource>(), Override, CreateAnother);

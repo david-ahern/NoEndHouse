@@ -71,8 +71,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.50060987, y: 1.03445578, z: .701743364}
+  m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
+  m_LocalPosition: {x: .0723772049, y: 1.03445578, z: -4.3578434}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -198,7 +198,7 @@ MonoBehaviour:
   DefaultAngle: 0
   HalfWidth: -.5
   MaxAngle: 120
-  MinAngle: 0
+  MinAngle: -120
   _locked: 0
 --- !u!114 &11400002
 MonoBehaviour:
