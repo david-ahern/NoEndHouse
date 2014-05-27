@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: SpecularMaterial
-  m_Shader: {fileID: 4800000, guid: 5ed41840520a2774f829cf4e5d82a75f, type: 3}
+  m_Name: SpecularFragmentMaterial
+  m_Shader: {fileID: 4800000, guid: 3f0b541098296f04eb20b786281290f9, type: 3}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
   m_SavedProperties:
@@ -33,4 +33,4 @@ Material:
       data:
         first:
           name: _SpecColor
-        second: {r: 1, g: 0, b: 0, a: 1}
+        second: {r: .0758619308, g: 0, b: 1, a: 1}

@@ -1,4 +1,4 @@
-﻿Shader "Custom/mSpecular" 
+﻿Shader "Custom/SpecularVertex" 
 {
 	Properties 
 	{
