@@ -15,7 +15,9 @@ public class Window : MonoBehaviour
     public float CloseSoundEndDelay;
 
     private bool moving;
+    
     private bool _isOpen;
+
     public bool IsOpen
     {
         get { return _isOpen; }

@@ -45,7 +45,13 @@ public class Message : MonoBehaviour
         }
     }
 
-    private void ShowMessages()
+    public void StopMessages()
+    {
+        StopAllCoroutines();
+        textMesh.text = "";
+    }
+
+    public void ShowMessages()
     {
         if (Messages[0].Time > 0)
             StartCoroutine(coShowMessages());
