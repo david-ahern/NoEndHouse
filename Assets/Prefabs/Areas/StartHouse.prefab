@@ -1698,6 +1698,38 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100192
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400192}
+  - 114: {fileID: 11400038}
+  m_Layer: 0
+  m_Name: StartRoomPuzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100194
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400194}
+  - 114: {fileID: 11400040}
+  m_Layer: 0
+  m_Name: StartRoomPuzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -2674,6 +2706,8 @@ Transform:
   - {fileID: 400144}
   - {fileID: 400178}
   - {fileID: 400168}
+  - {fileID: 400192}
+  - {fileID: 400194}
   - {fileID: 400174}
   - {fileID: 400176}
   - {fileID: 400122}
@@ -2847,6 +2881,28 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.99844265, y: .520550966, z: -.187178373}
   m_LocalScale: {x: .100000001, y: .100000001, z: .100000001}
+  m_Children: []
+  m_Father: {fileID: 400160}
+--- !u!4 &400192
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100192}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.95517349, y: -3.64574957, z: -29.1052284}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400160}
+--- !u!4 &400194
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100194}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.95517349, y: -3.64574957, z: -29.1052284}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400160}
 --- !u!23 &2300000
@@ -6581,6 +6637,39 @@ MonoBehaviour:
     Volume: 1
     Pitch: 1
   InHolder: 0
+--- !u!114 &11400038
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9004813e42320de4cb69ef8ab3929268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HintAfterTime: 10
+  Win1: {fileID: 11400008}
+  Win2: {fileID: 11400006}
+  door: {fileID: 11400014}
+  CompletedMessage: {fileID: 11400018}
+  HintMessage: {fileID: 11400020}
+--- !u!114 &11400040
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d79963b25a6f9428676720980bce28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HintAfterTime: 0
+  Holder1: {fileID: 11400028}
+  Holder2: {fileID: 11400032}
+  Holder3: {fileID: 11400030}
+  door: {fileID: 11400002}
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1
