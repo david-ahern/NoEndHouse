@@ -17,7 +17,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: bcf358107509fbf4bb137a3927f4e0f4, type: 3}
+          m_Texture: {fileID: 2800000, guid: 0afd3f4cd0ff2c847a8d9f7268200b5e, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -34,6 +34,20 @@ Material:
           m_Texture: {fileID: 2800000, guid: 6c50dda79bc4d53439d93671ef54d866, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _PickupTex
+        second:
+          m_Texture: {fileID: 2800000, guid: bcf358107509fbf4bb137a3927f4e0f4, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _DropTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 33c97f852f1de274e98997ce73bf70f8, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
     m_Floats:
       data:
         first:
@@ -42,7 +56,7 @@ Material:
       data:
         first:
           name: _Blend
-        second: 0
+        second: .553571463
     m_Colors:
       data:
         first:

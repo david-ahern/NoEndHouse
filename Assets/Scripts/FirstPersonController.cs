@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FirstPersonController : MonoBehaviour 
 {
-    private Rigidbody RigidBody;
+    //private Rigidbody RigidBody;
     private Animator anim;
 
 	public float ForwardMovementSpeed;
@@ -28,7 +28,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Awake()
     {
-        RigidBody = gameObject.GetComponentInChildren<Rigidbody>();
+        //RigidBody = gameObject.GetComponentInChildren<Rigidbody>();
         anim = gameObject.GetComponentInChildren<Animator>();
     }
 

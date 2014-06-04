@@ -2,10 +2,10 @@
 {
 	Properties
 	{
-		_MainTex ("MainTex", 2D) = "white" {}
-		_BlendTex("BlendTex", 2D) = "white" {}
-		_ExtraTex("ExtraTex", 2D) = "white" {}
-		_Blend("Blend", Range(0.0, 1.0)) = 1.0
+		_MainTex ("Default Icon", 2D) = "white" {}
+		_PickupTex("Pickup Icon", 2D) = "white" {}
+		_DropTex("Drop Icon", 2D) = "white" {}
+		_Blend("Blend", Range(0.0, 1.0)) = 0.5
 	}
 
 	SubShader
@@ -13,6 +13,7 @@
 		Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
 		LOD 100
 
+		ZWrite Off
 		Blend SrcAlpha OneMinusSrcAlpha
 
 		Pass
@@ -23,8 +24,8 @@
 			#pragma fragment frag
 
 			uniform sampler2D _MainTex;
-			uniform sampler2D _BlendTex;
-			uniform sampler2D _ExtraTex;
+			uniform sampler2D _PickupTex;
+			uniform sampler2D _DropTex;
 			uniform float4 _MainTex_ST;
 			uniform float _Blend;
 
@@ -53,28 +54,28 @@
 			float4 frag(vertexOutput i) : COLOR
 			{
 				float4 tex = tex2D(_MainTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				if (tex.w < 0.8)
+				if (tex.w < 0.9)
 					tex.w = 0;
-				float texW = 1 - (_Blend * 2);
-				if (texW < 0) 
-					texW = 0;
+				float texW = (_Blend - 0.5) * 2;
+				if (texW < 0)
+					texW *= -1;
+				texW = 1 - texW;
 
-				float4 bln = tex2D(_BlendTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				if (bln.w < 0.8)
-					bln.w = 0;
-				float blnW = (_Blend - 0.5) * 2;
-				if (blnW < 0)
-					blnW = 0;
+				float4 pickup = tex2D(_PickupTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
+				if (pickup.w < 0.8)
+					pickup.w = 0;
+				float pickupW = 1 - (_Blend * 2);
+				if (pickupW < 0) 
+					pickupW = 0;
 
-				float4 ext = tex2D(_ExtraTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				if (ext.w < 0.8)
-					ext.w = 0;
-				float extW = (_Blend - 0.5) * 2;
-				if (extW < 0)
-					extW *= -1;
-				extW = 1 - extW;
+				float4 drop = tex2D(_DropTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
+				if (drop.w < 0.8)
+					drop.w = 0;
+				float dropW = (_Blend - 0.5) * 2;
+				if (dropW < 0)
+					dropW = 0;
 
-				float4 rtn = (tex * texW) + (bln * blnW) + (ext * extW);
+				float4 rtn = (tex * texW) + (pickup * pickupW) + (drop * dropW);
 
 				return rtn;
 			}
