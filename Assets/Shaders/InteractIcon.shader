@@ -53,19 +53,28 @@
 			float4 frag(vertexOutput i) : COLOR
 			{
 				float4 tex = tex2D(_MainTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				if (tex.w < 0.9)
+				if (tex.w < 0.8)
 					tex.w = 0;
+				float texW = 1 - (_Blend * 2);
+				if (texW < 0) 
+					texW = 0;
 
 				float4 bln = tex2D(_BlendTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				if (bln.w < 0.9)
+				if (bln.w < 0.8)
 					bln.w = 0;
+				float blnW = (_Blend - 0.5) * 2;
+				if (blnW < 0)
+					blnW = 0;
 
 				float4 ext = tex2D(_ExtraTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw);
-				
-				if (ext.w < 0.9)
+				if (ext.w < 0.8)
 					ext.w = 0;
+				float extW = (_Blend - 0.5) * 2;
+				if (extW < 0)
+					extW *= -1;
+				extW = 1 - extW;
 
-				float4 rtn = (tex * _Blend) + (bln * (1 - _Blend));
+				float4 rtn = (tex * texW) + (bln * blnW) + (ext * extW);
 
 				return rtn;
 			}
