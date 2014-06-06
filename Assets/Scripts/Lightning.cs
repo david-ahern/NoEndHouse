@@ -102,6 +102,7 @@ public class Lightning : MonoBehaviour
 
     private void HandleMovement()
     {
+        LightningParticles.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
         gameObject.transform.position += new Vector3(Velocity.x, 0, Velocity.y);
 
         if (gameObject.transform.position.x > Globals.Player.gameObject.transform.position.x + MaxDistances.x)

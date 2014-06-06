@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class SoundController : MonoBehaviour 
+public class SoundController : MonoBehaviour
 {
     static public SoundController instance;
 

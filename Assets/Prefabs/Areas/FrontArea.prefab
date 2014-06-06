@@ -468,7 +468,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -33.0792084}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400024}
@@ -605,7 +605,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100022}
   m_LocalRotation: {x: 0, y: .707106829, z: 0, w: .707106829}
-  m_LocalPosition: {x: 9.80000305, y: .555745006, z: -2.50039768}
+  m_LocalPosition: {x: 10.0000029, y: .565744996, z: -2.50039768}
   m_LocalScale: {x: 25, y: .5, z: .100000001}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -1478,7 +1478,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: b48e7e1917fcdd84d81d201321ef2f07, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: .808562517
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1536,7 +1536,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: b48e7e1917fcdd84d81d201321ef2f07, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: .764371812
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1594,7 +1594,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: b48e7e1917fcdd84d81d201321ef2f07, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: .761380255
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1652,7 +1652,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: b48e7e1917fcdd84d81d201321ef2f07, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: .957996309
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1710,7 +1710,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 8300000, guid: b48e7e1917fcdd84d81d201321ef2f07, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: .802711725
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1768,7 +1768,7 @@ Light:
   serializedVersion: 3
   m_Type: 0
   m_Color: {r: .845588207, g: .652286351, b: .236267313, a: 1}
-  m_Intensity: 3.69000006
+  m_Intensity: .883005559
   m_Range: 10
   m_SpotAngle: 134
   m_CookieSize: 10
@@ -1803,7 +1803,7 @@ Light:
   serializedVersion: 3
   m_Type: 0
   m_Color: {r: .845588207, g: .652286351, b: .236267313, a: 1}
-  m_Intensity: 3.69000006
+  m_Intensity: 1.08683527
   m_Range: 10
   m_SpotAngle: 134
   m_CookieSize: 10
@@ -1838,7 +1838,7 @@ Light:
   serializedVersion: 3
   m_Type: 0
   m_Color: {r: .845588207, g: .652286351, b: .236267313, a: 1}
-  m_Intensity: 3.69000006
+  m_Intensity: 1.1006335
   m_Range: 10
   m_SpotAngle: 134
   m_CookieSize: 10
@@ -1873,7 +1873,7 @@ Light:
   serializedVersion: 3
   m_Type: 0
   m_Color: {r: .845588207, g: .652286351, b: .236267313, a: 1}
-  m_Intensity: 3.69000006
+  m_Intensity: .193742067
   m_Range: 10
   m_SpotAngle: 134
   m_CookieSize: 10
@@ -1908,7 +1908,7 @@ Light:
   serializedVersion: 3
   m_Type: 0
   m_Color: {r: .845588207, g: .652286351, b: .236267313, a: 1}
-  m_Intensity: 3.69000006
+  m_Intensity: .909992158
   m_Range: 10
   m_SpotAngle: 134
   m_CookieSize: 10

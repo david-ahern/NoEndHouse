@@ -57,19 +57,25 @@ public class HUDController : MonoBehaviour
     {
         Debug.DrawRay(Globals.MainCamera.position, Globals.MainCamera.forward * Globals.Player.Reach, Color.green);
 
+        InteractIcon.transform.localPosition = new Vector3(0, 0, Globals.Player.Reach * InteractIconDistance);
+
         RaycastHit Hit;
         if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Globals.Player.Reach))
-        {
-            InteractIcon.transform.localPosition = new Vector3(0, 0, Hit.distance * InteractIconDistance);
-        
+        {        
             if (Hit.collider.tag == "Item")
                 if ((!Globals.Player.LeftHand.IsEquipped || !Globals.Player.RightHand.IsEquipped))
+                {
                     SwitchIcon(IconStates.Pickup);
+                    InteractIcon.transform.localPosition = new Vector3(0, 0, Hit.distance * InteractIconDistance);
+                }
                 else
                     SwitchIcon(IconStates.Default);
             else if (Hit.collider.tag == "ItemHolder")
                 if ((Globals.Player.LeftHand.IsEquipped || Globals.Player.RightHand.IsEquipped) && !Hit.collider.gameObject.GetComponent<ItemHolder>().HasItem)
+                {
                     SwitchIcon(IconStates.Drop);
+                    InteractIcon.transform.localPosition = new Vector3(0, 0, Hit.distance * InteractIconDistance);
+                }
                 else
                     SwitchIcon(IconStates.Default);
             else
@@ -98,7 +104,6 @@ public class HUDController : MonoBehaviour
         float currentBlend = InteractIcon.material.GetFloat("_Blend");
         while (currentBlend > target + 0.01f || currentBlend < target - 0.01f)
         {
-            Debug.Log("Blending " + currentBlend + " " + target);
             currentBlend += (target - currentBlend - 0.001f) * IconBlendEasingSpeed;
             InteractIcon.material.SetFloat("_Blend", currentBlend);
             yield return new WaitForEndOfFrame();
