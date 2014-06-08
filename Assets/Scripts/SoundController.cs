@@ -8,30 +8,55 @@ public class SoundController : MonoBehaviour
 
     public List<Soundtrack> SoundTracks;
     private AudioSource SoundtrackSource;
+    public int _currentSountrackIndex = 0;
 
     private AudioListener SfxListener;
 
     static public float SoundtrackPlayPosition
     {
-        get { return instance.SoundtrackSource.time; }
+        get { return (instance != null ? instance.SoundtrackSource.time : 0); }
     }
 
     static public string SoundtrackName
     {
-        get { return instance.SoundtrackSource.clip.name; }
+        get { return (instance != null ? instance.SoundtrackSource.clip.name : "None"); }
+    }
+
+    static public int CurrentSoundtrack
+    {
+        get { return (instance != null ? instance._currentSountrackIndex : 0); }
     }
 
     private List<MiscAudioSource> MiscSources;
+
+    [Range(0, 1)]
+    public float _masterVolume = 1.0f;
+    static public float MasterVolume
+    {
+        get { return (instance != null ? instance._masterVolume : 0); }
+        set
+        {
+            if (instance!= null)
+            {
+                instance._masterVolume = value;
+                if (instance.SoundtrackSource != null) instance.SoundtrackSource.volume = instance._musicVolume * instance._masterVolume;
+                AudioListener.volume = instance._sfxVolume * instance._masterVolume;
+            }
+        }
+    }
 
     [Range(0, 1)]
     public float _musicVolume = 1.0f;
     static public float MusicVolume
     {
         get { return (instance != null ? instance._musicVolume : 0); }
-        set 
-        { 
-            if (instance != null) instance._musicVolume = value; 
-            if (instance.SoundtrackSource != null) instance.SoundtrackSource.volume = instance._musicVolume; 
+        set
+        {
+            if (instance != null) 
+            {
+                instance._musicVolume = value;
+                if (instance.SoundtrackSource != null) instance.SoundtrackSource.volume = instance._musicVolume * instance._masterVolume;
+            }
         }
     }
 
@@ -47,7 +72,7 @@ public class SoundController : MonoBehaviour
             if (instance != null)
             {
                 instance._sfxVolume = value;
-                AudioListener.volume = instance._sfxVolume;
+                AudioListener.volume = instance._sfxVolume * instance._masterVolume;
             }
                  
         }
@@ -81,12 +106,6 @@ public class SoundController : MonoBehaviour
         MusicVolume = _musicVolume;
         SfxVolume = _sfxVolume;
 
-        if (Input.GetKeyUp(KeyCode.P))
-            if (MusicVolume > 0)
-                _musicVolume = 0.5f;
-            else
-                _musicVolume = 0;
-
         if (!SoundtrackSource.isPlaying)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
 
@@ -105,6 +124,7 @@ public class SoundController : MonoBehaviour
     {
         if (instance != null)
         {
+            instance._currentSountrackIndex = track;
             instance.SoundtrackSource.clip = instance.SoundTracks[track].Track;
             instance.SoundtrackSource.Play();
         }
@@ -115,6 +135,16 @@ public class SoundController : MonoBehaviour
         if (instance != null)
         {
             PlaySoundtrack(Random.Range(0, instance.SoundTracks.Count));
+        }
+    }
+
+    static public void PlaySoundtrack(Soundtrack track)
+    {
+        if (instance != null)
+        {
+            instance._currentSountrackIndex = instance.SoundTracks.IndexOf(track);
+            instance.SoundtrackSource.clip = track.Track;
+            instance.SoundtrackSource.Play();
         }
     }
 
@@ -215,6 +245,14 @@ public class SoundController : MonoBehaviour
         return source;
     }
 
+    public void AddSoundtrack(AudioClip clip)
+    {
+        Soundtrack track = new Soundtrack();
+        track.Name = clip.name;
+        track.Track = clip;
+        SoundTracks.Add(track);
+    }
+
     [System.Serializable]
     public class Soundtrack
     {
@@ -222,6 +260,11 @@ public class SoundController : MonoBehaviour
         public string Name;
         [SerializeField]
         public AudioClip Track;
+
+        public void Play()
+        {
+            SoundController.PlaySoundtrack(this);
+        }
     }
 
     public class MiscAudioSource

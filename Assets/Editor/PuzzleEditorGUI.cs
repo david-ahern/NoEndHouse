@@ -18,13 +18,7 @@ public class PuzzleEditorGUI : EditorWindow
         return !Application.isPlaying;
     }
 
-
-    string str = "Hello world";
-    bool groupEnabled;
-    bool aBool = true;
-    float aFloat = 1.034f;
-
-    List<string> Areas = new List<string>();
+    List<GameObject> Areas;
 
     void OnEnable()
     {
@@ -33,20 +27,16 @@ public class PuzzleEditorGUI : EditorWindow
 
     void OnGUI()
     {
-        GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-        str = EditorGUILayout.TextField("Text Field", str);
-
-        groupEnabled = EditorGUILayout.BeginToggleGroup("OptionalSettings", groupEnabled);
-        aBool = EditorGUILayout.Toggle("Toggle", aBool);
-        aFloat = EditorGUILayout.Slider("Slider", aFloat, 0, 10);
-        EditorGUILayout.EndToggleGroup();
+        foreach (GameObject obj in Areas)
+        {
+            EditorGUILayout.BeginToggleGroup(obj.name, true);
+            EditorGUILayout.ObjectField(obj, typeof(AreaController));
+            EditorGUILayout.EndToggleGroup();
+        }
     }
 
     void GetAreas()
     {
-        List<Object> objs = MiscEditorMethods.LoadAllPrefabsAt("");
-
-        foreach (Object o in objs)
-            Debug.Log(o.name);
+        Areas = MiscEditorMethods.LoadAllPrefabsWithComponent(typeof(AreaController));
     }
 }

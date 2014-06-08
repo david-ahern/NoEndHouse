@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditorInternal;
 using UnityEditor;
 using System.Collections;
 
@@ -10,7 +11,8 @@ public class EditorProgressBar : EditorWindow
 
     static public float Progress
     {
-        set { progress = value; }
+        set { progress = value;
+        }
     }
 
     static public string Description
