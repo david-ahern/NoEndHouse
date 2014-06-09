@@ -4,6 +4,17 @@ using System.Collections.Generic;
 
 public class SoundController : MonoBehaviour
 {
+#if UNITY_EDITOR
+    [HideInInspector]
+    public bool ShowDefaultInspector = false;
+
+    [ContextMenu("Show Default Inspector")]
+    void ShowDefault()
+    {
+        ShowDefaultInspector = !ShowDefaultInspector;
+    }
+#endif
+
     static public SoundController instance;
 
     public List<Soundtrack> SoundTracks;
@@ -11,6 +22,18 @@ public class SoundController : MonoBehaviour
     public int _currentSountrackIndex = 0;
 
     private AudioListener SfxListener;
+
+    public bool _muted = false;
+    public float StoredMasterVolume;
+
+    static public bool Muted
+    {
+        get { return instance._muted; }
+        set
+        {
+            SetMute(value);
+        }
+    }
 
     static public float SoundtrackPlayPosition
     {
@@ -27,7 +50,7 @@ public class SoundController : MonoBehaviour
         get { return (instance != null ? instance._currentSountrackIndex : 0); }
     }
 
-    private List<MiscAudioSource> MiscSources;
+    public List<MiscAudioSource> MiscSources;
 
     [Range(0, 1)]
     public float _masterVolume = 1.0f;
@@ -83,8 +106,9 @@ public class SoundController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-
+            
             SoundtrackSource = gameObject.AddComponent<AudioSource>();
+            SoundtrackSource.hideFlags = HideFlags.HideInInspector;
             SoundtrackSource.volume = _musicVolume;
             SoundtrackSource.ignoreListenerVolume = true;
 
@@ -103,8 +127,12 @@ public class SoundController : MonoBehaviour
 	
 	void Update () 
     {
+        MasterVolume = _masterVolume;
         MusicVolume = _musicVolume;
         SfxVolume = _sfxVolume;
+
+        if (Muted && MasterVolume > 0)
+            _muted = false;
 
         if (!SoundtrackSource.isPlaying)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
@@ -245,6 +273,24 @@ public class SoundController : MonoBehaviour
         return source;
     }
 
+
+
+#if UNITY_EDITOR
+    static public void SetMute(bool mute = true)
+    {
+        if (!mute)
+        {
+            instance._muted = false;
+            instance._masterVolume = instance.StoredMasterVolume;
+        }
+        else
+        {
+            instance._muted = true;
+            instance.StoredMasterVolume = instance._masterVolume;
+            instance._masterVolume = 0;
+        }
+    }
+
     public void AddSoundtrack(AudioClip clip)
     {
         Soundtrack track = new Soundtrack();
@@ -252,6 +298,7 @@ public class SoundController : MonoBehaviour
         track.Track = clip;
         SoundTracks.Add(track);
     }
+#endif
 
     [System.Serializable]
     public class Soundtrack
@@ -275,7 +322,8 @@ public class SoundController : MonoBehaviour
 
         public MiscAudioSource(AudioSource source, bool Overridable, bool createAnother) 
         { 
-            Source = source; 
+            Source = source;
+            Source.hideFlags = HideFlags.HideInInspector;
             Override = Overridable;
             CreateAnother = createAnother;
         }

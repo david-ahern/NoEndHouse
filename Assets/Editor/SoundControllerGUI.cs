@@ -5,19 +5,30 @@ using System.Collections;
 [CustomEditor(typeof(SoundController))]
 public class SoundControllerGUI : Editor 
 {
-    bool Muted;
+    private SoundController Target
+    {
+        get { return (SoundController)target; }
+    }
+
     static float GUIMasterVolume = 0;
     AudioClip addedClip = null;
     public override void OnInspectorGUI()
     {
+        if (Target.ShowDefaultInspector)
+        {
+            DrawDefaultInspector();
+            return;
+        }
+
+        Target.transform.hideFlags = HideFlags.HideInInspector;
+        Repaint();
+
         EditorGUILayout.Space();
-        
-        SoundController controller = (SoundController)target;
         
         EditorGUILayout.LabelField("Volumes", EditorStyles.boldLabel);
         
         GUILayout.Label("Master Volume");
-        controller._masterVolume = GUILayout.HorizontalSlider(controller._masterVolume, 0, 1, GUILayout.ExpandWidth(true));
+        Target._masterVolume = GUILayout.HorizontalSlider(Target._masterVolume, 0, 1, GUILayout.ExpandWidth(true));
         
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Music Volume");
@@ -25,15 +36,15 @@ public class SoundControllerGUI : Editor
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        controller._musicVolume = GUILayout.HorizontalSlider(controller._musicVolume, 0, 1);
-        controller._sfxVolume = GUILayout.HorizontalSlider(controller._sfxVolume, 0, 1);
+        Target._musicVolume = GUILayout.HorizontalSlider(Target._musicVolume, 0, 1);
+        Target._sfxVolume = GUILayout.HorizontalSlider(Target._sfxVolume, 0, 1);
         EditorGUILayout.EndHorizontal();
-        
-        Muted = (controller._masterVolume != 0 ? false : true);
+
+        bool mute = Target._muted;
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space();
-        if (GUILayout.Button((Muted ? "Unmute" : "Mute"))) SwitchMute();
+        if (GUILayout.Button((mute ? "Unmute" : "Mute"))) SetMute(!mute);
         EditorGUILayout.Space();
         EditorGUILayout.EndHorizontal();
         
@@ -52,9 +63,9 @@ public class SoundControllerGUI : Editor
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Prev")) ChangeTrack(controller, -1);
+        if (GUILayout.Button("Prev")) ChangeTrack(-1);
         EditorGUILayout.Space();
-        if (GUILayout.Button("Next")) ChangeTrack(controller, 1);
+        if (GUILayout.Button("Next")) ChangeTrack(1);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
@@ -63,77 +74,121 @@ public class SoundControllerGUI : Editor
 
         int remove = -1;
 
-        foreach (var track in controller.SoundTracks)
+        foreach (var track in Target.SoundTracks)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label(track.Name);
             GUILayout.Label(track.Track.length.ToString());
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Up")) MoveTrackUp(controller, controller.SoundTracks.IndexOf(track));
-            if (GUILayout.Button("Down")) MoveTrackDown(controller, controller.SoundTracks.IndexOf(track));
-            if (GUILayout.Button("Remove")) remove = controller.SoundTracks.IndexOf(track);
+            if (GUILayout.Button("Up")) MoveTrackUp(Target.SoundTracks.IndexOf(track));
+            if (GUILayout.Button("Down")) MoveTrackDown(Target.SoundTracks.IndexOf(track));
+            if (GUILayout.Button("Remove")) remove = Target.SoundTracks.IndexOf(track);
             EditorGUILayout.EndHorizontal();
         }
 
         if (remove > -1)
-            controller.SoundTracks.RemoveAt(remove);
+            Target.SoundTracks.RemoveAt(remove);
 
         EditorGUILayout.Space();
-
         
         addedClip = (AudioClip)EditorGUILayout.ObjectField("Add Soundtrack:", addedClip, typeof(AudioClip), false);
 
         if (addedClip != null)
-            controller.AddSoundtrack(addedClip);
-        addedClip = null;        
-    }
+            Target.AddSoundtrack(addedClip);
+        addedClip = null;
 
-    void SwitchMute()
-    {
-        SoundController controller = (SoundController)target;
-        if (Muted)
+        EditorGUILayout.Space();
+
+        try
         {
-            Muted = false;
-            controller._masterVolume = GUIMasterVolume;
+            if (Target.MiscSources.Count > 0)
+            {
+                GUILayout.Box(GUIContent.none, new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
+                EditorGUILayout.Space();
+
+                EditorGUILayout.LabelField("Currently Playing Sources", EditorStyles.boldLabel);
+
+                EditorGUILayout.Space();
+                foreach (var source in Target.MiscSources)
+                {
+                    GUILayout.Label(source.Source.clip.name + ":");
+                    EditorGUILayout.BeginHorizontal();
+
+                        EditorGUILayout.BeginVertical();
+                           GUILayout.Label("Volume:\t" + source.Source.volume.ToString("n2"));
+                           GUILayout.Label("Pitch:\t\t" + source.Source.pitch.ToString("n2"));
+                        EditorGUILayout.EndVertical();
+
+                        EditorGUILayout.BeginVertical();
+                            GUILayout.Label("Play time:");
+                            GUILayout.Label(source.Source.time.ToString("n2") + " / " + source.Source.clip.length.ToString("n2") + " seconds");
+                        EditorGUILayout.EndVertical();
+
+                    EditorGUILayout.EndHorizontal();
+
+                    GUILayout.Label("Flags:");
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Loop:");
+                    EditorGUILayout.Toggle(source.Source.loop);
+                    GUILayout.Label("Override");
+                    EditorGUILayout.Toggle(source.Override);
+                    GUILayout.Label("Create Another");
+                    EditorGUILayout.Toggle(source.CreateAnother);
+                    EditorGUILayout.EndHorizontal();
+
+                    EditorGUILayout.Space();
+                    EditorGUILayout.Space();
+                }
+            }
+        }
+        catch { }
+
+        EditorUtility.SetDirty(Target);
+    }
+    public void SetMute(bool mute = true)
+    {
+        if (!mute)
+        {
+            Target._muted = false;
+            Target._masterVolume = GUIMasterVolume;
         }
         else
         {
-            Muted = true;
-
-            GUIMasterVolume = controller._masterVolume;
-
-            controller._masterVolume = 0;
+            Target._muted = true;
+            GUIMasterVolume = Target._masterVolume;
+            Target._masterVolume = 0;
         }
     }
 
-    void ChangeTrack(SoundController controller, int target)
-    {
-        target = controller._currentSountrackIndex + target;
 
-        if (target >= controller.SoundTracks.Count)
+    void ChangeTrack(int target)
+    {
+        target = Target._currentSountrackIndex + target;
+
+        if (target >= Target.SoundTracks.Count)
             target = 0;
         else if (target < 0)
-            target = controller.SoundTracks.Count - 1;
+            target = Target.SoundTracks.Count - 1;
 
-        controller.SoundTracks[target].Play();
+        Target.SoundTracks[target].Play();
     }
 
-    void MoveTrackUp(SoundController controller, int index)
+    void MoveTrackUp(int index)
     {
         if (index == 0) return;
 
-        var temp = controller.SoundTracks[index - 1];
-        controller.SoundTracks[index - 1] = controller.SoundTracks[index];
-        controller.SoundTracks[index] = temp;
+        var temp = Target.SoundTracks[index - 1];
+        Target.SoundTracks[index - 1] = Target.SoundTracks[index];
+        Target.SoundTracks[index] = temp;
     }
 
-    void MoveTrackDown(SoundController controller, int index)
+    void MoveTrackDown(int index)
     {
-        if (index == controller.SoundTracks.Count - 1) return;
+        if (index == Target.SoundTracks.Count - 1) return;
 
-        var temp = controller.SoundTracks[index + 1];
-        controller.SoundTracks[index + 1] = controller.SoundTracks[index];
-        controller.SoundTracks[index] = temp;
+        var temp = Target.SoundTracks[index + 1];
+        Target.SoundTracks[index + 1] = Target.SoundTracks[index];
+        Target.SoundTracks[index] = temp;
     }
 }
