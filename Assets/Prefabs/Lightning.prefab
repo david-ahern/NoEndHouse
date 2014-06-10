@@ -128,7 +128,7 @@ MonoBehaviour:
     Pitch: 1
   - Clip: {fileID: 8300000, guid: 2ec444fa8ccfd7c48a0bb062fa639c2d, type: 3}
     Loop: 0
-    Overridable: 1
+    Overridable: 0
     CreateAnother: 0
     Volume: 0
     Pitch: 1

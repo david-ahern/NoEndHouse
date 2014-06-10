@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections;
+using System.Collections.Generic;
 
 [CustomEditor(typeof(SoundController))]
 public class SoundControllerGUI : Editor 
@@ -12,6 +13,8 @@ public class SoundControllerGUI : Editor
 
     static float GUIMasterVolume = 0;
     AudioClip addedClip = null;
+
+    static List<bool> Foldouts = new List<bool>();
     public override void OnInspectorGUI()
     {
         if (Target.ShowDefaultInspector)
@@ -104,41 +107,58 @@ public class SoundControllerGUI : Editor
         {
             if (Target.MiscSources.Count > 0)
             {
+                if (Foldouts.Count < Target.MiscSources.Count)
+                    for (int i = Foldouts.Count; i < Target.MiscSources.Count; i++)
+                    {
+                        bool fout = false;
+                        Foldouts.Add(fout);
+                    }
+                else if (Foldouts.Count > Target.MiscSources.Count)
+                    for (int i = Foldouts.Count; i > Target.MiscSources.Count; i--)
+                    {
+                        Foldouts.RemoveAt(i - 1);
+                    }
+
                 GUILayout.Box(GUIContent.none, new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
                 EditorGUILayout.Space();
 
                 EditorGUILayout.LabelField("Currently Playing Sources", EditorStyles.boldLabel);
 
                 EditorGUILayout.Space();
-                foreach (var source in Target.MiscSources)
+                for (int i = 0; i < Target.MiscSources.Count; ++i)
                 {
-                    GUILayout.Label(source.Source.clip.name + ":");
-                    EditorGUILayout.BeginHorizontal();
+                    Foldouts[i] = EditorGUILayout.Foldout(Foldouts[i], Target.MiscSources[i].Source.clip.name);
+                    if (Foldouts[i])
+                    {
+                        EditorGUILayout.BeginHorizontal();
 
                         EditorGUILayout.BeginVertical();
-                           GUILayout.Label("Volume:\t" + source.Source.volume.ToString("n2"));
-                           GUILayout.Label("Pitch:\t\t" + source.Source.pitch.ToString("n2"));
+                        GUILayout.Label("Volume:\t" + Target.MiscSources[i].Source.volume.ToString("n2"));
+                        GUILayout.Label("Pitch:\t\t" + Target.MiscSources[i].Source.pitch.ToString("n2"));
                         EditorGUILayout.EndVertical();
 
                         EditorGUILayout.BeginVertical();
-                            GUILayout.Label("Play time:");
-                            GUILayout.Label(source.Source.time.ToString("n2") + " / " + source.Source.clip.length.ToString("n2") + " seconds");
+                        GUILayout.Label("Play time:");
+                        GUILayout.Label(Target.MiscSources[i].Source.time.ToString("n2") + " / " + Target.MiscSources[i].Source.clip.length.ToString("n2") + " seconds");
                         EditorGUILayout.EndVertical();
 
-                    EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.EndHorizontal();
 
-                    GUILayout.Label("Flags:");
-                    EditorGUILayout.BeginHorizontal();
-                    GUILayout.Label("Loop:");
-                    EditorGUILayout.Toggle(source.Source.loop);
-                    GUILayout.Label("Override");
-                    EditorGUILayout.Toggle(source.Override);
-                    GUILayout.Label("Create Another");
-                    EditorGUILayout.Toggle(source.CreateAnother);
-                    EditorGUILayout.EndHorizontal();
-
-                    EditorGUILayout.Space();
-                    EditorGUILayout.Space();
+                        GUILayout.Label("Flags:");
+                        EditorGUILayout.BeginHorizontal();
+                        GUILayout.Label("Loop:");
+                        EditorGUILayout.Toggle(Target.MiscSources[i].Source.loop);
+                        GUILayout.Label("Override");
+                        EditorGUILayout.Toggle(Target.MiscSources[i].Override);
+                        GUILayout.Label("Create Another");
+                        EditorGUILayout.Toggle(Target.MiscSources[i].CreateAnother);
+                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.BeginHorizontal();
+                        EditorGUILayout.Space();
+                        if (GUILayout.Button((Target.MiscSources[i].Muted ? "Unmute" : "Mute"))) Target.MiscSources[i].Mute(!Target.MiscSources[i].Muted);
+                        EditorGUILayout.Space();
+                        EditorGUILayout.EndHorizontal();
+                    }
                 }
             }
         }

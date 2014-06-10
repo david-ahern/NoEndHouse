@@ -95,8 +95,7 @@ public class Lightning : MonoBehaviour
         clip.Pitch = Mathf.Clamp(1 - ((new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / MaxDistances.magnitude), 0, 1);
         float delay = (new Vector2(gameObject.transform.position.x, gameObject.transform.position.z) - new Vector2(Globals.Player.gameObject.transform.position.x, Globals.Player.gameObject.transform.position.z)).magnitude / Globals.SoundSpeed;
 
-        yield return new WaitForSeconds(delay);
-        SoundController.PlayClip(clip);
+        SoundController.PlayClip(clip, delay);
         yield break;
     }
 

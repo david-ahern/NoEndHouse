@@ -184,7 +184,7 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    static public void PlayClip(MiscAudioClip clip)
+    static public void PlayClip(MiscAudioClip clip, float delay = 0.0f)
     {
         if (instance != null)
         {
@@ -195,25 +195,29 @@ public class SoundController : MonoBehaviour
                     if (instance.MiscSources[i].Override)
                     {
                         instance.MiscSources[i].Source.Stop();
-                        instance.MiscSources[i].Source.Play();
+                        instance.MiscSources[i].Source.PlayDelayed(delay);
                     }
                     else if (instance.MiscSources[i].CreateAnother)
                     {
                         instance.MiscSources.Add(CreateSource(clip));
-                        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+                        instance.MiscSources[instance.MiscSources.Count - 1].Source.PlayDelayed(delay);
+                        return;
                     }
-                    instance.MiscSources[i].Source.volume = clip.Volume;
+                    if (!instance.MiscSources[i].Muted)
+                        instance.MiscSources[i].Source.volume = clip.Volume;
+                    else
+                        instance.MiscSources[i].StoredVolume = clip.Volume;
                     instance.MiscSources[i].Source.pitch = clip.Pitch;
                     instance.MiscSources[i].Source.loop = clip.Loop;
                     return;
                 }
             }
             instance.MiscSources.Add(CreateSource(clip));
-            instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+            instance.MiscSources[instance.MiscSources.Count - 1].Source.PlayDelayed(delay);
         }
     }
 
-    static public void PlayClip(AudioClip clip)
+    static public void PlayClip(AudioClip clip, float delay = 0.0f)
     {
         if (instance != null)
         {
@@ -224,19 +228,19 @@ public class SoundController : MonoBehaviour
                     if (instance.MiscSources[i].Override)
                     {
                         instance.MiscSources[i].Source.Stop();
-                        instance.MiscSources[i].Source.Play();
+                        instance.MiscSources[i].Source.PlayDelayed(delay);
                     }
                     else if (instance.MiscSources[i].CreateAnother)
                     {
                         instance.MiscSources.Add(CreateSource(clip));
-                        instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+                        instance.MiscSources[instance.MiscSources.Count - 1].Source.PlayDelayed(delay);
                     }
                     return;
                 }
 
             }
             instance.MiscSources.Add(CreateSource(clip));
-            instance.MiscSources[instance.MiscSources.Count - 1].Source.Play();
+            instance.MiscSources[instance.MiscSources.Count - 1].Source.PlayDelayed(delay);
         }
     }
 
@@ -319,13 +323,29 @@ public class SoundController : MonoBehaviour
         public AudioSource Source;
         public bool Override;
         public bool CreateAnother;
-
+        public bool Muted;
+        public float StoredVolume;
         public MiscAudioSource(AudioSource source, bool Overridable, bool createAnother) 
         { 
             Source = source;
             Source.hideFlags = HideFlags.HideInInspector;
             Override = Overridable;
             CreateAnother = createAnother;
+        }
+
+        public void Mute(bool mute = true)
+        {
+            if (mute)
+            {
+                Muted = true;
+                StoredVolume = Source.volume;
+                Source.volume = 0;
+            }
+            else
+            {
+                Muted = false;
+                Source.volume = StoredVolume;
+            }
         }
     }
 }
