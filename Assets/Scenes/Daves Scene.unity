@@ -7600,11 +7600,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e3066384fd912ca44aa4badb2fab3df4, type: 2}
       propertyPath: _masterVolume
-      value: .507031918
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e3066384fd912ca44aa4badb2fab3df4, type: 2}
       propertyPath: _muted
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: e3066384fd912ca44aa4badb2fab3df4, type: 2}
       propertyPath: _musicVolume
@@ -9003,9 +9003,9 @@ MonoBehaviour:
   - Name: Evening of Chaos
     Track: {fileID: 8300000, guid: 8d36336e266c6f2419eb6dcac035a451, type: 3}
   _currentSountrackIndex: 0
-  _muted: 0
+  _muted: 1
   StoredMasterVolume: 0
-  _masterVolume: .507031918
+  _masterVolume: 0
   _musicVolume: 1
   _sfxVolume: 1
 --- !u!4 &1251684031

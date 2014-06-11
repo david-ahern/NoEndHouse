@@ -17,6 +17,14 @@ public class SoundControllerGUI : Editor
     static List<bool> Foldouts = new List<bool>();
     public override void OnInspectorGUI()
     {
+        Texture RemoveIcon = GUIIconEditor.GetIcon("Remove");
+        Texture MuteIcon = GUIIconEditor.GetIcon("Mute");
+        Texture UnmuteIcon = GUIIconEditor.GetIcon("Unmute");
+        Texture PrevIcon = GUIIconEditor.GetIcon("PlayPrev");
+        Texture NextIcon = GUIIconEditor.GetIcon("PlayNext");
+        Texture UpArrow = GUIIconEditor.GetIcon("UpArrow");
+        Texture DownArrow = GUIIconEditor.GetIcon("DownArrow");
+
         if (Target.ShowDefaultInspector)
         {
             DrawDefaultInspector();
@@ -47,7 +55,10 @@ public class SoundControllerGUI : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space();
-        if (GUILayout.Button((mute ? "Unmute" : "Mute"))) SetMute(!mute);
+        if (GUILayout.Button((mute ? UnmuteIcon : MuteIcon), 
+            (mute ? GUILayout.Width(UnmuteIcon.width / 2) : GUILayout.Width(MuteIcon.width)), 
+            (mute ? GUILayout.Height(UnmuteIcon.height / 2) : GUILayout.Height(MuteIcon.height)))) 
+                SetMute(!mute);
         EditorGUILayout.Space();
         EditorGUILayout.EndHorizontal();
         
@@ -66,9 +77,9 @@ public class SoundControllerGUI : Editor
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Prev")) ChangeTrack(-1);
+        if (GUILayout.Button(PrevIcon)) ChangeTrack(-1);
         EditorGUILayout.Space();
-        if (GUILayout.Button("Next")) ChangeTrack(1);
+        if (GUILayout.Button(NextIcon)) ChangeTrack(1);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.Space();
@@ -82,11 +93,12 @@ public class SoundControllerGUI : Editor
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label(track.Name);
             GUILayout.Label(track.Track.length.ToString());
-            EditorGUILayout.EndHorizontal();
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Up")) MoveTrackUp(Target.SoundTracks.IndexOf(track));
-            if (GUILayout.Button("Down")) MoveTrackDown(Target.SoundTracks.IndexOf(track));
-            if (GUILayout.Button("Remove")) remove = Target.SoundTracks.IndexOf(track);
+            if (GUILayout.Button(UpArrow, GUILayout.Width(UpArrow.width), GUILayout.Height(UpArrow.height))) 
+                MoveTrackUp(Target.SoundTracks.IndexOf(track));
+            if (GUILayout.Button(DownArrow, GUILayout.Width(DownArrow.width), GUILayout.Height(DownArrow.height))) 
+                MoveTrackDown(Target.SoundTracks.IndexOf(track));
+            if (GUILayout.Button(RemoveIcon, GUILayout.Width(RemoveIcon.width), GUILayout.Height(RemoveIcon.height)))
+                remove = Target.SoundTracks.IndexOf(track);
             EditorGUILayout.EndHorizontal();
         }
 
@@ -155,7 +167,10 @@ public class SoundControllerGUI : Editor
                         EditorGUILayout.EndHorizontal();
                         EditorGUILayout.BeginHorizontal();
                         EditorGUILayout.Space();
-                        if (GUILayout.Button((Target.MiscSources[i].Muted ? "Unmute" : "Mute"))) Target.MiscSources[i].Mute(!Target.MiscSources[i].Muted);
+                        if (GUILayout.Button((Target.MiscSources[i].Muted ? UnmuteIcon : MuteIcon),
+                            (Target.MiscSources[i].Muted ? GUILayout.Width(UnmuteIcon.width) : GUILayout.Width(MuteIcon.width)),
+                            (Target.MiscSources[i].Muted ? GUILayout.Height(UnmuteIcon.height) : GUILayout.Height(MuteIcon.height)))) 
+                                Target.MiscSources[i].Mute(!Target.MiscSources[i].Muted);
                         EditorGUILayout.Space();
                         EditorGUILayout.EndHorizontal();
                     }
