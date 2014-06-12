@@ -2,11 +2,13 @@
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 [InitializeOnLoad]
 public class GUIIconEditor : EditorWindow 
 {
-    static private string Path = "Assets/Editor/CustomGUITextures/Holders/IconHolder.asset";
+    static private string HolderPath = "Assets/Editor/CustomGUITextures/Holders/IconHolder.asset";
+    static private string TexturesPath = "Assets/Editor/CustomGUITextures/Textures";
 
     [SerializeField]
     static GUIIconHolder _IconHolder;
@@ -14,46 +16,26 @@ public class GUIIconEditor : EditorWindow
     [MenuItem("Custom/GUI Icon Editor")]
     public static void ShowWindow()
     {
-        _IconHolder = (GUIIconHolder)AssetDatabase.LoadAssetAtPath(Path, typeof(GUIIconHolder));
-
-        if (_IconHolder == null)
-        {
-            _IconHolder = ScriptableObject.CreateInstance<GUIIconHolder>();
-            _IconHolder.Icons = new List<GUIIcon>();
-            AssetDatabase.CreateAsset(_IconHolder, Path);
-
-            if (_IconHolder == null)
-                Debug.Log("Failed to load or create an IconHolder");
-        }
-
-        if (_IconHolder.Icons.Count > 0)
-            Selected = _IconHolder.Icons[0].Key;
-        else
-            Selected = "";
-
         EditorWindow window = EditorWindow.GetWindow(typeof(GUIIconEditor));
         window.minSize = new Vector2(522, 522);
     }
 
     static GUIIconEditor()
     {
-        Debug.Log("Init");
-        _IconHolder = (GUIIconHolder)AssetDatabase.LoadAssetAtPath(Path, typeof(GUIIconHolder));
+        _IconHolder = (GUIIconHolder)AssetDatabase.LoadAssetAtPath(HolderPath, typeof(GUIIconHolder));
 
         if (_IconHolder == null)
         {
-            Debug.Log("Icon holder is null");
             _IconHolder = ScriptableObject.CreateInstance<GUIIconHolder>();
-            Debug.Log("Icon holder created");
-            _IconHolder.Icons = new List<GUIIcon>();
-            Debug.Log("List created");
-            AssetDatabase.CreateAsset(_IconHolder, Path);
-            Debug.Log("Asset created");
+            _IconHolder.Keys = new List<string>();
+            _IconHolder.Textures = new List<Texture>();
+            AssetDatabase.CreateAsset(_IconHolder, HolderPath);
 
             if (_IconHolder == null)
                 Debug.Log("Failed to load or create an IconHolder");
         }
-        Debug.Log("Done");
+
+        GetAllTextures();
     }
 
 
@@ -82,8 +64,9 @@ public class GUIIconEditor : EditorWindow
                 EditorUtility.DisplayDialog("Invalid Entry", "The texture field has been left blank.", "Ok");
             else
             {
-                _IconHolder.Icons.Add(new GUIIcon(newKey, newTex));
-                AssetDatabase.AddObjectToAsset(_IconHolder.Icons[_IconHolder.Icons.Count - 1], _IconHolder);
+                _IconHolder.Keys.Add(newKey);
+                _IconHolder.Textures.Add(newTex);
+                //AssetDatabase.AddObjectToAsset(_IconHolder.Icons[_IconHolder.Icons.Count - 1], _IconHolder);
                 EditorUtility.SetDirty(_IconHolder);
                 AssetDatabase.SaveAssets();
                 Selected = newKey;
@@ -96,10 +79,10 @@ public class GUIIconEditor : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
 
-        EditorGUILayout.BeginScrollView(KeyListScrollPos, GUILayout.Width(120), GUILayout.Height(this.position.height - 40));
+        KeyListScrollPos = EditorGUILayout.BeginScrollView(KeyListScrollPos, GUILayout.Width(150), GUILayout.Height(this.position.height - 40));
 
-        foreach (GUIIcon icon in _IconHolder.Icons)
-            if (GUILayout.Button(icon.Key)) Selected = icon.Key;
+        foreach (string key in _IconHolder.Keys)
+            if (GUILayout.Button(key, GUILayout.Width(120))) Selected = key;
 
         EditorGUILayout.EndScrollView();
 
@@ -107,23 +90,25 @@ public class GUIIconEditor : EditorWindow
 
         if (Selected != "")
         {
-            GUIIcon SelectedHolder = new GUIIcon("", null);
+            /*GUIIcon SelectedHolder = new GUIIcon("", null);
             foreach (GUIIcon icon in _IconHolder.Icons)
                 if (icon.Key == Selected)
-                    SelectedHolder = icon;
+                    SelectedHolder = icon;*/
+
+            _IconHolder.Select(Selected);
 
             EditorGUILayout.BeginHorizontal(GUILayout.Width(150));
             GUILayout.Label("Key:");
-            GUILayout.Label(SelectedHolder.Key);
+            GUILayout.Label(Selected);
             EditorGUILayout.EndHorizontal();
 
             Texture temp;
-            temp = (Texture)EditorGUILayout.ObjectField(SelectedHolder.Tex, typeof(Texture));
+            temp = (Texture)EditorGUILayout.ObjectField(_IconHolder.Selected, typeof(Texture));
 
-            if (SelectedHolder.Tex != temp)
+            if (_IconHolder.Selected != temp)
             {
-                SelectedHolder.Tex = temp;
-                EditorUtility.SetDirty(SelectedHolder);
+                _IconHolder.Selected = temp;
+                EditorUtility.SetDirty(_IconHolder);
                 AssetDatabase.SaveAssets();
             }
 
@@ -131,45 +116,73 @@ public class GUIIconEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal(GUILayout.Width(150));
             GUILayout.Label("Width:\t\t");
-            GUILayout.Label(SelectedHolder.Tex.width.ToString());
+            GUILayout.Label(_IconHolder.Selected.width.ToString());
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal(GUILayout.Width(150));
             GUILayout.Label("Height:\t\t");
-            GUILayout.Label(SelectedHolder.Tex.height.ToString());
+            GUILayout.Label(_IconHolder.Selected.height.ToString());
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal(GUILayout.Width(150));
             GUILayout.Label("AntisoLevel:\t");
-            GUILayout.Label(SelectedHolder.Tex.anisoLevel.ToString());
+            GUILayout.Label(_IconHolder.Selected.anisoLevel.ToString());
             EditorGUILayout.EndHorizontal();
-            
+
+            EditorGUI.DrawTextureTransparent(new Rect(400, 65, 100, 100), _IconHolder.Selected);
+
             if (GUILayout.Button("Delete", GUILayout.Width(250)))
             {
-                _IconHolder.Icons.Remove(SelectedHolder);
-                Object.DestroyImmediate(SelectedHolder, true);
+                _IconHolder.Remove(Selected);
+                //Object.DestroyImmediate(SelectedHolder, true);
                 EditorUtility.SetDirty(_IconHolder);
                 AssetDatabase.SaveAssets();
                 Selected = "";
             }
-
-            EditorGUI.DrawTextureTransparent(new Rect(400, 65, 100, 100), SelectedHolder.Tex);
         }
 
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
 
+        if (GUILayout.Button("Load New", GUILayout.Width(120))) GetAllTextures();
+    }
 
-        GUILayout.Label(this.position.width.ToString());
-        GUILayout.Label(this.position.height.ToString());
+    static void GetAllTextures()
+    {
+        string temp = TexturesPath.Replace("Assets", "");
+        string[] filenames = Directory.GetFiles(Application.dataPath + temp, "*.png", SearchOption.AllDirectories);
+        int progress = 0;
+
+        foreach (string path in filenames)
+        {
+            if (EditorUtility.DisplayCancelableProgressBar("Hold on", path, (float)progress / filenames.Length)) break;
+
+            progress++;
+
+            string texPath = "Assets" + path.Replace(Application.dataPath, "").Replace('\\', '/');
+
+            Texture newTex = (Texture)AssetDatabase.LoadAssetAtPath(texPath, typeof(Texture));
+            string newKey = newTex.name;
+            
+            if (!_IconHolder.Keys.Contains(newKey))
+            {
+                _IconHolder.Keys.Add(newKey);
+                _IconHolder.Textures.Add(newTex);
+                EditorUtility.SetDirty(_IconHolder);
+                AssetDatabase.SaveAssets();
+                Selected = newKey;
+            }
+        }
+        EditorUtility.ClearProgressBar();
     }
 
     static public Texture GetIcon(string key)
     {
-        foreach (GUIIcon icon in _IconHolder.Icons)
+        return _IconHolder.GetTex(key);
+        /*foreach (GUIIcon icon in _IconHolder.Icons)
             if (icon.Key == key)
                 return icon.Tex;
-        return null;
+        return null;*/
     }
 }
 

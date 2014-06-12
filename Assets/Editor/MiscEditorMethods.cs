@@ -38,6 +38,29 @@ public class MiscEditorMethods
         return assetRefs;
     }
 
+    static public List<Object> GetObjectOfType(string Type, string Path = "", bool SearchSubdirectories = true)
+    {
+        List<Object> Objs = new List<Object>();
+
+        Path = Path.Replace("Assets", "");
+
+        string[] filenames = Directory.GetFiles(Application.dataPath + Path, Type, (SearchSubdirectories ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly));
+
+        int progress = 0;
+
+        foreach (string path in filenames)
+        {
+            if (EditorUtility.DisplayCancelableProgressBar("Hold On", path, (float)progress++ / filenames.Length)) { Objs.Clear(); break; }
+
+            string objPath = "Assets" + path.Replace(Application.dataPath, "").Replace('\\', '/');
+
+            Objs.Add(AssetDatabase.LoadAssetAtPath(objPath, typeof(Object)));
+        }
+        EditorUtility.ClearProgressBar();
+
+        return Objs;
+    }
+
     static private string fixSlashes(string s)
     {
         const string forwardSlash = "/";
@@ -63,5 +86,18 @@ public class MiscEditorMethods
         return foundItems;
     }
 
+    public static void OpenScriptInVS(MonoBehaviour Script, int GoToLine = 0)
+    {
+        string[] filenames = AssetDatabase.GetAllAssetPaths();
+        Directory.GetFiles(Application.dataPath, Script.GetType().ToString() + ".cs", SearchOption.AllDirectories);
+        
+        if (filenames.Length == 1)
+        {
+            string finalFileName = Path.GetFullPath(filenames[0]);
 
+            System.Diagnostics.Process.Start("devenv", " /edit \"" + finalFileName + "\" /command \"edit.goto" + GoToLine.ToString() + " \" ");
+        }
+        else
+            EditorUtility.DisplayDialog("Unable to open file", "Files found: " + filenames.Length + (filenames.Length == 0 ? "Please ensure the file exists." : "Too many files found, this should not happen"), "Ok");
+    }
 }

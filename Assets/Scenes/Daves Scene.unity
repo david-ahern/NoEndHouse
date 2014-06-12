@@ -7610,6 +7610,10 @@ Prefab:
       propertyPath: _musicVolume
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: e3066384fd912ca44aa4badb2fab3df4, type: 2}
+      propertyPath: ShowDefaultInspector
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e3066384fd912ca44aa4badb2fab3df4, type: 2}
   m_RootGameObject: {fileID: 1251684028}
