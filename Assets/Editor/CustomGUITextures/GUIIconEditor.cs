@@ -107,7 +107,7 @@ public class GUIIconEditor : EditorWindow
 
             if (_IconHolder.Selected != temp)
             {
-                _IconHolder.Selected = temp;
+                _IconHolder.ReplaceSelected(temp);
                 EditorUtility.SetDirty(_IconHolder);
                 AssetDatabase.SaveAssets();
             }

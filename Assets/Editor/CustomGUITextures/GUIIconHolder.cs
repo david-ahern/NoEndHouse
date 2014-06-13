@@ -18,6 +18,14 @@ public class GUIIconHolder: ScriptableObject
         return null;
     }
 
+    public string GetKey(Texture Tex)
+    {
+        foreach (Texture tex in Textures)
+            if (Tex == tex)
+                return Keys[Textures.IndexOf(tex)];
+        return "";
+    }
+
     public Texture Select(string Key)
     {
         return Selected = GetTex(Key);
@@ -35,6 +43,13 @@ public class GUIIconHolder: ScriptableObject
                Keys.Remove(key);
                break;
            }
+    }
+
+    public void ReplaceSelected(Texture Tex)
+    {
+        foreach (Texture tex in Textures)
+            if (tex == Selected)
+                Textures[Textures.IndexOf(tex)] = Tex;
     }
 }
 
