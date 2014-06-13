@@ -55,13 +55,13 @@ public class FirstPersonCamera : MonoBehaviour {
         transform.localRotation *= targetOrientation;
         
 
-		if (CharacterBody)
+		if (CharacterBody && !Globals.Player.DisableMovement)
 		{
 			Quaternion yRotation = Quaternion.AngleAxis(MouseAbsolute.x, CharacterBody.transform.up);
 			CharacterBody.transform.localRotation = yRotation;
 			CharacterBody.transform.localRotation *= targetCharacterOrientation;
 		}
-		else
+		else if (!Globals.Player.DisableMovement)
 		{
 			Quaternion yRotation = Quaternion.AngleAxis (MouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
 			transform.localRotation *= yRotation;

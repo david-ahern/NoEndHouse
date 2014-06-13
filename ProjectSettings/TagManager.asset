@@ -9,6 +9,8 @@ TagManager:
   - HUD
   - Fade
   - ItemHolder
+  - DoorHandle
+  - Window
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

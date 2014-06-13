@@ -3,7 +3,7 @@ using System.Collections;
 
 public class FirstPersonController : MonoBehaviour 
 {
-    private Rigidbody RigidBody;
+    //private Rigidbody RigidBody;
     private Animator anim;
 
 	public float ForwardMovementSpeed;
@@ -22,11 +22,13 @@ public class FirstPersonController : MonoBehaviour
     public float Reach = 2.0f;
 	private Vector3 Velocity;
 
+    public bool DisableMovement;
+
     public AreaController CurrentArea;
 
     void Awake()
     {
-        RigidBody = gameObject.GetComponentInChildren<Rigidbody>();
+        //RigidBody = gameObject.GetComponentInChildren<Rigidbody>();
         anim = gameObject.GetComponentInChildren<Animator>();
     }
 
@@ -48,29 +50,32 @@ public class FirstPersonController : MonoBehaviour
 
 	private void HandleMovement()
 	{
-		float yrotrad = gameObject.transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
+        if (!DisableMovement)
+        {
+            float yrotrad = gameObject.transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
 
-		yrotrad = -yrotrad;
+            yrotrad = -yrotrad;
 
-		float VertAxis = Input.GetAxis("Vertical");
-		float HorAxis = Input.GetAxis("Horizontal");
+            float VertAxis = Input.GetAxis("Vertical");
+            float HorAxis = Input.GetAxis("Horizontal");
 
-		float Running = 1.0f;
+            float Running = 1.0f;
 
-		if (Input.GetKey(KeyCode.LeftShift))
-			Running = RunSpeedMultiplyer;
+            if (Input.GetKey(KeyCode.LeftShift))
+                Running = RunSpeedMultiplyer;
 
-		if (VertAxis != 0 && !Jumped)
-			Velocity += new Vector3(-Mathf.Sin(yrotrad) * VertAxis * ForwardMovementSpeed, 0, Mathf.Cos(yrotrad) * VertAxis * ForwardMovementSpeed) * Running * Time.deltaTime;
-		if (HorAxis != 0 && !Jumped)
-			Velocity += new Vector3(Mathf.Cos(yrotrad) * HorAxis * SideMovementSpeed, 0, Mathf.Sin(yrotrad) * HorAxis * SideMovementSpeed) * Running * Time.deltaTime;
+            if (VertAxis != 0 && !Jumped)
+                Velocity += new Vector3(-Mathf.Sin(yrotrad) * VertAxis * ForwardMovementSpeed, 0, Mathf.Cos(yrotrad) * VertAxis * ForwardMovementSpeed) * Running * Time.deltaTime;
+            if (HorAxis != 0 && !Jumped)
+                Velocity += new Vector3(Mathf.Cos(yrotrad) * HorAxis * SideMovementSpeed, 0, Mathf.Sin(yrotrad) * HorAxis * SideMovementSpeed) * Running * Time.deltaTime;
 
-        anim.SetFloat("Speed", VertAxis);
+            anim.SetFloat("Speed", VertAxis);
+        }
 	}
 
 	private void HandleJump()
 	{
-		if (Input.GetAxis("Jump") > 0.5f && !Jumped)
+		if (Input.GetAxis("Jump") > 0.5f && !Jumped && !DisableMovement)
 		{
             Debug.Log("Jump");
             anim.SetFloat("Speed", 1);
@@ -123,50 +128,34 @@ public class FirstPersonController : MonoBehaviour
 	
     private void HandleInteraction()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (!DisableMovement)
         {
-            RaycastHit Hit;
-            if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
+            if (Input.GetMouseButtonUp(0))
             {
-                if (!LeftHand.IsEquipped && Hit.collider.tag == "Item")
-                {
-                    LeftHand.EquipItem(Hit.collider.gameObject);
-                }
-                else if (LeftHand.IsEquipped && Hit.collider.tag == "ItemHolder")
-                {
-                    Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(LeftHand.GiveItem());
-                }
-                else if (LeftHand.IsEquipped)
+                LeftHand.Interact();
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                RightHand.Interact();
+            }
+            else if (Input.GetMouseButtonUp(2))
+            {
+                if (RightHand.IsEquipped)
+                    RightHand.DropItem();
+                if (LeftHand.IsEquipped)
                     LeftHand.DropItem();
             }
-            else if (LeftHand.IsEquipped)
-                LeftHand.DropItem();
-        }
-        else if (Input.GetMouseButtonUp(1))
-        {
-            RaycastHit Hit;
-            if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
+            else if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
-                if (!RightHand.IsEquipped && Hit.collider.tag == "Item")
+                RaycastHit Hit;
+                if (Physics.Raycast(Globals.MainCamera.position, Globals.MainCamera.forward, out Hit, Reach))
                 {
-                    RightHand.EquipItem(Hit.collider.gameObject);
+                    if (Hit.collider.tag == "DoorHandle")
+                    {
+                        Hit.collider.gameObject.GetComponent<DoorHandle>().IsTurned = true;
+                    }
                 }
-                else if (RightHand.IsEquipped && Hit.collider.tag == "ItemHolder")
-                {
-                    Hit.collider.gameObject.GetComponent<ItemHolder>().PlaceItem(RightHand.GiveItem());
-                }
-                else if (RightHand.IsEquipped)
-                    RightHand.DropItem();
             }
-            else if (RightHand.IsEquipped)
-                RightHand.DropItem();
-        }
-        else if (Input.GetMouseButtonUp(2))
-        {
-            if (RightHand.IsEquipped)
-                RightHand.DropItem();
-            if (LeftHand.IsEquipped)
-                LeftHand.DropItem();
         }
     }
 }

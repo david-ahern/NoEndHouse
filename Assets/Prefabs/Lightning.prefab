@@ -41,7 +41,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 500, y: 50, z: 500}
+  m_LocalPosition: {x: 0, y: 50, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -128,11 +128,11 @@ MonoBehaviour:
     Pitch: 1
   - Clip: {fileID: 8300000, guid: 2ec444fa8ccfd7c48a0bb062fa639c2d, type: 3}
     Loop: 0
-    Overridable: 1
+    Overridable: 0
     CreateAnother: 0
     Volume: 0
     Pitch: 1
-  Velocity: {x: -.100000001, y: -.100000001}
+  Velocity: {x: 0, y: 0}
   MaxDistances: {x: 1000, y: 1000}
 --- !u!198 &19800000
 ParticleSystem:
@@ -356,9 +356,9 @@ ParticleSystem:
     radius: 7.43864679
     angle: 30
     length: 5
-    boxX: 40
+    boxX: 80
     boxY: 5
-    boxZ: 40
+    boxZ: 80
     placementMode: 0
     m_Mesh: {fileID: 0}
     randomDirection: 1

@@ -13,11 +13,15 @@ public class ItemHolder : MonoBehaviour
 
     public void PlaceItem(Item item)
     {
-        Debug.Log("Placing Item");
         PlacedItem = item;
         PlacedItem.gameObject.transform.parent = gameObject.transform;
         PlacedItem.gameObject.transform.localPosition = new Vector3(0, 0, 0);
         PlacedItem.gameObject.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
         PlacedItem.InHolder = true;
+    }
+
+    public void RemoveItem()
+    {
+        PlacedItem = null;
     }
 }

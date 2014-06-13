@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be3affd3406135d4baa91d2da5bbb416, type: 3}
+  m_Name: IconHolder
+  m_EditorClassIdentifier: 
+  Keys:
+  - Add Icon
+  - Down Icon
+  - Info Icon
+  - Left Icon
+  - Loop Icon
+  - Mute Icon
+  - New Icon
+  - Open Icon
+  - Pause Icon
+  - Play Icon
+  - Play Next
+  - Play Prev
+  - Record Icon
+  - Remove Icon
+  - Rewind Icon
+  - Save As Icon
+  - Save Icon
+  - Search Icon
+  - Settings Icon
+  - Shuffle Icon
+  - Sound Icon
+  - Stop Icon
+  - Tick Icon
+  - Trash Icon
+  - Unmute Icon
+  - Up Icon
+  - Warning Icon
+  - Fast Forward Icon
+  Textures:
+  - {fileID: 2800000, guid: 004e8e1d5eac3ea40abba5e5bc5f732e, type: 3}
+  - {fileID: 2800000, guid: ae97e4f791a4f794995665013749e6c6, type: 3}
+  - {fileID: 2800000, guid: cb63b416ddc599648a82d74bb9f5f5ed, type: 3}
+  - {fileID: 2800000, guid: 51988e9159dde374cb99e3c01fabefde, type: 3}
+  - {fileID: 2800000, guid: 772078301af077f48a9972740b65ea98, type: 3}
+  - {fileID: 2800000, guid: 582495e3984668242b71bd008ffdf3e2, type: 3}
+  - {fileID: 2800000, guid: f499d51a3dbbfb74eb522c92eb1013ea, type: 3}
+  - {fileID: 2800000, guid: 3af2b00b5bdc0ce43b2627cca9218758, type: 3}
+  - {fileID: 2800000, guid: 7dbb69c43c6b84041838888c782c9063, type: 3}
+  - {fileID: 2800000, guid: 3f50fbebdc2d32f40838fd2343820fd4, type: 3}
+  - {fileID: 2800000, guid: 98e411350e19adc498c5cc794b03c3fc, type: 3}
+  - {fileID: 2800000, guid: 058c223bc95435d44a859dbda0289d68, type: 3}
+  - {fileID: 2800000, guid: 256e03aa4b8d5ce41a31ba56b251bed3, type: 3}
+  - {fileID: 2800000, guid: 9f378e67ac58c174486bbe2873ca06d3, type: 3}
+  - {fileID: 2800000, guid: 7b41914440bab5142b087ffc3cc3d59c, type: 3}
+  - {fileID: 2800000, guid: 07480a08073d1514697c8ca07feea92c, type: 3}
+  - {fileID: 2800000, guid: f7aa6c84b15335b41a410163e1a1e41f, type: 3}
+  - {fileID: 2800000, guid: 5b247d131fd30854096b9b2fbbf7a0b5, type: 3}
+  - {fileID: 2800000, guid: 804eda1e67145714cb8e14496352858e, type: 3}
+  - {fileID: 2800000, guid: 1ba0a3f932654094aa421bee023f7666, type: 3}
+  - {fileID: 2800000, guid: 3ab9459b52464f347adcbdff50c79320, type: 3}
+  - {fileID: 2800000, guid: 1f909cd329e8fc74885e336c1fb89c2c, type: 3}
+  - {fileID: 2800000, guid: 87399ad793f7da14e9fa378d5068a770, type: 3}
+  - {fileID: 2800000, guid: 794df3d5054f35f40bd2d28bf2692074, type: 3}
+  - {fileID: 2800000, guid: 4dd7f0759d34a67439bbeb45117473f0, type: 3}
+  - {fileID: 2800000, guid: 20fbd2ef5a540394988a9ef54bc832ce, type: 3}
+  - {fileID: 2800000, guid: 423a8e2b31b6fe742becd909fcd14c58, type: 3}
+  - {fileID: 2800000, guid: 076891d5685093444845c872ad97045e, type: 3}
+  Selected: {fileID: 2800000, guid: bcf358107509fbf4bb137a3927f4e0f4, type: 3}
