@@ -7778,7 +7778,7 @@ MonoBehaviour:
   _sfxVolume: .914893627
 --- !u!4 &1251684031
 Transform:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: e3066384fd912ca44aa4badb2fab3df4, type: 2}
   m_PrefabInternal: {fileID: 1089966059}
   m_GameObject: {fileID: 1251684028}

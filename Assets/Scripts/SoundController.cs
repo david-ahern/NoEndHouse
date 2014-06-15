@@ -8,7 +8,7 @@ public class SoundController : MonoBehaviour
     [HideInInspector]
     public bool ShowDefaultInspector = false;
 
-    [ContextMenu("Show Default Inspector")]
+    [ContextMenu("Switch Inspector View")]
     void ShowDefault()
     {
         ShowDefaultInspector = !ShowDefaultInspector;
