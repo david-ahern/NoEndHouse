@@ -17,7 +17,7 @@ public class GUIIconEditor : EditorWindow
     public static void ShowWindow()
     {
         EditorWindow window = EditorWindow.GetWindow(typeof(GUIIconEditor));
-        window.minSize = new Vector2(522, 522);
+        window.minSize = new Vector2(522, 187);
     }
 
     static GUIIconEditor()
@@ -86,6 +86,9 @@ public class GUIIconEditor : EditorWindow
 
         EditorGUILayout.EndScrollView();
 
+        if (Selected == "")
+            Selected = _IconHolder.Keys[0];
+
         EditorGUILayout.BeginVertical();
 
         if (Selected != "")
@@ -131,7 +134,7 @@ public class GUIIconEditor : EditorWindow
 
             EditorGUI.DrawTextureTransparent(new Rect(400, 65, 100, 100), _IconHolder.Selected);
 
-            if (GUILayout.Button("Delete", GUILayout.Width(250)))
+            if (GUILayout.Button("Delete", GUILayout.Width(200)))
             {
                 _IconHolder.Remove(Selected);
                 //Object.DestroyImmediate(SelectedHolder, true);
@@ -145,6 +148,7 @@ public class GUIIconEditor : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         if (GUILayout.Button("Load New", GUILayout.Width(120))) GetAllTextures();
+        EditorGUILayout.Space();
     }
 
     static void GetAllTextures()
@@ -183,6 +187,11 @@ public class GUIIconEditor : EditorWindow
             if (icon.Key == key)
                 return icon.Tex;
         return null;*/
+    }
+
+    static public void DoSomething()
+    {
+        GUILayout.Button("Button");
     }
 }
 

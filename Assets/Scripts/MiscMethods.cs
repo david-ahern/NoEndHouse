@@ -4,14 +4,14 @@ using System;
 
 public class MiscMethods
 {
-    static public string SecondsToMinsString(float seconds, bool roundup = false)
+    static public string TimeAsString(float seconds, bool milliseconds = false)
     {
         TimeSpan span = TimeSpan.FromSeconds(seconds);
 
-        string time = span.Minutes.ToString();
-        
-        if (!roundup)
-            time += ":" + span.Seconds.ToString("d2");
+        string time = span.Minutes.ToString() + ":" + span.Seconds.ToString("d2");
+
+        if (milliseconds)
+            time += span.Milliseconds.ToString("d2");
 
         return time;
     }

@@ -24,7 +24,7 @@ public class HUDController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-
+            Debug.Log("Attempting to create shader");
             InteractionIconMaterial = new Material(Shader.Find("HUD/InteractIcon"));
             InteractionIconMaterial.SetTexture("_MainTex", DefaultIcon);
             InteractionIconMaterial.SetTexture("_PickupTex", PickupIcon);

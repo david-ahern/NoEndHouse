@@ -20,6 +20,7 @@ public class SoundController : MonoBehaviour
     public List<Soundtrack> SoundTracks;
     private AudioSource SoundtrackSource;
     public int _currentSountrackIndex = 0;
+    private bool _soundtrackPaused = false;
 
     private AudioListener SfxListener;
 
@@ -35,19 +36,40 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    static public float SoundtrackPlayPosition
+    static public float CurrentSoundtrackPlayPosition
     {
         get { return (instance != null ? instance.SoundtrackSource.time : 0); }
     }
 
-    static public string SoundtrackName
+    static public string CurrentSoundtrackName
     {
         get { return (instance != null ? instance.SoundtrackSource.clip.name : "None"); }
     }
 
-    static public int CurrentSoundtrack
+    static public int CurrentSoundtrackIndex
     {
         get { return (instance != null ? instance._currentSountrackIndex : 0); }
+    }
+
+    static public Soundtrack CurrentSoundtrack
+    {
+        get { return (instance != null ? instance.SoundTracks[instance._currentSountrackIndex] : null); }
+    }
+
+    static public bool SoundtrackPaused
+    {
+        get { return (instance != null ? instance._soundtrackPaused : true); }
+        set
+        {
+            if (instance != null)
+            {
+                if (value)
+                    instance.SoundtrackSource.Pause();
+                else
+                    instance.SoundtrackSource.Play();
+                instance._soundtrackPaused = value;
+            }
+        }
     }
 
     public List<MiscAudioSource> MiscSources;
@@ -134,7 +156,7 @@ public class SoundController : MonoBehaviour
         if (Muted && MasterVolume > 0)
             _muted = false;
 
-        if (!SoundtrackSource.isPlaying)
+        if (!SoundtrackSource.isPlaying && !_soundtrackPaused)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
 
         for (int i = 0; i < instance.MiscSources.Count; ++i)
@@ -172,7 +194,8 @@ public class SoundController : MonoBehaviour
         {
             instance._currentSountrackIndex = instance.SoundTracks.IndexOf(track);
             instance.SoundtrackSource.clip = track.Track;
-            instance.SoundtrackSource.Play();
+            if (!instance._soundtrackPaused)
+                instance.SoundtrackSource.Play();
         }
     }
 
@@ -181,6 +204,7 @@ public class SoundController : MonoBehaviour
         if (instance != null)
         {
             instance.SoundtrackSource.Stop();
+            instance._soundtrackPaused = true;
         }
     }
 
@@ -279,7 +303,6 @@ public class SoundController : MonoBehaviour
 
 
 
-#if UNITY_EDITOR
     static public void SetMute(bool mute = true)
     {
         if (!mute)
@@ -302,7 +325,6 @@ public class SoundController : MonoBehaviour
         track.Track = clip;
         SoundTracks.Add(track);
     }
-#endif
 
     [System.Serializable]
     public class Soundtrack

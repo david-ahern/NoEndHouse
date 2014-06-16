@@ -21,6 +21,7 @@ public class SoundControllerGUI : Editor
     AudioClip addedClip = null;
 
     static List<bool> Foldouts = new List<bool>();
+    static List<bool> SountrackFoldouts = new List<bool>();
 
     static bool ShowSoundtracks = true;
     static bool ShowEffects = true;
@@ -33,6 +34,9 @@ public class SoundControllerGUI : Editor
         Texture NextIcon = GUIIconEditor.GetIcon("Play Next");
         Texture UpArrow = GUIIconEditor.GetIcon("Up Icon");
         Texture DownArrow = GUIIconEditor.GetIcon("Down Icon");
+        Texture PlayIcon = GUIIconEditor.GetIcon("Play Icon");
+        Texture PausedIcon = GUIIconEditor.GetIcon("Pause Icon");
+        Texture StopIcon = GUIIconEditor.GetIcon("Stop Icon");
 
         if (Target.ShowDefaultInspector)
         {
@@ -64,7 +68,7 @@ public class SoundControllerGUI : Editor
 
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.Space();
-        if (GUILayout.Button((mute ? UnmuteIcon : MuteIcon), GUILayout.Width(100), GUILayout.Height(32)))
+        if (GUILayout.Button((mute ? UnmuteIcon : MuteIcon), GUILayout.Width(100), GUILayout.Height(25)))
                 SetMute(!mute);
         EditorGUILayout.Space();
         EditorGUILayout.EndHorizontal();
@@ -73,39 +77,107 @@ public class SoundControllerGUI : Editor
 
         GUILayout.Box(GUIContent.none, new GUILayoutOption[]{GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 
-        EditorGUILayout.BeginHorizontal();
-        ShowSoundtracks = EditorGUILayout.Foldout(ShowSoundtracks, "");
-        EditorGUILayout.LabelField("Soundtracks", EditorStyles.boldLabel);
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        EditorGUILayout.Space();
-        EditorGUILayout.EndHorizontal();
+        GUIStyle FoldoutStyle = new GUIStyle(EditorStyles.foldout);
+        FoldoutStyle.fontStyle = FontStyle.Bold;
+        Color color = Color.black;
+        FoldoutStyle.focused.textColor = color;
+        FoldoutStyle.onFocused.textColor = color;
+        FoldoutStyle.active.textColor = color;
+        FoldoutStyle.onActive.textColor = color;
+
+        ShowSoundtracks = EditorGUILayout.Foldout(ShowSoundtracks, "Soundtracks", FoldoutStyle);
 
         EditorGUILayout.Space();
 
         if (ShowSoundtracks)
         {
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Currently Playing:");
-            GUILayout.Label(SoundController.SoundtrackName);
-            GUILayout.Label(SoundController.SoundtrackPlayPosition.ToString());
-            EditorGUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Currently Playing:", GUILayout.Width(120));
+
+            if (SoundController.CurrentSoundtrack != null)
+            {
+                GUILayout.Label(SoundController.CurrentSoundtrackName);
+
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Play Position:", GUILayout.Width(120));
+                GUILayout.Label(MiscMethods.TimeAsString(SoundController.CurrentSoundtrackPlayPosition) + " / " + MiscMethods.TimeAsString(SoundController.CurrentSoundtrack.Track.length));
+            }
+            GUILayout.EndHorizontal();
 
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button(PrevIcon, GUILayout.Width(100), GUILayout.Height(20))) ChangeTrack(-1);
-            EditorGUILayout.Space();
-            if (GUILayout.Button(NextIcon, GUILayout.Width(100), GUILayout.Height(20))) ChangeTrack(1);
+            if (GUILayout.Button(PrevIcon, GUILayout.Width(50), GUILayout.Height(20))) ChangeTrack(-1);
+            if (GUILayout.Button((SoundController.SoundtrackPaused ? PlayIcon : PausedIcon), GUILayout.Height(20))) SoundController.SoundtrackPaused = !SoundController.SoundtrackPaused;
+            if (GUILayout.Button(StopIcon, GUILayout.Width(75), GUILayout.Height(20))) SoundController.StopSoundtrack();
+            if (GUILayout.Button(NextIcon, GUILayout.Width(50), GUILayout.Height(20))) ChangeTrack(1);
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space();
-
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Availible Tracks:");
+            EditorGUILayout.Space();
 
             int remove = -1;
+
+            GUIStyle BoldStyle = new GUIStyle(EditorStyles.label);
+            BoldStyle.fontStyle = FontStyle.Bold;
+
+            if (SountrackFoldouts.Count < Target.SoundTracks.Count)
+                for (int i = SountrackFoldouts.Count; i < Target.SoundTracks.Count; i++)
+                {
+                    SountrackFoldouts.Add(false);
+                }
+            else if (SountrackFoldouts.Count > Target.SoundTracks.Count)
+                for (int i = SountrackFoldouts.Count; i > Target.SoundTracks.Count; i--)
+                {
+                    SountrackFoldouts.RemoveAt(i - 1);
+                }
+
 
             foreach (var track in Target.SoundTracks)
             {
                 EditorGUILayout.BeginHorizontal();
+                SountrackFoldouts[Target.SoundTracks.IndexOf(track)] = EditorGUILayout.Foldout(SountrackFoldouts[Target.SoundTracks.IndexOf(track)], track.Name, (SoundController.CurrentSoundtrackName == track.Name ? FoldoutStyle : EditorStyles.foldout));
+                if (GUILayout.Button(PlayIcon,GUILayout.Width(25), GUILayout.Height(25))) SoundController.PlaySoundtrack(track);
+                if (GUILayout.Button(UpArrow, GUILayout.Width(25), GUILayout.Height(25)))
+                    MoveTrackUp(Target.SoundTracks.IndexOf(track));
+                if (GUILayout.Button(DownArrow, GUILayout.Width(25), GUILayout.Height(25)))
+                    MoveTrackDown(Target.SoundTracks.IndexOf(track));
+                if (GUILayout.Button(RemoveIcon, GUILayout.Width(25), GUILayout.Height(25)))
+                    remove = Target.SoundTracks.IndexOf(track);
+
+                EditorGUILayout.EndHorizontal();
+                if (SountrackFoldouts[Target.SoundTracks.IndexOf(track)])
+                {
+                    AudioClip temp = (AudioClip)EditorGUILayout.ObjectField(track.Track, typeof(AudioClip), GUILayout.Width(250));
+
+                    if (temp != track.Track)
+                    {
+                        track.Track = temp;
+                        track.Name = track.Track.name;
+                    }
+
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Length:", GUILayout.Width(75));
+                    GUILayout.Label(MiscMethods.TimeAsString(track.Track.length));
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Frequency:", GUILayout.Width(75));
+                    GUILayout.Label(track.Track.frequency.ToString());
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Channels:", GUILayout.Width(75));
+                    GUILayout.Label(track.Track.channels.ToString());
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Ready:", GUILayout.Width(75));
+                    GUILayout.Label(track.Track.isReadyToPlay.ToString());
+                    EditorGUILayout.EndHorizontal();
+                    EditorGUILayout.Space();
+                }
+
+                /*EditorGUILayout.BeginHorizontal();
                 GUILayout.Label(track.Name);
                 GUILayout.Label(track.Track.length.ToString());
                 if (GUILayout.Button(UpArrow, GUILayout.Width(UpArrow.width), GUILayout.Height(UpArrow.height)))
@@ -114,7 +186,7 @@ public class SoundControllerGUI : Editor
                     MoveTrackDown(Target.SoundTracks.IndexOf(track));
                 if (GUILayout.Button(RemoveIcon, GUILayout.Width(RemoveIcon.width), GUILayout.Height(RemoveIcon.height)))
                     remove = Target.SoundTracks.IndexOf(track);
-                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndHorizontal();*/
             }
 
             if (remove > -1)
@@ -148,22 +220,24 @@ public class SoundControllerGUI : Editor
 
                 GUILayout.Box(GUIContent.none, new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
 
-                EditorGUILayout.BeginHorizontal();
-                ShowEffects = EditorGUILayout.Foldout(ShowEffects, "");
-                EditorGUILayout.LabelField("Currently Playing Sources", EditorStyles.boldLabel);
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.Space();
-                EditorGUILayout.EndHorizontal();
+                ShowEffects = EditorGUILayout.Foldout(ShowEffects, "Current Sources", FoldoutStyle);
+
                 EditorGUILayout.Space();
 
                 if (ShowEffects)
                 {
                     for (int i = 0; i < Target.MiscSources.Count; ++i)
                     {
+                        EditorGUILayout.BeginHorizontal();
                         Foldouts[i] = EditorGUILayout.Foldout(Foldouts[i], Target.MiscSources[i].Source.clip.name);
+
+                        if (GUILayout.Button((Target.MiscSources[i].Muted ? UnmuteIcon : MuteIcon), GUILayout.Width(25), GUILayout.Height(25)))
+                            Target.MiscSources[i].Mute(!Target.MiscSources[i].Muted);
+
+                        EditorGUILayout.EndHorizontal();
                         if (Foldouts[i])
                         {
+                            EditorGUILayout.ObjectField(Target.MiscSources[i].Source.clip, typeof(AudioClip), GUILayout.Width(250));
                             EditorGUILayout.BeginHorizontal();
 
                             EditorGUILayout.BeginVertical();
@@ -189,8 +263,6 @@ public class SoundControllerGUI : Editor
                             EditorGUILayout.EndHorizontal();
                             EditorGUILayout.BeginHorizontal();
                             EditorGUILayout.Space();
-                            if (GUILayout.Button((Target.MiscSources[i].Muted ? UnmuteIcon : MuteIcon), GUILayout.Width(100), GUILayout.Height(32)))
-                                    Target.MiscSources[i].Mute(!Target.MiscSources[i].Muted);
                             EditorGUILayout.Space();
                             EditorGUILayout.EndHorizontal();
                         }

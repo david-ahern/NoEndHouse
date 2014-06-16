@@ -213,6 +213,10 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
+#########
+# Unity
+#########
+
 # ---------------[ Unity generated ]------------------ #
 Temp/
 Obj/

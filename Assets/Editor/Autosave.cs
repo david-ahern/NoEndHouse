@@ -77,9 +77,10 @@ public class Autosave : EditorWindow
             {
                 CalculateNextTime(1);
             }
+
             EditorGUILayout.EndHorizontal();
 
-            EditorGUI.ProgressBar(new Rect(5, 70, this.position.width - 10, 20), ((float)EditorApplication.timeSinceStartup - AutosaveIntervalStart) / (NextAutosaveTime - AutosaveIntervalStart), "Next Autosave In: " + MiscMethods.SecondsToMinsString((AutosaveIntervalSecs - ((float)(EditorApplication.timeSinceStartup - AutosaveIntervalStart)))));
+            EditorGUI.ProgressBar(new Rect(5, 70, this.position.width - 10, 20), ((float)EditorApplication.timeSinceStartup - AutosaveIntervalStart) / (NextAutosaveTime - AutosaveIntervalStart), "Next Autosave In: " + MiscMethods.TimeAsString((AutosaveIntervalSecs - ((float)(EditorApplication.timeSinceStartup - AutosaveIntervalStart)))));
         }
 
         EditorUtility.SetDirty(this);
