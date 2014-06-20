@@ -22,10 +22,13 @@ public class SoundController : MonoBehaviour
     public int _currentSountrackIndex = 0;
     private bool _soundtrackPaused = false;
 
-    private AudioListener SfxListener;
-
     public bool _muted = false;
     public float StoredMasterVolume;
+
+    private AudioSource DialogueSource;
+    public List<Dialogue> DialogueQueue;
+
+    public List<MiscAudioSource> MiscSources;
 
     static public bool Muted
     {
@@ -72,7 +75,7 @@ public class SoundController : MonoBehaviour
         }
     }
 
-    public List<MiscAudioSource> MiscSources;
+    
 
     [Range(0, 1)]
     public float _masterVolume = 1.0f;
@@ -106,6 +109,22 @@ public class SoundController : MonoBehaviour
     }
 
     [Range(0, 1)]
+    public float _dialogueVolume = 1.0f;
+    [SerializeField]
+    static public float DialogueVolume
+    {
+        get { return (instance != null ? instance._dialogueVolume : 0); }
+        set
+        {
+            if (instance != null)
+            {
+                instance._dialogueVolume = value;
+                if (instance.DialogueSource != null) instance.DialogueSource.volume = instance._dialogueVolume;
+            }
+        }
+    }
+
+    [Range(0, 1)]
     public float _sfxVolume = 1.0f;
 
     [SerializeField]
@@ -134,6 +153,13 @@ public class SoundController : MonoBehaviour
             SoundtrackSource.volume = _musicVolume;
             SoundtrackSource.ignoreListenerVolume = true;
 
+            DialogueSource = gameObject.AddComponent<AudioSource>();
+            DialogueSource.hideFlags = HideFlags.HideInInspector;
+            DialogueSource.volume = _dialogueVolume;
+            DialogueSource.ignoreListenerVolume = true;
+
+            DialogueQueue = new List<Dialogue>();
+
             MiscSources = new List<MiscAudioSource>();
         }
         if (instance == this)
@@ -151,6 +177,7 @@ public class SoundController : MonoBehaviour
     {
         MasterVolume = _masterVolume;
         MusicVolume = _musicVolume;
+        DialogueVolume = _dialogueVolume;
         SfxVolume = _sfxVolume;
 
         if (Muted && MasterVolume > 0)
@@ -158,6 +185,9 @@ public class SoundController : MonoBehaviour
 
         if (!SoundtrackSource.isPlaying && !_soundtrackPaused)
             PlaySoundtrack(Random.Range(0, SoundTracks.Count));
+
+        if (!DialogueSource.isPlaying && DialogueQueue.Count > 0)
+            PlayNextDialogue();
 
         for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
@@ -208,6 +238,41 @@ public class SoundController : MonoBehaviour
         }
     }
 
+
+    static public void PlayNextDialogue()
+    {
+        if (instance != null)
+        {
+            instance.DialogueSource.clip = instance.DialogueQueue[0].Clip;
+            instance.DialogueSource.volume = instance.DialogueQueue[0].Volume;
+
+            instance.DialogueSource.PlayDelayed(instance.DialogueQueue[0].Delay);
+
+            instance.DialogueQueue.RemoveAt(0);
+        }
+    }
+
+    static public void PlayDialogue(Dialogue clip)
+    {
+        if (instance != null)
+        {
+            if (!instance.DialogueSource.isPlaying)
+            {
+                instance.DialogueSource.clip = clip.Clip;
+                instance.DialogueSource.volume = clip.Volume;
+
+                instance.DialogueSource.PlayDelayed(clip.Delay);
+            }
+            else
+            {
+                instance.DialogueQueue.Add(clip);
+            }
+        }
+    }
+
+
+
+
     static public void PlayClip(MiscAudioClip clip, float delay = 0.0f)
     {
         if (instance != null)
@@ -227,10 +292,7 @@ public class SoundController : MonoBehaviour
                         instance.MiscSources[instance.MiscSources.Count - 1].Source.PlayDelayed(delay);
                         return;
                     }
-                    if (!instance.MiscSources[i].Muted)
-                        instance.MiscSources[i].Source.volume = clip.Volume;
-                    else
-                        instance.MiscSources[i].StoredVolume = clip.Volume;
+                    instance.MiscSources[i].Source.volume = clip.Volume;
                     instance.MiscSources[i].Source.pitch = clip.Pitch;
                     instance.MiscSources[i].Source.loop = clip.Loop;
                     return;
@@ -280,6 +342,8 @@ public class SoundController : MonoBehaviour
             source.Play();
         }
     }
+
+
 
     static private MiscAudioSource CreateSource(AudioClip Clip, bool Loop = false, bool Override = false, bool CreateAnother = false, float Volume = 1.0f, float Pitch = 1.0f)
     {
@@ -340,13 +404,13 @@ public class SoundController : MonoBehaviour
         }
     }
 
+
     public class MiscAudioSource
     {
         public AudioSource Source;
         public bool Override;
         public bool CreateAnother;
         public bool Muted;
-        public float StoredVolume;
         public MiscAudioSource(AudioSource source, bool Overridable, bool createAnother) 
         { 
             Source = source;
@@ -360,13 +424,12 @@ public class SoundController : MonoBehaviour
             if (mute)
             {
                 Muted = true;
-                StoredVolume = Source.volume;
-                Source.volume = 0;
+                Source.mute = true;
             }
             else
             {
                 Muted = false;
-                Source.volume = StoredVolume;
+                Source.mute = false;
             }
         }
     }
@@ -387,4 +450,20 @@ public class MiscAudioClip
     public float Volume = 1.0f;
     [SerializeField]
     public float Pitch = 1.0f;
+}
+
+[System.Serializable]
+public class Dialogue
+{
+    [SerializeField]
+    public string Key;
+    [SerializeField]
+    public AudioClip Clip;
+    [SerializeField]
+    [Range(0, 1)]
+    public float Volume = 1.0f;
+    [SerializeField]
+    public float Delay = 0.0f;
+    [SerializeField]
+    public string Subtitle = "";
 }

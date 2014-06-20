@@ -18,14 +18,14 @@ public class HUDController : MonoBehaviour
     public Texture PickupIcon;
     public Texture DropIcon;
     private Material InteractionIconMaterial;
+    public Shader IconShader;
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            Debug.Log("Attempting to create shader");
-            InteractionIconMaterial = new Material(Shader.Find("HUD/InteractIcon"));
+            InteractionIconMaterial = new Material(IconShader);
             InteractionIconMaterial.SetTexture("_MainTex", DefaultIcon);
             InteractionIconMaterial.SetTexture("_PickupTex", PickupIcon);
             InteractionIconMaterial.SetTexture("_DropTex", DropIcon);

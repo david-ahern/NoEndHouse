@@ -460,6 +460,7 @@ MonoBehaviour:
   DefaultIcon: {fileID: 2800000, guid: 0afd3f4cd0ff2c847a8d9f7268200b5e, type: 3}
   PickupIcon: {fileID: 2800000, guid: bcf358107509fbf4bb137a3927f4e0f4, type: 3}
   DropIcon: {fileID: 2800000, guid: 33c97f852f1de274e98997ce73bf70f8, type: 3}
+  IconShader: {fileID: 4800000, guid: ef73b47afd3d7a74695ea2029cfd3963, type: 3}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

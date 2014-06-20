@@ -30,7 +30,6 @@ public class Autosave : EditorWindow
 
     void SaveScene()
     {
-        Debug.Log("Autosaving");
         EditorApplication.SaveScene();
         CalculateNextTime();
     }
