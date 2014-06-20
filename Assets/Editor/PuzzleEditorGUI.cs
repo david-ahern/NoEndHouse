@@ -25,6 +25,7 @@ public class PuzzleEditorGUI : EditorWindow
         GetAreas();
     }
 
+
     void OnGUI()
     {
         foreach (GameObject obj in Areas)

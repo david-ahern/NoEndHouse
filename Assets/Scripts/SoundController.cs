@@ -270,7 +270,23 @@ public class SoundController : MonoBehaviour
         }
     }
 
+    static public void AddDialouge(List<Dialogue> list, bool SkipQueue = false, bool StopCurrent = false, bool ClearQueue = false)
+    {
+        if (instance != null)
+        {
+            if (!instance.DialogueSource.isPlaying)
+            {
+                instance.DialogueSource.clip = list[0].Clip;
+                instance.DialogueSource.volume = list[0].Volume;
 
+                instance.DialogueSource.PlayDelayed(list[0].Delay);
+
+                list.RemoveAt(0);
+            }
+        }
+
+        instance.DialogueQueue.AddRange(list);
+    }
 
 
     static public void PlayClip(MiscAudioClip clip, float delay = 0.0f)
@@ -456,9 +472,7 @@ public class MiscAudioClip
 public class Dialogue
 {
     [SerializeField]
-    public string Key;
-    [SerializeField]
-    public AudioClip Clip;
+    public AudioClip Clip = null;
     [SerializeField]
     [Range(0, 1)]
     public float Volume = 1.0f;
