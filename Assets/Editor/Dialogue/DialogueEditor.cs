@@ -40,8 +40,11 @@ public class DialogueEditor : EditorWindow
 
         GetAllDialogueTriggers();
 
-        _DialogeHolder.selected = _DialogeHolder.Dialogues[0];
-        TempKey = _DialogeHolder.selected.Key;
+        if (_DialogeHolder.Dialogues.Count > 0)
+        {
+            _DialogeHolder.selected = _DialogeHolder.Dialogues[0];
+            TempKey = _DialogeHolder.selected.Key;
+        }
     }
 
     enum PopupSelections { Dialogue, Area };
@@ -52,6 +55,7 @@ public class DialogueEditor : EditorWindow
     Vector2 DialogueListScrollPos = new Vector2(0, 0);
     Vector2 AreaListScrollPos = new Vector2(0, 0);
     Vector2 AreaTriggerScrollPos = new Vector2(0, 0);
+    Vector2 DialoguesScrollPos = new Vector2(0, 0);
 
     static string TempKey = "";
 
@@ -67,18 +71,18 @@ public class DialogueEditor : EditorWindow
         Texture TrashButton = GUIIconEditor.GetIcon("Trash Icon");
         Texture UpArrow = GUIIconEditor.GetIcon("Up Icon");
         Texture DownArrow = GUIIconEditor.GetIcon("Down Icon");
+        Texture SaveIcon = GUIIconEditor.GetIcon("Save Icon");
 
         GUILayout.BeginHorizontal(GUI.skin.FindStyle("Toolbar"));
         GUILayout.FlexibleSpace();
         searchString = GUILayout.TextField(searchString, GUI.skin.FindStyle("ToolbarSeachTextField"), GUILayout.Width(this.position.width - 150));
         if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSeachCancelButton")))
         {
-            // Remove focus if cleared
             searchString = "";
             GUI.FocusControl(null);
         }
         GUILayout.EndHorizontal();
-        CurrentPopup = (PopupSelections)EditorGUI.EnumPopup(new Rect(0,0,100, 15), "", CurrentPopup);
+        CurrentPopup = (PopupSelections)EditorGUI.EnumPopup(new Rect(1,1,100, 15), "", CurrentPopup);
 
         if (CurrentPopup == PopupSelections.Dialogue)
         {
@@ -86,13 +90,14 @@ public class DialogueEditor : EditorWindow
             DialogueListScrollPos = EditorGUILayout.BeginScrollView(DialogueListScrollPos, GUILayout.Width(120), GUILayout.Height(this.position.height - 20));
 
             foreach (Dialogue dialogue in _DialogeHolder.Dialogues)
-                if (GUILayout.Button(dialogue.Key))
-                {
-                    _DialogeHolder.selected = dialogue;
-                    TempKey = dialogue.Key;
-                }
+                if (dialogue.Key.Contains(searchString) || dialogue.Subtitle.Contains(searchString) || (dialogue.Clip != null && dialogue.Clip.name.Contains(searchString)))
+                    if (GUILayout.Button(dialogue.Key, GUILayout.Width(100)))
+                    {
+                        _DialogeHolder.selected = dialogue;
+                        TempKey = dialogue.Key;
+                    }
 
-            if (GUILayout.Button(AddButton, GUILayout.Height(20))) AddNewDialogue();
+            if (GUILayout.Button(AddButton, GUILayout.Height(20), GUILayout.Width(100))) AddNewDialogue();
 
             EditorGUILayout.EndScrollView();
 
@@ -100,39 +105,22 @@ public class DialogueEditor : EditorWindow
 
             if (_DialogeHolder.selected != null)
             {
-                AudioClip tempClip;
-                float tempVolume;
-                float tempDelay;
-                string tempSubtitle;
-
                 EditorGUILayout.Space();
                 EditorGUILayout.BeginHorizontal();
 
-                GUILayout.Label("Key:", GUILayout.Width(40));
+                GUILayout.Label("Key:", GUILayout.Width(70));
                 TempKey = GUILayout.TextField(TempKey);
-                if (GUILayout.Button("Update", GUILayout.Width(80)))
-                {
-                    bool allow = true;
-                    foreach (Dialogue d in _DialogeHolder.Dialogues)
-                        if (d.Key == TempKey)
-                            allow = false;
-
-                    if (allow)
-                        _DialogeHolder.selected.Key = TempKey;
-                    else
-                        EditorUtility.DisplayDialog("Invalid Dialogue Key", "The key entered already exists, please enter a different key.", "Ok");
-                }
 
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("Clip:", GUILayout.Width(70));
-                tempClip = (AudioClip)EditorGUILayout.ObjectField(_DialogeHolder.selected.Clip, typeof(AudioClip), false);
+                _DialogeHolder.selected.Clip = (AudioClip)EditorGUILayout.ObjectField(_DialogeHolder.selected.Clip, typeof(AudioClip), false);
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("Volume:", GUILayout.Width(70));
-                tempVolume = GUILayout.HorizontalSlider(_DialogeHolder.selected.Volume, 0, 1);
+                _DialogeHolder.selected.Volume = GUILayout.HorizontalSlider(_DialogeHolder.selected.Volume, 0, 1);
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Label("Delay:", GUILayout.Width(70));
@@ -140,24 +128,26 @@ public class DialogueEditor : EditorWindow
 
                 temp = Regex.Replace(temp, @"[^a-zA-Z0-9 ]", "");
                 if (temp == "")
-                    tempDelay = 0;
+                    _DialogeHolder.selected.Delay = 0;
                 else
-                    tempDelay = System.Convert.ToSingle(temp);
+                    _DialogeHolder.selected.Delay = System.Convert.ToSingle(temp);
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.Space();
 
                 GUILayout.Label("Subtitle:");
-                tempSubtitle = GUILayout.TextArea(_DialogeHolder.selected.Subtitle);
+                _DialogeHolder.selected.Subtitle = GUILayout.TextArea(_DialogeHolder.selected.Subtitle);
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.Space();
+                if (GUILayout.Button(SaveIcon, GUILayout.Width(30), GUILayout.Height(30)))
+                {
+                    ApplyNewDialogueData();
+                }
                 if (GUILayout.Button(TrashButton, GUILayout.Width(30), GUILayout.Height(30)))
                 {
                     RemoveDialogue(_DialogeHolder.selected);
 
                 }
-                else
-                    ApplyNewDialogueData(_DialogeHolder.selected, tempClip, tempVolume, tempDelay, tempSubtitle);
 
                 EditorGUILayout.Space();
                 EditorGUILayout.EndHorizontal();
@@ -174,7 +164,7 @@ public class DialogueEditor : EditorWindow
             GUILayout.Label("Areas");
             AreaListScrollPos = EditorGUILayout.BeginScrollView(AreaListScrollPos, GUILayout.Width(120), GUILayout.Height(this.position.height - 20));
             foreach (GameObject area in Areas)
-                if (GUILayout.Button(area.name))
+                if (GUILayout.Button(area.name, GUILayout.Width(100)))
                 {
                     SelectedArea = area;
                     SelectedTrigger = null;
@@ -189,17 +179,17 @@ public class DialogueEditor : EditorWindow
                 AreaTriggerScrollPos = EditorGUILayout.BeginScrollView(AreaTriggerScrollPos, GUILayout.Width(120), GUILayout.Height(this.position.height - 20));
                 
                 foreach (DialogueTrigger trigger in DialogueAreaList[Areas.IndexOf(SelectedArea)])
-                    if (GUILayout.Button(trigger.name)) SelectedTrigger = trigger;
+                    if (GUILayout.Button(trigger.name, GUILayout.Width(100))) SelectedTrigger = trigger;
 
                 EditorGUILayout.EndScrollView();
                 EditorGUILayout.EndVertical();
-                
+
                 if (SelectedTrigger != null)
                 {
+                    DialoguesScrollPos = EditorGUILayout.BeginScrollView(DialoguesScrollPos, GUILayout.Height(this.position.height - 20));
                     if (SelectedTrigger.Dialogues.Count > 0)
                     {
                         Dialogue removeDialogue = null;
-                        EditorGUILayout.BeginVertical();
                         GUILayout.Label("Dialogues", GUILayout.Width(80));
                         foreach (Dialogue dialogue in SelectedTrigger.Dialogues)
                         {
@@ -239,23 +229,25 @@ public class DialogueEditor : EditorWindow
 
                         if (removeDialogue != null)
                             SelectedTrigger.Dialogues.Remove(removeDialogue);
-                        EditorGUILayout.EndVertical();
                     }
                     else
                         GUILayout.Label("No dialogues in this trigger");
 
-                    EditorGUILayout.BeginVertical();
+                    EditorGUILayout.EndScrollView();
+
+                    EditorGUILayout.BeginVertical(GUILayout.Width(120));
 
                     GUILayout.Label("Availible Dialogues");
 
                     DialogueListScrollPos = EditorGUILayout.BeginScrollView(DialogueListScrollPos, GUILayout.Width(120), GUILayout.Height(this.position.height - 20));
 
                     foreach (Dialogue dialogue in _DialogeHolder.Dialogues)
-                        if (GUILayout.Button(dialogue.Key))
-                        {
-                            SelectedTrigger.Dialogues.Add(dialogue);
-                            EditorUtility.SetDirty(SelectedTrigger);
-                        }
+                        if (dialogue.Key.Contains(searchString) || dialogue.Subtitle.Contains(searchString) || (dialogue.Clip != null && dialogue.Clip.name.Contains(searchString)))
+                            if (GUILayout.Button(dialogue.Key, GUILayout.Width(100)))
+                            {
+                                SelectedTrigger.Dialogues.Add(dialogue);
+                                EditorUtility.SetDirty(SelectedTrigger);
+                            }
 
                     EditorGUILayout.EndScrollView();
                     EditorGUILayout.EndVertical();
@@ -266,39 +258,20 @@ public class DialogueEditor : EditorWindow
         Repaint();
     }
 
-    void ApplyNewDialogueData(Dialogue dialogue, AudioClip clip, float volume, float delay, string subtitle)
+    void ApplyNewDialogueData()
     {
-        bool save = false;
+        bool allow = true;
+        foreach (Dialogue d in _DialogeHolder.Dialogues)
+            if (d.Key == TempKey && (_DialogeHolder.Dialogues.IndexOf(d) != _DialogeHolder.Dialogues.IndexOf(_DialogeHolder.selected)))
+                allow = false;
 
-        if (clip != dialogue.Clip)
-        {
-            save = true;
-            dialogue.Clip = clip;
-        }
+        if (allow)
+            _DialogeHolder.selected.Key = TempKey;
+        else
+            EditorUtility.DisplayDialog("Invalid Dialogue Key", "The key entered already exists, please enter a different key.", "Ok");
 
-        if (volume != dialogue.Volume)
-        {
-            save = true;
-            dialogue.Volume = volume;
-        }
-
-        if (delay != dialogue.Delay)
-        {
-            save = true;
-            dialogue.Delay = delay;
-        }
-
-        if (subtitle != dialogue.Subtitle)
-        {
-            save = true;
-            dialogue.Subtitle = subtitle;
-        }
-
-        if (save)
-        {
-            EditorUtility.SetDirty(_DialogeHolder);
-            AssetDatabase.SaveAssets();
-        }
+        EditorUtility.SetDirty(_DialogeHolder);
+        AssetDatabase.SaveAssets();
     }
     void AddNewDialogue()
     {
@@ -424,18 +397,64 @@ public class AddDialogueWindow : EditorWindow
     {
         SelectedTrigger = trigger;
         EditorWindow window = EditorWindow.GetWindow<AddDialogueWindow>();
+        window.position = new Rect(window.position.x, window.position.height, 443, 188);
     }
+
+    Dialogue selected = null;
 
     void OnGUI()
     {
+        Texture AddIcon = GUIIconEditor.GetIcon("Add Icon");
+        EditorGUILayout.BeginHorizontal();
         ScrollPos = EditorGUILayout.BeginScrollView(ScrollPos, GUILayout.Width(120), GUILayout.Height(this.position.height - 20));
         foreach(Dialogue dialogue in DialogueEditor._DialogeHolder.Dialogues)
         {
-            if (GUILayout.Button(dialogue.Key)) SelectedTrigger.Dialogues.Add(dialogue);
+            if (GUILayout.Button(dialogue.Key)) selected = dialogue;
         }
         EditorGUILayout.EndScrollView();
 
-        if (SelectedTrigger.gameObject != Selection.activeGameObject)
-            this.Close();
+        if (selected != null)
+        {
+            EditorGUILayout.BeginVertical();
+            if (SelectedTrigger.gameObject != Selection.activeGameObject)
+                this.Close();
+
+            EditorGUILayout.Space();
+            EditorGUILayout.BeginHorizontal();
+
+            GUILayout.Label("Key:", GUILayout.Width(70));
+            GUILayout.TextField(selected.Key);
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Clip:", GUILayout.Width(70));
+            EditorGUILayout.ObjectField(selected.Clip, typeof(AudioClip), false);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Volume:", GUILayout.Width(70));
+            GUILayout.HorizontalSlider(selected.Volume, 0, 1);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Delay:", GUILayout.Width(70));
+            GUILayout.TextField(selected.Delay.ToString(), GUILayout.Width(50));
+
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.Space();
+
+            GUILayout.Label("Subtitle:");
+            GUILayout.TextArea(selected.Subtitle);
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.Space();
+            if (GUILayout.Button(AddIcon, GUILayout.Width(30), GUILayout.Height(30))) SelectedTrigger.Dialogues.Add(selected);
+            EditorGUILayout.Space();
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+        }
+        EditorGUILayout.EndHorizontal();
+        Debug.Log("W:" + this.position.width);
+        Debug.Log("H:" + this.position.height);
     }
 }

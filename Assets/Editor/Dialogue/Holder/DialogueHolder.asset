@@ -12,16 +12,6 @@ MonoBehaviour:
   m_Name: DialogueHolder
   m_EditorClassIdentifier: 
   Dialogues:
-  - Key: Lightning
-    Clip: {fileID: 8300000, guid: 0369ab87f63118d418167b65a61a8449, type: 3}
-    Volume: 1
-    Delay: 0
-    Subtitle: BOOM
-  - Key: Hush
-    Clip: {fileID: 8300000, guid: 04f0e16a4c0ac404f80536ded7a064ff, type: 3}
-    Volume: 1
-    Delay: 0
-    Subtitle: Buuuuuhhhhhh
   - Key: Dialogue
     Clip: {fileID: 0}
     Volume: 1
@@ -33,8 +23,8 @@ MonoBehaviour:
     Delay: 0
     Subtitle: 
   selected:
-    Key: Hush
-    Clip: {fileID: 8300000, guid: 04f0e16a4c0ac404f80536ded7a064ff, type: 3}
+    Key: Dialogue 1
+    Clip: {fileID: 0}
     Volume: 1
     Delay: 0
-    Subtitle: Buuuuuhhhhhh
+    Subtitle: 
