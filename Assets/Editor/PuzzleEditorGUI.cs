@@ -31,7 +31,7 @@ public class PuzzleEditorGUI : EditorWindow
         foreach (GameObject obj in Areas)
         {
             EditorGUILayout.BeginToggleGroup(obj.name, true);
-            EditorGUILayout.ObjectField(obj, typeof(AreaController));
+            EditorGUILayout.ObjectField(obj, typeof(AreaController), false);
             EditorGUILayout.EndToggleGroup();
         }
     }

@@ -45,7 +45,7 @@ public class DialogueTriggerGUI : Editor
 
         EditorGUILayout.BeginHorizontal();
         ShowDialogue = EditorGUILayout.Foldout(ShowDialogue, "Dialogue List", FoldoutStyle);
-        if (GUILayout.Button(AddButton, GUILayout.Width(20), GUILayout.Height(20))) Target.Dialogues.Add(new Dialogue());
+        if (GUILayout.Button(AddButton, GUILayout.Width(20), GUILayout.Height(20))) AddDialogueWindow.ShowWindow(Target);
         EditorGUILayout.EndHorizontal();
 
         Dialogue removeDialogue = null;
@@ -63,9 +63,9 @@ public class DialogueTriggerGUI : Editor
                     {
                         EditorGUILayout.BeginHorizontal();
                         GUILayout.Space(20);
-                        DialogueFoldouts[Target.Dialogues.IndexOf(dialogue)] = EditorGUILayout.Foldout(DialogueFoldouts[Target.Dialogues.IndexOf(dialogue)], (dialogue.Clip ? dialogue.Clip.name : "No Clip"));
-                        if (GUILayout.Button(UpArrow, GUILayout.Width(20), GUILayout.Height(10))) MoveUp(Target.Dialogues.IndexOf(dialogue));
-                        if (GUILayout.Button(DownArrow, GUILayout.Width(20), GUILayout.Height(10))) MoveDown(Target.Dialogues.IndexOf(dialogue));
+                        DialogueFoldouts[Target.Dialogues.IndexOf(dialogue)] = EditorGUILayout.Foldout(DialogueFoldouts[Target.Dialogues.IndexOf(dialogue)], dialogue.Key);
+                        if (GUILayout.Button(UpArrow, GUILayout.Width(20), GUILayout.Height(20))) MoveUp(Target.Dialogues.IndexOf(dialogue));
+                        if (GUILayout.Button(DownArrow, GUILayout.Width(20), GUILayout.Height(20))) MoveDown(Target.Dialogues.IndexOf(dialogue));
                         if (GUILayout.Button(RemoveButton, GUILayout.Width(20), GUILayout.Height(20))) removeDialogue = dialogue;
                         EditorGUILayout.EndHorizontal();
 
@@ -81,7 +81,7 @@ public class DialogueTriggerGUI : Editor
                                 EditorGUILayout.BeginHorizontal();
                                 GUILayout.Space(40);
                                 GUILayout.Label("Clip:", GUILayout.Width(70));
-                                dialogue.Clip = (AudioClip)EditorGUILayout.ObjectField(dialogue.Clip, typeof(AudioClip));
+                                dialogue.Clip = (AudioClip)EditorGUILayout.ObjectField(dialogue.Clip, typeof(AudioClip), false);
                                 EditorGUILayout.EndHorizontal();
 
                                 EditorGUILayout.BeginHorizontal();

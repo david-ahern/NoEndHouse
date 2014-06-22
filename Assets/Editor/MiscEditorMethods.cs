@@ -34,7 +34,6 @@ public class MiscEditorMethods
             if (files[i].Name.StartsWith(".")) continue;
             assetRefs.Add((GameObject)AssetDatabase.LoadMainAssetAtPath(getRelativeAssetPath(files[i].FullName)));
         }
-        EditorProgressBar.Close();
         return assetRefs;
     }
 
@@ -99,5 +98,12 @@ public class MiscEditorMethods
         }
         else
             EditorUtility.DisplayDialog("Unable to open file", "Files found: " + filenames.Length + (filenames.Length == 0 ? "Please ensure the file exists." : "Too many files found, this should not happen"), "Ok");
+    }
+
+    public static void ApplyChangesToObject(GameObject obj)
+    {
+        Object parent = PrefabUtility.GetPrefabParent(obj);
+
+        PrefabUtility.ReplacePrefab(obj, parent);
     }
 }

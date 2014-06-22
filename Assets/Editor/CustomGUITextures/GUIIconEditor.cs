@@ -45,9 +45,6 @@ public class GUIIconEditor : EditorWindow
     string newKey = "";
     Texture newTex = null;
 
-    int newSizeX = 0;
-    int newSizeY = 0;
-
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
@@ -55,7 +52,7 @@ public class GUIIconEditor : EditorWindow
         GUILayout.Label("Add Icon:", new GUILayoutOption[] { GUILayout.Width(100) });
 
         newKey = GUILayout.TextField(newKey, 25, new GUILayoutOption[] { GUILayout.Width(150) });
-        newTex = (Texture)EditorGUILayout.ObjectField(newTex, typeof(Texture), new GUILayoutOption[] { GUILayout.Width(150) });
+        newTex = (Texture)EditorGUILayout.ObjectField(newTex, typeof(Texture), false, new GUILayoutOption[] { GUILayout.Width(150) });
 
         if (GUILayout.Button("Add", new GUILayoutOption[] { GUILayout.Width(100) }))
             if (newKey == "")
@@ -106,7 +103,7 @@ public class GUIIconEditor : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             Texture temp;
-            temp = (Texture)EditorGUILayout.ObjectField(_IconHolder.Selected, typeof(Texture));
+            temp = (Texture)EditorGUILayout.ObjectField(_IconHolder.Selected, typeof(Texture), false);
 
             if (_IconHolder.Selected != temp)
             {

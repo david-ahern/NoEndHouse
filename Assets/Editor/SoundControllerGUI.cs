@@ -150,7 +150,7 @@ public class SoundControllerGUI : Editor
                 EditorGUILayout.EndHorizontal();
                 if (SountrackFoldouts[Target.SoundTracks.IndexOf(track)])
                 {
-                    AudioClip temp = (AudioClip)EditorGUILayout.ObjectField(track.Track, typeof(AudioClip), GUILayout.Width(250));
+                    AudioClip temp = (AudioClip)EditorGUILayout.ObjectField(track.Track, typeof(AudioClip), false, GUILayout.Width(250));
 
                     if (temp != track.Track)
                     {
@@ -237,7 +237,7 @@ public class SoundControllerGUI : Editor
                         EditorGUILayout.EndHorizontal();
                         if (Foldouts[i])
                         {
-                            EditorGUILayout.ObjectField(Target.MiscSources[i].Source.clip, typeof(AudioClip), GUILayout.Width(250));
+                            EditorGUILayout.ObjectField(Target.MiscSources[i].Source.clip, typeof(AudioClip), false, GUILayout.Width(250));
                             EditorGUILayout.BeginHorizontal();
 
                             EditorGUILayout.BeginVertical();

@@ -1732,6 +1732,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400196}
+  - 65: {fileID: 6500140}
+  - 114: {fileID: 11400042}
+  m_Layer: 0
+  m_Name: TestTrigger2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &100198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400198}
+  - 65: {fileID: 6500142}
+  - 114: {fileID: 11400044}
+  m_Layer: 0
+  m_Name: TestTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -2698,6 +2732,7 @@ Transform:
   - {fileID: 400000}
   - {fileID: 400046}
   - {fileID: 400166}
+  - {fileID: 400198}
   - {fileID: 400180}
   - {fileID: 400190}
   - {fileID: 400188}
@@ -2710,6 +2745,7 @@ Transform:
   - {fileID: 400168}
   - {fileID: 400192}
   - {fileID: 400194}
+  - {fileID: 400196}
   - {fileID: 400174}
   - {fileID: 400176}
   - {fileID: 400122}
@@ -2904,6 +2940,28 @@ Transform:
   m_GameObject: {fileID: 100194}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -8.95517349, y: -3.64574957, z: -29.1052284}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400160}
+--- !u!4 &400196
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100196}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.7193356, y: -2.84212399, z: -1.61120605}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400160}
+--- !u!4 &400198
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 20.7193356, y: -2.84212446, z: -1.61120605}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400160}
@@ -5177,7 +5235,7 @@ HingeJoint:
   m_Anchor: {x: -.5, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: .0723772645, y: 1.03445578, z: -3.8578434}
+  m_ConnectedAnchor: {x: .0723773539, y: 1.03445578, z: -3.8578434}
   m_UseSpring: 1
   m_Spring:
     spring: 100
@@ -6036,6 +6094,30 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6500140
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100196}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6500142
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100198}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 1
@@ -6730,6 +6812,60 @@ MonoBehaviour:
   Holder2: {fileID: 11400032}
   Holder3: {fileID: 11400030}
   door: {fileID: 11400002}
+--- !u!114 &11400042
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946c5131a9293174487c35085c002003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowDefaultInspector: 0
+  Trigger: 1
+  Dialogues:
+  - Key: EveOfChaos
+    Clip: {fileID: 8300000, guid: 8d36336e266c6f2419eb6dcac035a451, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: Ding, ding ding
+  - Key: Dialogue
+    Clip: {fileID: 0}
+    Volume: 1
+    Delay: 0
+    Subtitle: 
+  SkipQueue: 0
+  StopCurrent: 0
+  ClearQueue: 0
+--- !u!114 &11400044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946c5131a9293174487c35085c002003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowDefaultInspector: 0
+  Trigger: 1
+  Dialogues:
+  - Key: Lightning
+    Clip: {fileID: 8300000, guid: 0369ab87f63118d418167b65a61a8449, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: BOOM
+  - Key: Hush
+    Clip: {fileID: 8300000, guid: 04f0e16a4c0ac404f80536ded7a064ff, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: Buuuuuhhhhhh
+  SkipQueue: 0
+  StopCurrent: 0
+  ClearQueue: 0
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

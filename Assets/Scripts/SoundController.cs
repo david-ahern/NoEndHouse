@@ -472,6 +472,8 @@ public class MiscAudioClip
 public class Dialogue
 {
     [SerializeField]
+    public string Key = "";
+    [SerializeField]
     public AudioClip Clip = null;
     [SerializeField]
     [Range(0, 1)]
