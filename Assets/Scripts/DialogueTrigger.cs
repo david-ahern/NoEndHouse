@@ -20,6 +20,8 @@ public class DialogueTrigger : MonoBehaviour
     public bool StopCurrent = false;
     public bool ClearQueue = false;
 
+    private bool Played = false;
+
     void Start()
     {
         if (!Trigger)
@@ -33,14 +35,18 @@ public class DialogueTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && Trigger)
+        if (other.tag == "Player" && Trigger && !Played)
+        {
+            Played = true;
             SoundController.AddDialouge(Dialogues, SkipQueue, StopCurrent, ClearQueue);
+        }
     }
 
-    void TriggerDialogue()
+    public void TriggerDialogue()
     {
-        if (!Trigger)
+        if (!Trigger && !Played)
         {
+            Played = true;
             SoundController.AddDialouge(Dialogues, SkipQueue, StopCurrent, ClearQueue);
         }
     }

@@ -9,7 +9,9 @@ public class StartRoom : Puzzle
     public Door door;
     public Message CompletedMessage;
     public Message HintMessage;
+    public DialogueTrigger HintDialogue;
 
+    private bool HintPlayed = false;
     void Start()
     {
         door.IsLocked = true;
@@ -31,9 +33,11 @@ public class StartRoom : Puzzle
             CompletedMessage.StopMessages();
         }
 
-        if (Time.time - StartTime > HintAfterTime)
+        if (Time.time - StartTime > HintAfterTime && !HintPlayed)
         {
+            HintPlayed = true;
             HintMessage.ShowMessages();
+            HintDialogue.TriggerDialogue();
         }
 	}
 }

@@ -461,6 +461,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &100052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400052}
+  - 65: {fileID: 6500032}
+  - 114: {fileID: 11400016}
+  m_Layer: 0
+  m_Name: Final Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -474,6 +491,7 @@ Transform:
   - {fileID: 400024}
   - {fileID: 400022}
   - {fileID: 400002}
+  - {fileID: 400052}
   - {fileID: 400050}
   - {fileID: 400004}
   - {fileID: 400046}
@@ -769,6 +787,17 @@ Transform:
   m_GameObject: {fileID: 100050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.63364458, y: .510959744, z: -23.940155}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400000}
+--- !u!4 &400052
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100052}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -.0745353103, y: .444025993, z: 24.1312084}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -1468,6 +1497,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 19.9842911, y: 2.56245041, z: 22.7034912}
   m_Center: {x: -5.5653038, y: .781225085, z: 10.1806374}
+--- !u!65 &6500032
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100052}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.69171572, y: 2.41317081, z: 1}
+  m_Center: {x: 1.34585786, y: .706585407, z: 0}
 --- !u!82 &8200000
 AudioSource:
   m_ObjectHideFlags: 1
@@ -2080,6 +2121,33 @@ MonoBehaviour:
   RelativePosition: {x: 2, y: .00499321008, z: -45}
   Delay: 0
   LoadedArea: {fileID: 0}
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 946c5131a9293174487c35085c002003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowDefaultInspector: 0
+  Trigger: 1
+  Dialogues:
+  - Key: EndDialogue_01
+    Clip: {fileID: 8300000, guid: 57adf877dd66764418d6b7370ba3a6c2, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: Well done, and i deserve a pat on the back for getting this working.
+  - Key: EndDialogue_02
+    Clip: {fileID: 8300000, guid: ab4a11eb7ebe1184eba294bcf5383af0, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: Pat Pat.
+  SkipQueue: 0
+  StopCurrent: 0
+  ClearQueue: 0
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

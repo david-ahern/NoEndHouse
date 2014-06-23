@@ -12,19 +12,34 @@ MonoBehaviour:
   m_Name: DialogueHolder
   m_EditorClassIdentifier: 
   Dialogues:
-  - Key: Dialogue
-    Clip: {fileID: 0}
+  - Key: StartHouse_Hint01
+    Clip: {fileID: 8300000, guid: 7f18d299377c64744b3f221cd21d6eee, type: 3}
     Volume: 1
     Delay: 0
-    Subtitle: 
-  - Key: Dialogue 1
-    Clip: {fileID: 0}
+    Subtitle: Click on each window to open them, and unlock the door.
+  - Key: StartHouse_Hint02
+    Clip: {fileID: 8300000, guid: de345c21df606ca4aba47bcee4821d09, type: 3}
     Volume: 1
     Delay: 0
-    Subtitle: 
+    Subtitle: You must place each item onto the shelf to exit this room.
+  - Key: StartHouse_Hint03
+    Clip: {fileID: 8300000, guid: 5f6add43c3e32aa4387e11397423e616, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: The door will then unlock, and you can leave the building.
+  - Key: EndDialogue_01
+    Clip: {fileID: 8300000, guid: 57adf877dd66764418d6b7370ba3a6c2, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: Well done, and i deserve a pat on the back for getting this working.
+  - Key: EndDialogue_02
+    Clip: {fileID: 8300000, guid: ab4a11eb7ebe1184eba294bcf5383af0, type: 3}
+    Volume: 1
+    Delay: 0
+    Subtitle: Pat Pat.
   selected:
-    Key: Dialogue 1
-    Clip: {fileID: 0}
+    Key: StartHouse_Hint01
+    Clip: {fileID: 8300000, guid: 7f18d299377c64744b3f221cd21d6eee, type: 3}
     Volume: 1
     Delay: 0
-    Subtitle: 
+    Subtitle: Click on each window to open them, and unlock the door.

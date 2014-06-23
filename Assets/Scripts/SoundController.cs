@@ -188,6 +188,8 @@ public class SoundController : MonoBehaviour
 
         if (!DialogueSource.isPlaying && DialogueQueue.Count > 0)
             PlayNextDialogue();
+        else if (!DialogueSource.isPlaying)
+            HUDController.CloseSubtitle();
 
         for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
@@ -248,6 +250,8 @@ public class SoundController : MonoBehaviour
 
             instance.DialogueSource.PlayDelayed(instance.DialogueQueue[0].Delay);
 
+            HUDController.DisplaySubtitle(instance.DialogueQueue[0].Subtitle, instance.DialogueQueue[0].Delay);
+
             instance.DialogueQueue.RemoveAt(0);
         }
     }
@@ -262,6 +266,8 @@ public class SoundController : MonoBehaviour
                 instance.DialogueSource.volume = clip.Volume;
 
                 instance.DialogueSource.PlayDelayed(clip.Delay);
+
+                HUDController.DisplaySubtitle(instance.DialogueQueue[0].Subtitle, instance.DialogueQueue[0].Delay);
             }
             else
             {
@@ -280,7 +286,7 @@ public class SoundController : MonoBehaviour
                 instance.DialogueSource.volume = list[0].Volume;
 
                 instance.DialogueSource.PlayDelayed(list[0].Delay);
-
+                HUDController.DisplaySubtitle(list[0].Subtitle, list[0].Delay);
                 list.RemoveAt(0);
             }
         }
