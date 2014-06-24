@@ -27,6 +27,7 @@ public class SoundController : MonoBehaviour
 
     private AudioSource DialogueSource;
     public List<Dialogue> DialogueQueue;
+    private bool HasBeenSorted = false;
 
     public List<MiscAudioSource> MiscSources;
 
@@ -188,8 +189,11 @@ public class SoundController : MonoBehaviour
 
         if (!DialogueSource.isPlaying && DialogueQueue.Count > 0)
             PlayNextDialogue();
-        else if (!DialogueSource.isPlaying)
-            HUDController.CloseSubtitle();
+        else if (!DialogueSource.isPlaying && !HasBeenSorted)
+        {
+            HasBeenSorted = true;
+            SubtitleController.Clear();
+        }
 
         for (int i = 0; i < instance.MiscSources.Count; ++i)
         {
@@ -245,12 +249,14 @@ public class SoundController : MonoBehaviour
     {
         if (instance != null)
         {
+            SubtitleController.Clear();
             instance.DialogueSource.clip = instance.DialogueQueue[0].Clip;
             instance.DialogueSource.volume = instance.DialogueQueue[0].Volume;
 
             instance.DialogueSource.PlayDelayed(instance.DialogueQueue[0].Delay);
 
-            HUDController.DisplaySubtitle(instance.DialogueQueue[0].Subtitle, instance.DialogueQueue[0].Delay);
+            SubtitleController.ShowSubtitle(instance.DialogueQueue[0].Subtitle, instance.DialogueQueue[0].Delay);
+            instance.HasBeenSorted = false;
 
             instance.DialogueQueue.RemoveAt(0);
         }
@@ -267,7 +273,8 @@ public class SoundController : MonoBehaviour
 
                 instance.DialogueSource.PlayDelayed(clip.Delay);
 
-                HUDController.DisplaySubtitle(instance.DialogueQueue[0].Subtitle, instance.DialogueQueue[0].Delay);
+                SubtitleController.ShowSubtitle(instance.DialogueQueue[0].Subtitle, instance.DialogueQueue[0].Delay);
+                instance.HasBeenSorted = false;
             }
             else
             {
@@ -286,12 +293,13 @@ public class SoundController : MonoBehaviour
                 instance.DialogueSource.volume = list[0].Volume;
 
                 instance.DialogueSource.PlayDelayed(list[0].Delay);
-                HUDController.DisplaySubtitle(list[0].Subtitle, list[0].Delay);
+                SubtitleController.ShowSubtitle(list[0].Subtitle, list[0].Delay);
+                instance.HasBeenSorted = false;
+
                 list.RemoveAt(0);
             }
+            instance.DialogueQueue.AddRange(list);
         }
-
-        instance.DialogueQueue.AddRange(list);
     }
 
 

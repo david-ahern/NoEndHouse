@@ -20,9 +20,6 @@ public class HUDController : MonoBehaviour
     private Material InteractionIconMaterial;
     public Shader IconShader;
 
-    public TextMesh SubtitleRenderer;
-    public Renderer SubtitleBG;
-
     void Awake()
     {
         if (instance == null)
@@ -34,9 +31,6 @@ public class HUDController : MonoBehaviour
             InteractionIconMaterial.SetTexture("_DropTex", DropIcon);
 
             InteractIcon.material = InteractionIconMaterial;
-
-            SubtitleRenderer.gameObject.SetActive(false);
-            SubtitleBG.gameObject.SetActive(false);
         }
 
         if (instance != this)
@@ -116,25 +110,5 @@ public class HUDController : MonoBehaviour
         }
 
         InteractIcon.material.SetFloat("_Blend", target);
-    }
-
-    static public void DisplaySubtitle(string Subtitle, float Delay = 0.0f)
-    {
-        if (instance != null)
-        {
-            instance.SubtitleRenderer.text = Subtitle;
-
-            instance.SubtitleRenderer.gameObject.SetActive(true);
-            instance.SubtitleBG.gameObject.SetActive(true);
-        }
-    }
-
-    static public void CloseSubtitle()
-    {
-        if (instance != null)
-        {
-            instance.SubtitleRenderer.gameObject.SetActive(false);
-            instance.SubtitleBG.gameObject.SetActive(false);
-        }
     }
 }

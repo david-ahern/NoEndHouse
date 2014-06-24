@@ -312,7 +312,7 @@ public class DialogueEditor : EditorWindow
         foreach (GameObject Area in Areas)
         {
             List<DialogueTrigger> TriggerList = new List<DialogueTrigger>(Area.GetComponentsInChildren<DialogueTrigger>(true));
-            Debug.Log(TriggerList.Count);
+
             DialogueAreaList.Add(TriggerList);
 
             foreach(DialogueTrigger trigger in TriggerList)

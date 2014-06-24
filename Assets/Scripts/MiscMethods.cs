@@ -15,4 +15,9 @@ public class MiscMethods
 
         return time;
     }
+
+    static public float GetLerpTimeValue(float Current, float Start, float Duration)
+    {
+        return (Current - Start) / Duration;
+    }
 }
