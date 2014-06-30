@@ -22,9 +22,11 @@ public class SoundControllerGUI : Editor
 
     static List<bool> Foldouts = new List<bool>();
     static List<bool> SountrackFoldouts = new List<bool>();
+    static List<bool> DialogueFoldouts = new List<bool>();
 
     static bool ShowSoundtracks = true;
     static bool ShowEffects = true;
+    static bool ShowDialogue = true;
     public override void OnInspectorGUI()
     {
         Texture RemoveIcon = GUIIconEditor.GetIcon("Remove Icon");
@@ -56,11 +58,13 @@ public class SoundControllerGUI : Editor
         
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Music Volume");
+        GUILayout.Label("Dialogue Volume");
         GUILayout.Label("SFX Volume");
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         Target._musicVolume = GUILayout.HorizontalSlider(Target._musicVolume, 0, 1);
+        Target._dialogueVolume = GUILayout.HorizontalSlider(Target._dialogueVolume, 0, 1);
         Target._sfxVolume = GUILayout.HorizontalSlider(Target._sfxVolume, 0, 1);
         EditorGUILayout.EndHorizontal();
 
@@ -201,6 +205,64 @@ public class SoundControllerGUI : Editor
         }
 
         EditorGUILayout.Space();
+        try
+        {
+            GUILayout.Box(GUIContent.none, new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
+
+            ShowDialogue = EditorGUILayout.Foldout(ShowDialogue, "Dialoge", FoldoutStyle);
+
+
+            if (ShowDialogue)
+            {
+                if (Target.CurrentlyPlayingDialogue != null)
+                {
+                    EditorGUILayout.Space();
+
+                    GUILayout.Label("Currently Playing:\t" + Target.CurrentlyPlayingDialogue.Key);
+                    EditorGUILayout.ObjectField(Target.CurrentlyPlayingDialogue.Clip, typeof(AudioClip));
+
+                    GUILayout.Label("Volume:\t" + Target.CurrentlyPlayingDialogue.Volume);
+                    GUILayout.Label("Delay:\t" + Target.CurrentlyPlayingDialogue.Delay);
+
+                    GUILayout.Label("Subtitle:");
+                    GUILayout.TextArea(Target.CurrentlyPlayingDialogue.Subtitle);
+
+                    EditorGUILayout.Space();
+                }
+
+                if (Target.DialogueQueue.Count > 0)
+                {
+                    if (DialogueFoldouts.Count < Target.DialogueQueue.Count)
+                        for (int i = DialogueFoldouts.Count; i < Target.DialogueQueue.Count; i++)
+                        {
+                            bool fout = false;
+                            DialogueFoldouts.Add(fout);
+                        }
+                    else if (DialogueFoldouts.Count > Target.DialogueQueue.Count)
+                        for (int i = DialogueFoldouts.Count; i > Target.DialogueQueue.Count; --i)
+                        {
+                            DialogueFoldouts.RemoveAt(i - 1);
+                        }
+
+                    for (int i = 0; i < Target.DialogueQueue.Count; i++)
+                    {
+                        DialogueFoldouts[i] = EditorGUILayout.Foldout(DialogueFoldouts[i], DialogueEditor._DialogeHolder.dialogue(Target.DialogueQueue[i]).Key);
+
+                        if (DialogueFoldouts[i])
+                        {
+                            EditorGUILayout.ObjectField(DialogueEditor._DialogeHolder.dialogue(Target.DialogueQueue[i]).Clip, typeof(AudioClip));
+
+                            GUILayout.Label("Volume:\t" + DialogueEditor._DialogeHolder.dialogue(Target.DialogueQueue[i]).Volume);
+                            GUILayout.Label("Delay:\t" + DialogueEditor._DialogeHolder.dialogue(Target.DialogueQueue[i]).Delay);
+
+                            GUILayout.Label("Subtitle:");
+                            GUILayout.TextArea(DialogueEditor._DialogeHolder.dialogue(Target.DialogueQueue[i]).Subtitle);
+                        }
+                    }
+                }
+            }
+        }
+        catch { }
 
         try
         {

@@ -14,7 +14,7 @@ public class DialogueTrigger : MonoBehaviour
     }
     public bool Trigger = true;
 
-    public List<Dialogue> Dialogues = new List<Dialogue>();
+    public List<string> Keys = new List<string>();
 
     public bool SkipQueue = false;
     public bool StopCurrent = false;
@@ -38,7 +38,7 @@ public class DialogueTrigger : MonoBehaviour
         if (other.tag == "Player" && Trigger && !Played)
         {
             Played = true;
-            SoundController.AddDialouge(Dialogues, SkipQueue, StopCurrent, ClearQueue);
+            SoundController.AddDialouge(Keys, SkipQueue, StopCurrent, ClearQueue);
         }
     }
 
@@ -47,7 +47,7 @@ public class DialogueTrigger : MonoBehaviour
         if (!Trigger && !Played)
         {
             Played = true;
-            SoundController.AddDialouge(Dialogues, SkipQueue, StopCurrent, ClearQueue);
+            SoundController.AddDialouge(Keys, SkipQueue, StopCurrent, ClearQueue);
         }
     }
 }

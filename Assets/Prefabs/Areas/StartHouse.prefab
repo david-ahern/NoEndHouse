@@ -6826,17 +6826,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowDefaultInspector: 0
   Trigger: 1
-  Dialogues:
-  - Key: StartHouse_Hint02
-    Clip: {fileID: 8300000, guid: de345c21df606ca4aba47bcee4821d09, type: 3}
-    Volume: 1
-    Delay: 0
-    Subtitle: You must place each item onto the shelf to exit this room.
-  - Key: StartHouse_Hint03
-    Clip: {fileID: 8300000, guid: 5f6add43c3e32aa4387e11397423e616, type: 3}
-    Volume: 1
-    Delay: 0
-    Subtitle: The door will then unlock, and you can leave the building.
+  Keys:
+  - StartHouse_Hint02
+  - StartHouse_Hint03
   SkipQueue: 0
   StopCurrent: 0
   ClearQueue: 0
@@ -6853,12 +6845,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowDefaultInspector: 0
   Trigger: 0
-  Dialogues:
-  - Key: StartHouse_Hint01
-    Clip: {fileID: 8300000, guid: 7f18d299377c64744b3f221cd21d6eee, type: 3}
-    Volume: 1
-    Delay: 0
-    Subtitle: Click on each window to open them, and unlock the door.
+  Keys:
+  - StartHouse_Hint01
   SkipQueue: 0
   StopCurrent: 0
   ClearQueue: 0

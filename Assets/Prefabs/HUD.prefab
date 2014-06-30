@@ -96,7 +96,7 @@ GameObject:
   - 33: {fileID: 3300006}
   - 23: {fileID: 2300008}
   m_Layer: 12
-  m_Name: Background
+  m_Name: SubtitleBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -617,6 +617,7 @@ MonoBehaviour:
   LineWidth: 40
   BackgroundAlpha: .5
   FadeTime: 1
+  Holder: {fileID: 11400000, guid: b4a4910f87153e242be892b6dba8df6a, type: 2}
 --- !u!124 &12400000
 Behaviour:
   m_ObjectHideFlags: 1
