@@ -12,7 +12,7 @@ public class DialogueHolder : ScriptableObject
 
     public Dialogue dialogue(string key)
     {
-        if (temp.Key == key)
+        if (temp != null && temp.Key == key)
             return temp;
 
         foreach(Dialogue d in Dialogues)

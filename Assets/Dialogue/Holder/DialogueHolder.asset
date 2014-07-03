@@ -36,7 +36,7 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: ab4a11eb7ebe1184eba294bcf5383af0, type: 3}
     Volume: 1
     Delay: 0
-    Subtitle: Pat Pat.
+    Subtitle: Pat Pat
   selected:
     Key: StartHouse_Hint01
     Clip: {fileID: 8300000, guid: 7f18d299377c64744b3f221cd21d6eee, type: 3}
