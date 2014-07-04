@@ -69,4 +69,9 @@ public class MyGUIStyles
 
         return options;
     }
+
+    static public void Seperator()
+    {
+        GUILayout.Box(GUIContent.none, new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
+    }
 }
