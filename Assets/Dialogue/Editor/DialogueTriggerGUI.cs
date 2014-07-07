@@ -8,7 +8,6 @@ using System;
 [CustomEditor(typeof(DialogueTrigger))]
 public class DialogueTriggerGUI : Editor
 {
-
 	private DialogueTrigger Target
     {
         get { return (DialogueTrigger)target; }
@@ -59,27 +58,20 @@ public class DialogueTriggerGUI : Editor
 
                 if (ShowDialogue)
                 {
-                    bool changed = false;
                     foreach (string dialogue in Target.Keys)
                     {
                         EditorGUILayout.BeginHorizontal();
                         GUILayout.Space(20);
                         DialogueFoldouts[Target.Keys.IndexOf(dialogue)] = EditorGUILayout.Foldout(DialogueFoldouts[Target.Keys.IndexOf(dialogue)], DialogueEditor._DialogeHolder.dialogue(dialogue).Key);
                         if (GUILayout.Button(UpArrow, GUILayout.Width(20), GUILayout.Height(20)))
-                        {
                             MoveUp(Target.Keys.IndexOf(dialogue));
-                            changed = true;
-                        }
+
                         if (GUILayout.Button(DownArrow, GUILayout.Width(20), GUILayout.Height(20))) 
-                        {
                             MoveDown(Target.Keys.IndexOf(dialogue));
-                            changed = true;
-                        }
+
                         if (GUILayout.Button(RemoveButton, GUILayout.Width(20), GUILayout.Height(20)))
-                        {
                             removeDialogue = dialogue;
-                            changed = true;
-                        }
+
                         EditorGUILayout.EndHorizontal();
 
                         if (DialogueFoldouts[Target.Keys.IndexOf(dialogue)])
@@ -131,10 +123,7 @@ public class DialogueTriggerGUI : Editor
                         }
                     }
 
-                    if (changed)
-                    {
-                        EditorUtility.SetDirty(Target);
-                    }
+                    EditorUtility.SetDirty(Target);
                 }
 
         if (removeDialogue != null)

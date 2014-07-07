@@ -18,7 +18,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &400000
 Transform:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 2
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
@@ -48,6 +48,12 @@ MonoBehaviour:
   _muted: 0
   StoredMasterVolume: 0
   DialogueQueue: []
+  CurrentlyPlayingDialogue:
+    Key: 
+    Clip: {fileID: 0}
+    Volume: 1
+    Delay: 0
+    Subtitle: 
   _masterVolume: .622448981
   _musicVolume: .631205678
   _dialogueVolume: 1

@@ -74,4 +74,9 @@ public class MyGUIStyles
     {
         GUILayout.Box(GUIContent.none, new GUILayoutOption[] { GUILayout.ExpandWidth(true), GUILayout.Height(1) });
     }
+
+    static public void Tab(int size = 1)
+    {
+        GUILayout.Space(size * 10);
+    }
 }

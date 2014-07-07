@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 [InitializeOnLoad]
+[ExecuteInEditMode]
 public class DialogueEditor : EditorWindow 
 {
     static private string HolderPath = "Assets/Dialogue/Holder/DialogueHolder.asset";
@@ -12,13 +13,14 @@ public class DialogueEditor : EditorWindow
     [SerializeField]
     static public DialogueHolder _DialogeHolder;
 
-    
+    static public GameObject PreviewSource;
 
     [MenuItem("Dialogue/Dialogue Editor")]
     public static void ShowWindow()
     {
         EditorWindow window = EditorWindow.GetWindow(typeof(DialogueEditor));
         window.name = "Dialogue";
+        window.minSize = new Vector2(600, 100);
         GetAllDialogueTriggers();
     }
 
@@ -45,6 +47,10 @@ public class DialogueEditor : EditorWindow
             _DialogeHolder.selected = _DialogeHolder.Dialogues[0];
             TempKey = _DialogeHolder.selected.Key;
         }
+
+        PreviewSource = new GameObject();
+        PreviewSource.hideFlags = HideFlags.HideAndDontSave;
+        PreviewSource.AddComponent<AudioSource>();
     }
 
     enum PopupSelections { Dialogue, Area };
@@ -64,6 +70,10 @@ public class DialogueEditor : EditorWindow
     AreaController SelectedArea;
     DialogueTrigger SelectedTrigger;
 
+    void OnDestroy()
+    {
+        GameObject.DestroyImmediate(PreviewSource);
+    }
     void OnGUI()
     {
         try
@@ -121,6 +131,11 @@ public class DialogueEditor : EditorWindow
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Label("Clip:", GUILayout.Width(70));
                     _DialogeHolder.selected.Clip = (AudioClip)EditorGUILayout.ObjectField(_DialogeHolder.selected.Clip, typeof(AudioClip), false);
+                    if (GUILayout.Button("Preview"))
+                    {
+                        PreviewSource.audio.clip = _DialogeHolder.selected.Clip;
+                        PreviewSource.audio.Play();
+                    }
                     EditorGUILayout.EndHorizontal();
 
                     EditorGUILayout.BeginHorizontal();
@@ -188,6 +203,19 @@ public class DialogueEditor : EditorWindow
                 if (SelectedTrigger != null)
                 {
                     bool changed = false;
+                    EditorGUILayout.BeginVertical();
+
+                    GUILayout.Label("Flags:");
+                    EditorGUILayout.BeginHorizontal();
+                    GUILayout.Label("Skip Queue:");
+                    SelectedTrigger.SkipQueue = EditorGUILayout.Toggle(SelectedTrigger.SkipQueue);
+                    GUILayout.Label("Stop Current:");
+                    SelectedTrigger.StopCurrent = EditorGUILayout.Toggle(SelectedTrigger.StopCurrent);
+                    GUILayout.Label("Clear Queue:");
+                    SelectedTrigger.ClearQueue = EditorGUILayout.Toggle(SelectedTrigger.ClearQueue);
+                    EditorGUILayout.EndHorizontal();
+
+                    MyGUIStyles.Seperator();
 
                     DialoguesScrollPos = EditorGUILayout.BeginScrollView(DialoguesScrollPos, GUILayout.Height(this.position.height - 20));
                     if (SelectedTrigger.Keys.Count > 0)
@@ -254,6 +282,9 @@ public class DialogueEditor : EditorWindow
                         GUILayout.Label("No dialogues in this trigger");
 
                     EditorGUILayout.EndScrollView();
+
+                    EditorGUILayout.EndVertical();
+
 
                     EditorGUILayout.BeginVertical(GUILayout.Width(120));
 

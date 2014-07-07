@@ -2,6 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class LoadAreaTrigger : MonoBehaviour 
 {
     public GameObject AreaToLoad;
@@ -13,7 +14,7 @@ public class LoadAreaTrigger : MonoBehaviour
 
     void Awake()
     {
-        ParentArea = gameObject.transform.parent.gameObject.GetComponent<AreaController>();
+        ParentArea = gameObject.transform.root.GetComponentInChildren<AreaController>();
     }
 
     void OnTriggerEnter(Collider other)
