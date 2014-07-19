@@ -3,16 +3,13 @@ using System.Collections;
 
 public class XboxControllerTestScript : MonoBehaviour 
 {
-
-	void Start () 
-    {
-	
-	}
 	
 	void Update () 
     {
         if (Input.GetButtonDown("Xbox-AButton"))
-            Debug.Log("A Pressed");
+            Debug.Log("A Pressed - P1");
+        if (Input.GetButtonDown("Xbox-AButtonP2"))
+            Debug.Log("A Pressed - P2");
         if (Input.GetButtonDown("Xbox-BButton"))
             Debug.Log("B Pressed");
         if (Input.GetButtonDown("Xbox-XButton"))
@@ -33,9 +30,9 @@ public class XboxControllerTestScript : MonoBehaviour
             Debug.Log("Right Stick Pressed");
 
         if (Input.GetAxis("Xbox-LTrigger") > 0)
-            Debug.Log("Left trigger");
+            Debug.Log("Left trigger: " + Input.GetAxis("Xbox-LTrigger"));
         if (Input.GetAxis("Xbox-RTrigger") > 0)
-            Debug.Log("Right Trigger");
+            Debug.Log("Right Trigger: " + Input.GetAxis("Xbox-RTrigger"));
 
         if (Input.GetAxis("Xbox-DPadLeft") > 0)
             Debug.Log("D Pad Left");
@@ -45,6 +42,7 @@ public class XboxControllerTestScript : MonoBehaviour
             Debug.Log("D Pad Up");
         if (Input.GetAxis("Xbox-DPadDown") > 0)
             Debug.Log("D Pad Down");
+
 
         if (Input.GetAxis("Xbox-RStickHorizontal") != 0)
             Debug.Log("Right Stick H: " + Input.GetAxis("Xbox-RStickHorizontal"));
